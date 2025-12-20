@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USCIS Cover Letter Template</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #000;
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 1in;
+        }
+
+        .letterhead {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000;
+        }
+
+        .letterhead input {
+            text-align: center;
+            border: none;
+            border-bottom: 1px dotted #666;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 3px 0;
+            width: 100%;
+        }
+
+        input[type="text"], textarea {
+            border: none;
+            border-bottom: 1px solid #666;
+            padding: 5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .date-section {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .address-block {
+            margin-bottom: 30px;
+        }
+
+        .subject-line {
+            font-weight: bold;
+            margin: 20px 0;
+            text-decoration: underline;
+        }
+
+        .body-text p {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #000;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-action:hover {
+            background: #5568d3;
+        }
+
+        .btn-home {
+            background: #28a745;
+        }
+
+        .btn-home:hover {
+            background: #218838;
+        }
+
+        @media print {
+            .action-buttons, .print-hide {
+                display: none !important;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0.5in;
+            }
+        }
+
+        .helper-instruction {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .exhibit-row input {
+            width: 100%;
+        }
+
+        .add-exhibit-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Share Menu Styles */
+        .share-menu {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            min-width: 250px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .share-menu.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .share-menu-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .share-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .share-close:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .share-options {
+            padding: 8px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            gap: 12px;
+        }
+
+        .share-option:hover {
+            background: #f3f4f6;
+            color: #667eea;
+        }
+
+        .share-option i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .share-option .fa-linkedin {
+            color: #0077b5;
+        }
+
+        .share-option .fa-twitter {
+            color: #1da1f2;
+        }
+
+        .share-option .fa-facebook {
+            color: #1877f2;
+        }
+
+        .share-option .fa-whatsapp {
+            color: #25d366;
+        }
+
+        .share-option .fa-envelope {
+            color: #ea4335;
+        }
+
+        .share-option .fa-link {
+            color: #6b7280;
+        }
+
+        @media print {
+            .share-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="action-buttons">
+        <a href="/" class="btn-action btn-home">
+            <i class="fas fa-home me-2"></i>Home
+        </a>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-print me-2"></i>Print
+        </button>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-file-pdf me-2"></i>Save as PDF
+        </button>
+        <button class="btn-action" onclick="toggleShareMenu()">
+            <i class="fas fa-share-alt me-2"></i>Share
+        </button>
+    </div>
+
+    <!-- Share Menu -->
+    <div id="shareMenu" class="share-menu">
+        <div class="share-menu-header">
+            <span>Share this form template</span>
+            <button class="share-close" onclick="toggleShareMenu()">&times;</button>
+        </div>
+        <div class="share-options">
+            <a href="#" class="share-option" onclick="shareOn('linkedin')">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('twitter')">
+                <i class="fab fa-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('facebook')">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('whatsapp')">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('email')">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="#" class="share-option" onclick="copyLink()">
+                <i class="fas fa-link"></i>
+                <span>Copy Link</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="helper-instruction print-hide">
+            <strong><i class="fas fa-lightbulb me-2"></i>Instructions:</strong>
+            Fill in your law firm information, beneficiary details, and list all documents included in your application package.
+            This cover letter helps USCIS officers quickly understand your case.
+        </div>
+
+        <!-- Letterhead (Optional - for law firms) -->
+        <div class="letterhead">
+            <input type="text" name="firmName" placeholder="Your Law Firm Name (or leave blank)" style="font-size: 18px;">
+            <br>
+            <input type="text" name="firmAddress" placeholder="Street Address">
+            <br>
+            <input type="text" name="firmCityState" placeholder="City, State ZIP">
+            <br>
+            <input type="text" name="firmPhone" placeholder="Phone: (555) 123-4567 | Email: you@lawfirm.com">
+        </div>
+
+        <!-- Date -->
+        <div class="date-section">
+            <input type="date" name="date" style="border-bottom: none;">
+        </div>
+
+        <!-- USCIS Address -->
+        <div class="address-block">
+            <strong>U.S. Citizenship and Immigration Services</strong><br>
+            <input type="text" name="uscisOffice" placeholder="USCIS Office/Service Center" style="width: 500px;"><br>
+            <input type="text" name="uscisAddress" placeholder="Address" style="width: 500px;"><br>
+            <input type="text" name="uscisCityState" placeholder="City, State ZIP" style="width: 500px;">
+        </div>
+
+        <!-- Subject Line -->
+        <div class="subject-line">
+            RE: <input type="text" name="subject" placeholder="Application Type and Beneficiary Name (e.g., Form I-485, Adjustment of Status for John Smith)" style="width: 600px; border: none; border-bottom: 1px solid #000;">
+        </div>
+
+        <div style="margin-left: 50px; margin-bottom: 20px;">
+            <strong>A-Number:</strong> <input type="text" name="aNumber" placeholder="A-" style="width: 150px;"><br>
+            <strong>Receipt Number (if any):</strong> <input type="text" name="receiptNumber" placeholder="e.g., MSC-" style="width: 200px;">
+        </div>
+
+        <!-- Salutation -->
+        <p style="margin-top: 30px;">
+            Dear USCIS Officer:
+        </p>
+
+        <!-- Body Text -->
+        <div class="body-text">
+            <p>
+                Please find enclosed the completed
+                <input type="text" name="formType" placeholder="Form Number (e.g., I-485)" style="width: 150px;">,
+                <input type="text" name="formName" placeholder="Form Name" style="width: 350px;">, on behalf of
+                <input type="text" name="beneficiaryName" placeholder="Beneficiary Full Name" style="width: 250px;">.
+            </p>
+
+            <p>
+                <strong>Case Summary:</strong><br>
+                <textarea name="caseSummary" rows="4" placeholder="Provide a brief overview of the case. Example: Mr. John Smith, a citizen of India, is applying for adjustment of status to lawful permanent resident based on an approved Form I-140 petition in the EB-2 category. Mr. Smith has maintained lawful status since entering the U.S. on an H-1B visa in 2018."></textarea>
+            </p>
+
+            <p>
+                <strong>Eligibility:</strong><br>
+                <textarea name="eligibility" rows="3" placeholder="Explain why the beneficiary is eligible. Example: The beneficiary is eligible for adjustment of status under INA §245(a) as an immediate relative/preference category immigrant with a current priority date."></textarea>
+            </p>
+        </div>
+
+        <!-- Table of Contents / Document Index -->
+        <h4 style="margin-top: 30px; margin-bottom: 15px;">ENCLOSED DOCUMENTS</h4>
+
+        <table id="documentsTable">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">Exhibit</th>
+                    <th>Document Description</th>
+                    <th style="width: 80px;">Pages</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="A" name="exhibit1"></td>
+                    <td><input type="text" name="doc1" placeholder="e.g., Form I-485, Application to Register Permanent Residence"></td>
+                    <td><input type="text" name="pages1" placeholder="1-12"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="B" name="exhibit2"></td>
+                    <td><input type="text" name="doc2" placeholder="e.g., Form I-693, Medical Examination"></td>
+                    <td><input type="text" name="pages2"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="C" name="exhibit3"></td>
+                    <td><input type="text" name="doc3" placeholder="e.g., Copy of Passport (biographical pages and visa stamps)"></td>
+                    <td><input type="text" name="pages3"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="D" name="exhibit4"></td>
+                    <td><input type="text" name="doc4" placeholder="e.g., Copy of I-94 Arrival/Departure Record"></td>
+                    <td><input type="text" name="pages4"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="E" name="exhibit5"></td>
+                    <td><input type="text" name="doc5" placeholder="e.g., Employment Verification Letter"></td>
+                    <td><input type="text" name="pages5"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="F" name="exhibit6"></td>
+                    <td><input type="text" name="doc6" placeholder="e.g., Tax Returns (3 years)"></td>
+                    <td><input type="text" name="pages6"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="G" name="exhibit7"></td>
+                    <td><input type="text" name="doc7" placeholder="e.g., Birth Certificate with certified translation"></td>
+                    <td><input type="text" name="pages7"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="H" name="exhibit8"></td>
+                    <td><input type="text" name="doc8" placeholder="e.g., Photos (6 identical passport-style photos)"></td>
+                    <td><input type="text" name="pages8"></td>
+                </tr>
+                <tr class="exhibit-row">
+                    <td><input type="text" value="I" name="exhibit9"></td>
+                    <td><input type="text" name="doc9" placeholder="e.g., Filing fee check/money order"></td>
+                    <td><input type="text" name="pages9"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="add-exhibit-btn print-hide" onclick="addRow()">
+            <i class="fas fa-plus me-2"></i>Add Another Document
+        </button>
+
+        <!-- Closing -->
+        <div style="margin-top: 40px;">
+            <p>
+                All required forms, supporting documents, and fees are enclosed. Please contact us if you require any additional information or documentation.
+            </p>
+
+            <p style="margin-top: 30px;">
+                Respectfully submitted,
+            </p>
+
+            <div style="margin-top: 60px;">
+                <p>
+                    __________________________________________<br>
+                    <input type="text" name="attorneyName" placeholder="Attorney Name" style="border: none; width: 300px;"><br>
+                    <input type="text" name="attorneyBar" placeholder="Bar Number / State" style="border: none; width: 300px;"><br>
+                    <input type="text" name="firmNameSig" placeholder="Law Firm Name" style="border: none; width: 300px;"><br>
+                    <input type="text" name="attorneyEmail" placeholder="Email" style="border: none; width: 300px;"><br>
+                    <input type="text" name="attorneyPhone" placeholder="Phone" style="border: none; width: 300px;">
+                </p>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <p style="font-size: 12px;">
+                    <strong>Enclosures:</strong> As listed above
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let exhibitCount = 9;
+
+        function addRow() {
+            exhibitCount++;
+            const letter = String.fromCharCode(64 + exhibitCount); // A=65, B=66, etc.
+            const table = document.getElementById('documentsTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.className = 'exhibit-row';
+
+            newRow.innerHTML = `
+                <td><input type="text" value="${letter}" name="exhibit${exhibitCount}"></td>
+                <td><input type="text" name="doc${exhibitCount}" placeholder="Document description"></td>
+                <td><input type="text" name="pages${exhibitCount}"></td>
+            `;
+        }
+
+        // Auto-save functionality
+        const inputs = document.querySelectorAll('input[name], textarea[name]');
+
+        inputs.forEach(input => {
+            const saved = localStorage.getItem('cover_' + input.name);
+            if (saved) input.value = saved;
+
+            input.addEventListener('input', function() {
+                localStorage.setItem('cover_' + input.name, input.value);
+            });
+        });
+
+        // Share functionality
+        function toggleShareMenu() {
+            const menu = document.getElementById('shareMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close share menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('shareMenu');
+            const shareButton = event.target.closest('.btn-action');
+
+            if (!menu.contains(event.target) && !shareButton?.textContent.includes('Share')) {
+                menu.classList.remove('active');
+            }
+        });
+
+        function shareOn(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('USCIS Cover Letter Template');
+            const text = encodeURIComponent('Check out this helpful USCIS Cover Letter template for immigration applications');
+
+            let shareUrl;
+
+            switch(platform) {
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${title}&body=${text}%20${url}`;
+                    break;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
+            toggleShareMenu();
+            return false;
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() {
+                    // Show success message
+                    const copyBtn = event.target.closest('.share-option');
+                    const originalText = copyBtn.querySelector('span').textContent;
+                    copyBtn.querySelector('span').textContent = 'Copied!';
+                    copyBtn.style.color = '#10b981';
+
+                    setTimeout(function() {
+                        copyBtn.querySelector('span').textContent = originalText;
+                        copyBtn.style.color = '';
+                    }, 2000);
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Link copied to clipboard!');
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>

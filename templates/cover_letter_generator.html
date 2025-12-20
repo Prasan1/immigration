@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USCIS Cover Letter Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px 20px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body p-4">
+                <h2><i class="fas fa-envelope-open-text me-2"></i>USCIS Cover Letter Generator</h2>
+                <p class="text-muted">Generate a professional cover letter for your USCIS application</p>
+                <hr>
+
+                <form id="coverLetterForm">
+                    <div class="mb-3">
+                        <label class="form-label">Your Full Name *</label>
+                        <input type="text" class="form-control" id="full_name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="(555) 555-5555">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Form Title (e.g., Form I-485) *</label>
+                        <input type="text" class="form-control" id="form_title" required placeholder="Form I-485 - Adjustment of Status">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Case Number (if available)</label>
+                        <input type="text" class="form-control" id="case_number" placeholder="Optional">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Documents Included (one per line)</label>
+                        <textarea class="form-control" id="documents" rows="5" placeholder="1. Completed Form I-485&#10;2. Passport photos&#10;3. Birth certificate&#10;4. Medical examination report&#10;5. Filing fee payment"></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-file-pdf me-2"></i>Generate Cover Letter PDF
+                        </button>
+                        <a href="/dashboard" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+
+                <div id="result" class="mt-4" style="display: none;">
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-check-circle me-2"></i>Success!</h5>
+                        <p>Your cover letter has been generated.</p>
+                        <a id="downloadLink" class="btn btn-success" download>
+                            <i class="fas fa-download me-2"></i>Download PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#coverLetterForm').on('submit', function(e) {
+            e.preventDefault();
+
+            const docs = $('#documents').val().split('\n').filter(d => d.trim());
+
+            const data = {
+                full_name: $('#full_name').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                form_title: $('#form_title').val(),
+                case_number: $('#case_number').val(),
+                documents: docs
+            };
+
+            $('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Generating...');
+
+            $.ajax({
+                url: '/api/documents/cover-letter/generate',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    $('#downloadLink').attr('href', response.download_url);
+                    $('#result').show();
+                    $('button[type="submit"]').prop('disabled', false).html('<i class="fas fa-file-pdf me-2"></i>Generate Another');
+                },
+                error: function(xhr) {
+                    alert('Error: ' + (xhr.responseJSON?.error || 'Failed to generate PDF'));
+                    $('button[type="submit"]').prop('disabled', false).html('<i class="fas fa-file-pdf me-2"></i>Generate Cover Letter PDF');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

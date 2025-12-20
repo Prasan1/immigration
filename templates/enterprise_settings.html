@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Settings - ImmigrationForms.io</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(44, 62, 80, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-container {
+            padding: 3rem 0;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .preview-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-passport me-2"></i>
+                ImmigrationForms.io
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/forms">
+                    <i class="fas fa-file-alt me-1"></i>Browse Forms
+                </a>
+                <a class="nav-link" href="/pricing">
+                    <i class="fas fa-tags me-1"></i>Pricing
+                </a>
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <a class="nav-link active" href="/enterprise/settings">
+                    <i class="fas fa-cog me-1"></i>Settings
+                </a>
+                <button class="btn btn-outline-light btn-sm ms-2" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container settings-container">
+        <div class="settings-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-paint-brush me-2" style="color: #667eea;"></i>
+                    Enterprise Branding Settings
+                </h2>
+                <span class="badge bg-success">
+                    <i class="fas fa-crown me-1"></i>ENTERPRISE
+                </span>
+            </div>
+
+            <div id="successMessage" class="alert alert-success" style="display: none;">
+                <i class="fas fa-check-circle me-2"></i>
+                <span id="successText"></span>
+            </div>
+
+            <form id="settingsForm">
+                <!-- Site Name -->
+                <div class="mb-4">
+                    <label for="siteName" class="form-label">
+                        <i class="fas fa-heading me-2"></i>Site Name
+                    </label>
+                    <input type="text" class="form-control" id="siteName"
+                           placeholder="Your Law Firm Name" required>
+                    <small class="text-muted">This will replace "ImmigrationForms.io" throughout the site</small>
+                </div>
+
+                <!-- Logo URL -->
+                <div class="mb-4">
+                    <label for="logoUrl" class="form-label">
+                        <i class="fas fa-image me-2"></i>Logo URL
+                    </label>
+                    <input type="url" class="form-control" id="logoUrl"
+                           placeholder="https://yoursite.com/logo.png">
+                    <small class="text-muted">Recommended size: 200x50 pixels (PNG with transparent background)</small>
+                </div>
+
+                <!-- Primary Color -->
+                <div class="mb-4">
+                    <label for="primaryColor" class="form-label">
+                        <i class="fas fa-palette me-2"></i>Primary Color
+                    </label>
+                    <div class="d-flex align-items-center">
+                        <input type="color" class="form-control form-control-color" id="primaryColor"
+                               value="#667eea" style="width: 100px;">
+                        <input type="text" class="form-control ms-2" id="primaryColorHex"
+                               value="#667eea" pattern="^#[0-9A-Fa-f]{6}$" style="width: 120px;">
+                        <div class="color-preview" id="primaryPreview"></div>
+                    </div>
+                    <small class="text-muted">Main brand color used for buttons and highlights</small>
+                </div>
+
+                <!-- Secondary Color -->
+                <div class="mb-4">
+                    <label for="secondaryColor" class="form-label">
+                        <i class="fas fa-palette me-2"></i>Secondary Color
+                    </label>
+                    <div class="d-flex align-items-center">
+                        <input type="color" class="form-control form-control-color" id="secondaryColor"
+                               value="#764ba2" style="width: 100px;">
+                        <input type="text" class="form-control ms-2" id="secondaryColorHex"
+                               value="#764ba2" pattern="^#[0-9A-Fa-f]{6}$" style="width: 120px;">
+                        <div class="color-preview" id="secondaryPreview"></div>
+                    </div>
+                    <small class="text-muted">Used for gradients and accents</small>
+                </div>
+
+                <!-- Footer Text -->
+                <div class="mb-4">
+                    <label for="footerText" class="form-label">
+                        <i class="fas fa-align-left me-2"></i>Custom Footer Text
+                    </label>
+                    <textarea class="form-control" id="footerText" rows="3"
+                              placeholder="© 2025 Your Law Firm. All rights reserved."></textarea>
+                    <small class="text-muted">Customize footer copyright and legal text</small>
+                </div>
+
+                <!-- Show Powered By -->
+                <div class="mb-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="showPoweredBy" checked>
+                        <label class="form-check-label" for="showPoweredBy">
+                            Show "Powered by ImmigrationForms.io"
+                        </label>
+                    </div>
+                    <small class="text-muted">Uncheck to remove our branding (Enterprise feature)</small>
+                </div>
+
+                <!-- Custom Domain Info -->
+                <div class="mb-4">
+                    <label for="customDomain" class="form-label">
+                        <i class="fas fa-globe me-2"></i>Custom Domain (Optional)
+                    </label>
+                    <input type="text" class="form-control" id="customDomain"
+                           placeholder="forms.yourlawfirm.com">
+                    <small class="text-muted">
+                        <strong>Setup instructions:</strong> Point your domain's CNAME record to our server.
+                        <a href="#" class="text-primary">View detailed instructions</a>
+                    </small>
+                </div>
+
+                <!-- Save Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn save-btn">
+                        <i class="fas fa-save me-2"></i>Save Branding Settings
+                    </button>
+                </div>
+            </form>
+
+            <!-- Preview Section -->
+            <div class="preview-section" id="previewSection">
+                <h5><i class="fas fa-eye me-2"></i>Preview</h5>
+                <p class="mb-0">Your custom branding will be applied across the entire platform after saving.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSettings = {};
+
+        $(document).ready(function() {
+            loadSettings();
+
+            // Color picker sync
+            $('#primaryColor').on('input', function() {
+                const color = $(this).val();
+                $('#primaryColorHex').val(color);
+                $('#primaryPreview').css('background-color', color);
+                updatePreview();
+            });
+
+            $('#primaryColorHex').on('input', function() {
+                const color = $(this).val();
+                if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+                    $('#primaryColor').val(color);
+                    $('#primaryPreview').css('background-color', color);
+                    updatePreview();
+                }
+            });
+
+            $('#secondaryColor').on('input', function() {
+                const color = $(this).val();
+                $('#secondaryColorHex').val(color);
+                $('#secondaryPreview').css('background-color', color);
+                updatePreview();
+            });
+
+            $('#secondaryColorHex').on('input', function() {
+                const color = $(this).val();
+                if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+                    $('#secondaryColor').val(color);
+                    $('#secondaryPreview').css('background-color', color);
+                    updatePreview();
+                }
+            });
+
+            // Site name preview
+            $('#siteName').on('input', updatePreview);
+
+            // Form submit
+            $('#settingsForm').submit(function(e) {
+                e.preventDefault();
+                saveSettings();
+            });
+
+            // Logout
+            $('#logoutBtn').click(function() {
+                $.post('/api/auth/logout', function() {
+                    window.location.href = '/';
+                });
+            });
+        });
+
+        function loadSettings() {
+            $.get('/api/enterprise/settings', function(settings) {
+                currentSettings = settings;
+
+                $('#siteName').val(settings.site_name);
+                $('#logoUrl').val(settings.logo_url || '');
+                $('#primaryColor').val(settings.primary_color);
+                $('#primaryColorHex').val(settings.primary_color);
+                $('#primaryPreview').css('background-color', settings.primary_color);
+                $('#secondaryColor').val(settings.secondary_color);
+                $('#secondaryColorHex').val(settings.secondary_color);
+                $('#secondaryPreview').css('background-color', settings.secondary_color);
+                $('#footerText').val(settings.footer_text || '');
+                $('#showPoweredBy').prop('checked', settings.show_powered_by);
+                $('#customDomain').val(settings.custom_domain || '');
+
+                updatePreview();
+            });
+        }
+
+        function saveSettings() {
+            const settings = {
+                site_name: $('#siteName').val(),
+                logo_url: $('#logoUrl').val(),
+                primary_color: $('#primaryColor').val(),
+                secondary_color: $('#secondaryColor').val(),
+                footer_text: $('#footerText').val(),
+                show_powered_by: $('#showPoweredBy').is(':checked'),
+                custom_domain: $('#customDomain').val()
+            };
+
+            $.ajax({
+                url: '/api/enterprise/settings',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(settings),
+                success: function(response) {
+                    $('#successText').text(response.message);
+                    $('#successMessage').slideDown();
+
+                    setTimeout(function() {
+                        $('#successMessage').slideUp();
+                    }, 3000);
+                },
+                error: function() {
+                    alert('Error saving settings. Please try again.');
+                }
+            });
+        }
+
+        function updatePreview() {
+            const primary = $('#primaryColor').val();
+            const secondary = $('#secondaryColor').val();
+            const siteName = $('#siteName').val() || 'Your Site Name';
+
+            $('#previewSection').css('background', `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`);
+            $('#previewSection h5').text(`Preview: ${siteName}`);
+        }
+    </script>
+</body>
+</html>

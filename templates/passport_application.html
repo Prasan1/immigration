@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Passport Application (DS-11) - Document Processing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, {{ g.branding.primary_color }}, {{ g.branding.secondary_color }});
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, {{ g.branding.primary_color }}, {{ g.branding.secondary_color }});
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 30px 0 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: {{ g.branding.primary_color }};
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, {{ g.branding.primary_color }}, {{ g.branding.secondary_color }});
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+        .price-badge {
+            background: #ffc107;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .required-star {
+            color: #dc3545;
+        }
+
+        #payment-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1><i class="fas fa-passport"></i> US Passport Application Processing</h1>
+            <p class="lead">Complete your DS-11 form with our guided application process</p>
+            <div class="price-badge">$12.00 per application</div>
+            <p class="mb-0">Includes auto-filled PDF, checklist, and step-by-step guidance</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>What you'll get:</strong> After payment, we'll generate a completed DS-11 form PDF with all your information,
+                a comprehensive document checklist, and detailed instructions for submission.
+            </div>
+
+            <form id="passportForm">
+                <!-- Personal Information -->
+                <div class="section-header">
+                    <i class="fas fa-user"></i> Personal Information
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Full Legal Name <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="full_name" required
+                               placeholder="As it appears on your birth certificate">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date of Birth <span class="required-star">*</span></label>
+                        <input type="date" class="form-control" id="date_of_birth" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Place of Birth <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="place_of_birth" required placeholder="City, State">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" id="gender">
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="X">X (Unspecified)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Social Security Number</label>
+                        <input type="text" class="form-control" id="ssn" placeholder="###-##-####">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Height</label>
+                        <input type="text" class="form-control" id="height" placeholder="5'8&quot;">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Hair Color</label>
+                        <input type="text" class="form-control" id="hair_color" placeholder="Brown">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Eye Color</label>
+                        <input type="text" class="form-control" id="eye_color" placeholder="Brown">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Email <span class="required-star">*</span></label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="(555) 555-5555">
+                    </div>
+                </div>
+
+                <!-- Mailing Address -->
+                <div class="section-header">
+                    <i class="fas fa-map-marker-alt"></i> Mailing Address
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Street Address <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="mailing_address" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label">City <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="city" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">State <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="state" required placeholder="CA">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">ZIP Code <span class="required-star">*</span></label>
+                        <input type="text" class="form-control" id="zip_code" required>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="section-header">
+                    <i class="fas fa-phone-alt"></i> Emergency Contact
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label">Contact Name</label>
+                        <input type="text" class="form-control" id="emergency_contact_name">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="tel" class="form-control" id="emergency_contact_phone">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Relationship</label>
+                        <input type="text" class="form-control" id="emergency_contact_relationship" placeholder="Spouse">
+                    </div>
+                </div>
+
+                <!-- Employment -->
+                <div class="section-header">
+                    <i class="fas fa-briefcase"></i> Employment Information
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Occupation</label>
+                        <input type="text" class="form-control" id="occupation">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Employer</label>
+                        <input type="text" class="form-control" id="employer">
+                    </div>
+                </div>
+
+                <!-- Travel Plans -->
+                <div class="section-header">
+                    <i class="fas fa-plane"></i> Travel Plans (Optional)
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Expected Travel Date</label>
+                        <input type="date" class="form-control" id="travel_date">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Destination</label>
+                        <input type="text" class="form-control" id="destination">
+                    </div>
+                </div>
+
+                <!-- Parent Information -->
+                <div class="section-header">
+                    <i class="fas fa-users"></i> Parent Information
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Parent 1 Full Name</label>
+                        <input type="text" class="form-control" id="parent1_name">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Place of Birth</label>
+                        <input type="text" class="form-control" id="parent1_birthplace">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="parent1_dob">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Parent 2 Full Name</label>
+                        <input type="text" class="form-control" id="parent2_name">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Place of Birth</label>
+                        <input type="text" class="form-control" id="parent2_birthplace">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="parent2_dob">
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                        <i class="fas fa-save"></i> Save Draft
+                    </button>
+                    <button type="submit" class="btn btn-primary flex-grow-1">
+                        <i class="fas fa-arrow-right"></i> Continue to Payment ($12.00)
+                    </button>
+                </div>
+            </form>
+
+            <!-- Payment Section (Hidden initially) -->
+            <div id="payment-section" style="display: none;">
+                <h4><i class="fas fa-credit-card"></i> Complete Payment</h4>
+                <p>Total: <strong>$12.00</strong> - One-time payment for passport application processing</p>
+                <div id="payment-element"></div>
+                <button id="submit-payment" class="btn btn-primary mt-3">
+                    <i class="fas fa-lock"></i> Pay $12.00
+                </button>
+                <button id="back-to-form" class="btn btn-secondary mt-3">
+                    <i class="fas fa-arrow-left"></i> Back to Form
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center text-white">
+            <div class="spinner-border text-light" role="status"></div>
+            <p class="mt-3">Processing...</p>
+        </div>
+    </div>
+
+    <script>
+        const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
+        let elements;
+        let paymentElement;
+        let applicationId;
+
+        // Form submission
+        document.getElementById('passportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+
+            // Collect form data
+            const formData = collectFormData();
+
+            try {
+                // Create application
+                const response = await fetch('/api/passport/applications', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to create application');
+                }
+
+                const application = await response.json();
+                applicationId = application.id;
+
+                // Create checkout session
+                const checkoutResponse = await fetch(`/api/passport/applications/${applicationId}/checkout`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+
+                if (!checkoutResponse.ok) {
+                    const error = await checkoutResponse.json();
+                    throw new Error(error.error || 'Failed to create checkout');
+                }
+
+                const {client_secret} = await checkoutResponse.json();
+
+                // Show payment section
+                document.getElementById('passportForm').style.display = 'none';
+                document.getElementById('payment-section').style.display = 'block';
+
+                // Setup Stripe payment element
+                elements = stripe.elements({clientSecret: client_secret});
+                paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+
+                hideLoading();
+            } catch (error) {
+                hideLoading();
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Save draft
+        document.getElementById('saveDraftBtn').addEventListener('click', async () => {
+            showLoading();
+            const formData = collectFormData();
+
+            try {
+                const response = await fetch('/api/passport/applications', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) throw new Error('Failed to save draft');
+
+                hideLoading();
+                alert('Draft saved successfully!');
+            } catch (error) {
+                hideLoading();
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Payment submission
+        document.getElementById('submit-payment').addEventListener('click', async () => {
+            showLoading();
+
+            const {error} = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: window.location.origin + '/dashboard?passport_success=true',
+                },
+            });
+
+            if (error) {
+                hideLoading();
+                alert('Payment failed: ' + error.message);
+            }
+        });
+
+        // Back to form
+        document.getElementById('back-to-form').addEventListener('click', () => {
+            document.getElementById('payment-section').style.display = 'none';
+            document.getElementById('passportForm').style.display = 'block';
+        });
+
+        function collectFormData() {
+            return {
+                full_name: document.getElementById('full_name').value,
+                date_of_birth: document.getElementById('date_of_birth').value,
+                place_of_birth: document.getElementById('place_of_birth').value,
+                gender: document.getElementById('gender').value,
+                ssn: document.getElementById('ssn').value,
+                height: document.getElementById('height').value,
+                hair_color: document.getElementById('hair_color').value,
+                eye_color: document.getElementById('eye_color').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                mailing_address: document.getElementById('mailing_address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip_code: document.getElementById('zip_code').value,
+                emergency_contact_name: document.getElementById('emergency_contact_name').value,
+                emergency_contact_phone: document.getElementById('emergency_contact_phone').value,
+                emergency_contact_relationship: document.getElementById('emergency_contact_relationship').value,
+                occupation: document.getElementById('occupation').value,
+                employer: document.getElementById('employer').value,
+                travel_date: document.getElementById('travel_date').value,
+                destination: document.getElementById('destination').value,
+                parent1_name: document.getElementById('parent1_name').value,
+                parent1_birthplace: document.getElementById('parent1_birthplace').value,
+                parent1_dob: document.getElementById('parent1_dob').value,
+                parent2_name: document.getElementById('parent2_name').value,
+                parent2_birthplace: document.getElementById('parent2_birthplace').value,
+                parent2_dob: document.getElementById('parent2_dob').value,
+            };
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

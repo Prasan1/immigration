@@ -1,0 +1,84 @@
+<!-- Page Loading Indicator - Include this in all pages -->
+<style>
+    #pageLoadingBar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        z-index: 9999;
+        transition: width 0.3s ease;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    #pageLoadingBar.loading {
+        width: 70%;
+    }
+
+    #pageLoadingBar.complete {
+        width: 100%;
+        opacity: 0;
+        transition: width 0.1s ease, opacity 0.3s ease 0.1s;
+    }
+
+    /* Optimize animations - reduce from 2s to 3s and make lighter */
+    @keyframes pulse-premium {
+        0%, 100% { box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); }
+        50% { box-shadow: 0 4px 20px rgba(245, 87, 108, 0.4); }
+    }
+
+    @keyframes pulse-free {
+        0%, 100% { box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
+        50% { box-shadow: 0 4px 20px rgba(56, 239, 125, 0.4); }
+    }
+
+    .premium-badge {
+        animation: pulse-premium 3s ease-in-out infinite !important;
+    }
+
+    .free-badge {
+        animation: pulse-free 3s ease-in-out infinite !important;
+    }
+
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+</style>
+
+<div id="pageLoadingBar"></div>
+
+<script>
+(function() {
+    const loadingBar = document.getElementById('pageLoadingBar');
+
+    // Show loading bar on navigation
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.href && !link.target && !link.href.includes('#') &&
+            !link.href.includes('mailto:') && !link.href.includes('javascript:')) {
+            loadingBar.classList.add('loading');
+        }
+    });
+
+    // Complete loading bar when page loads
+    window.addEventListener('load', function() {
+        loadingBar.classList.add('complete');
+        setTimeout(function() {
+            loadingBar.classList.remove('loading', 'complete');
+            loadingBar.style.width = '0%';
+            loadingBar.style.opacity = '1';
+        }, 400);
+    });
+
+    // Start loading bar immediately
+    if (document.readyState === 'loading') {
+        loadingBar.classList.add('loading');
+    }
+})();
+</script>

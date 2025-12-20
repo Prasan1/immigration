@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - {{ g.branding.site_name }}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="alternate icon" href="/static/favicon.svg">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+
+        .navbar {
+            background: rgba(44, 62, 80, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .last-updated {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        p, li {
+            color: #495057;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin-bottom: 1.5rem;
+        }
+
+        .alert {
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-passport me-2"></i>
+                {{ g.branding.site_name }}
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+                <a class="nav-link" href="/forms">
+                    <i class="fas fa-file-alt me-1"></i>USCIS Forms
+                </a>
+                <a class="nav-link" href="/templates">
+                    <i class="fas fa-edit me-1"></i>Form Templates
+                </a>
+                <a class="nav-link" href="/pricing">
+                    <i class="fas fa-tags me-1"></i>Pricing
+                </a>
+                {% if user %}
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+                {% else %}
+                <a class="nav-link" href="/login">Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-container">
+        <h1>Terms of Service</h1>
+        <p class="last-updated">Last Updated: December 16, 2025</p>
+
+        <div class="alert alert-warning">
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>Important Notice:</strong>
+            {{ g.branding.site_name }} provides informational resources and templates. We are NOT a law firm and do NOT provide legal advice. For legal advice, please consult a qualified immigration attorney.
+        </div>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using {{ g.branding.site_name }}, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>{{ g.branding.site_name }} provides:</p>
+        <ul>
+            <li>Access to USCIS immigration form information and checklists</li>
+            <li>Fillable template documents for immigration purposes</li>
+            <li>Processing time and fee information</li>
+            <li>Step-by-step guides for form completion</li>
+            <li>Team collaboration features (on applicable plans)</li>
+            <li>White-label branding options (on Business plan)</li>
+        </ul>
+
+        <h2>3. User Accounts</h2>
+        <p>To access certain features, you must create an account. You agree to:</p>
+        <ul>
+            <li>Provide accurate and complete information</li>
+            <li>Maintain the security of your account credentials</li>
+            <li>Promptly update your account information</li>
+            <li>Accept responsibility for all activities under your account</li>
+            <li>Notify us immediately of any unauthorized access</li>
+        </ul>
+
+        <h2>4. Subscription and Billing</h2>
+        <p><strong>Subscription Plans:</strong></p>
+        <ul>
+            <li><strong>Solo:</strong> Free tier with limited access</li>
+            <li><strong>Professional ($39/month):</strong> Full access for individual users</li>
+            <li><strong>Team ($149/month):</strong> Up to 5 team members</li>
+            <li><strong>Business ($299/month):</strong> Up to 15 team members with white-label branding</li>
+        </ul>
+
+        <p><strong>Billing Terms:</strong></p>
+        <ul>
+            <li>Subscriptions are billed monthly in advance</li>
+            <li>Payments are processed securely through Stripe</li>
+            <li>Prices are subject to change with 30 days notice</li>
+            <li>You can cancel your subscription at any time</li>
+            <li>No refunds for partial months of service</li>
+        </ul>
+
+        <h2>5. Cancellation and Refunds</h2>
+        <p>You may cancel your subscription at any time from your account dashboard. Upon cancellation:</p>
+        <ul>
+            <li>You will retain access until the end of your current billing period</li>
+            <li>No refunds will be issued for unused portions of your subscription</li>
+            <li>Your data will be retained for 30 days in case you wish to reactivate</li>
+            <li>After 30 days, your account and data may be permanently deleted</li>
+        </ul>
+
+        <h2>6. Acceptable Use</h2>
+        <p>You agree NOT to:</p>
+        <ul>
+            <li>Violate any laws or regulations</li>
+            <li>Infringe on intellectual property rights</li>
+            <li>Share your account with unauthorized users</li>
+            <li>Attempt to hack, reverse engineer, or compromise our systems</li>
+            <li>Upload malware or malicious code</li>
+            <li>Resell or redistribute our content without permission</li>
+            <li>Use the service for any fraudulent purposes</li>
+        </ul>
+
+        <h2>7. Intellectual Property</h2>
+        <p>All content, features, and functionality of our service are owned by {{ g.branding.site_name }} or our licensors and are protected by copyright, trademark, and other intellectual property laws.</p>
+        <p><strong>You may:</strong></p>
+        <ul>
+            <li>Use our templates and forms for your personal or business immigration needs</li>
+            <li>Modify templates for your specific use case</li>
+            <li>Share completed forms with USCIS or immigration authorities</li>
+        </ul>
+        <p><strong>You may NOT:</strong></p>
+        <ul>
+            <li>Resell, redistribute, or sublicense our templates or content</li>
+            <li>Remove copyright notices or branding (except on Business plan with white-label)</li>
+            <li>Create derivative works for commercial distribution</li>
+        </ul>
+
+        <h2>8. Disclaimer of Warranties</h2>
+        <p>{{ g.branding.site_name }} is provided "AS IS" and "AS AVAILABLE" without warranties of any kind. We do not guarantee:</p>
+        <ul>
+            <li>That our service will be uninterrupted or error-free</li>
+            <li>That information will always be accurate or up-to-date</li>
+            <li>That using our templates will result in immigration approval</li>
+            <li>Any specific outcome from using our service</li>
+        </ul>
+        <p><strong>IMPORTANT:</strong> USCIS forms, fees, and requirements change frequently. While we strive to keep information current, you should always verify with official USCIS sources before submitting applications.</p>
+
+        <h2>9. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law, {{ g.branding.site_name }} and its affiliates shall not be liable for:</p>
+        <ul>
+            <li>Indirect, incidental, or consequential damages</li>
+            <li>Loss of profits, data, or business opportunities</li>
+            <li>Immigration application denials or delays</li>
+            <li>Errors in information or templates</li>
+        </ul>
+        <p>Our total liability shall not exceed the amount you paid us in the past 12 months.</p>
+
+        <h2>10. Indemnification</h2>
+        <p>You agree to indemnify and hold harmless {{ g.branding.site_name }}, its officers, directors, employees, and agents from any claims, damages, or expenses arising from:</p>
+        <ul>
+            <li>Your use of our service</li>
+            <li>Your violation of these Terms</li>
+            <li>Your violation of any third-party rights</li>
+            <li>Information you submit to immigration authorities</li>
+        </ul>
+
+        <h2>11. Team Features and White-Label</h2>
+        <p>For Team and Business plan subscribers:</p>
+        <ul>
+            <li>The account owner is responsible for all team member activity</li>
+            <li>Account owner must ensure team members comply with these Terms</li>
+            <li>Seat limits are enforced based on your subscription tier</li>
+            <li>White-label branding (Business plan only) must not infringe on third-party trademarks</li>
+        </ul>
+
+        <h2>12. Termination</h2>
+        <p>We may suspend or terminate your account if:</p>
+        <ul>
+            <li>You violate these Terms of Service</li>
+            <li>Your payment fails or you're past due</li>
+            <li>We believe your account poses a security risk</li>
+            <li>Required by law or government request</li>
+        </ul>
+
+        <h2>13. Changes to Terms</h2>
+        <p>We may modify these Terms at any time. We will notify you of material changes via email or in-app notification. Continued use of our service after changes constitutes acceptance of the new Terms.</p>
+
+        <h2>14. Governing Law</h2>
+        <p>These Terms are governed by the laws of the United States. Any disputes shall be resolved in the courts of competent jurisdiction.</p>
+
+        <h2>15. Contact Information</h2>
+        <p>For questions about these Terms, please contact us:</p>
+        <ul>
+            <li><strong>Email:</strong> <a href="mailto:legal@immigrationtemplates.com">legal@immigrationtemplates.com</a></li>
+            <li><strong>Support:</strong> <a href="mailto:support@immigrationtemplates.com">support@immigrationtemplates.com</a></li>
+        </ul>
+
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-primary"><i class="fas fa-home me-2"></i>Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

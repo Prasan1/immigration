@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extreme Hardship Declaration (I-601/I-601A)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.8;
+            color: #000;
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 20px;
+        }
+
+        .form-header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            border: none;
+            border-bottom: 1px solid #666;
+            padding: 5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .signature-section {
+            margin-top: 60px;
+            page-break-inside: avoid;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #000;
+            width: 300px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-action:hover {
+            background: #5568d3;
+            color: white;
+        }
+
+        .btn-home {
+            background: #28a745;
+        }
+
+        .btn-home:hover {
+            background: #218838;
+        }
+
+        @media print {
+            .action-buttons, .print-hide {
+                display: none !important;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0.5in;
+            }
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Share Menu Styles */
+        .share-menu {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            min-width: 250px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .share-menu.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .share-menu-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .share-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .share-close:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .share-options {
+            padding: 8px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            gap: 12px;
+        }
+
+        .share-option:hover {
+            background: #f3f4f6;
+            color: #667eea;
+        }
+
+        .share-option i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .share-option .fa-linkedin {
+            color: #0077b5;
+        }
+
+        .share-option .fa-twitter {
+            color: #1da1f2;
+        }
+
+        .share-option .fa-facebook {
+            color: #1877f2;
+        }
+
+        .share-option .fa-whatsapp {
+            color: #25d366;
+        }
+
+        .share-option .fa-envelope {
+            color: #ea4335;
+        }
+
+        .share-option .fa-link {
+            color: #6b7280;
+        }
+
+        @media print {
+            .share-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="action-buttons">
+        <a href="/" class="btn-action btn-home">
+            <i class="fas fa-home me-2"></i>Home
+        </a>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-print me-2"></i>Print
+        </button>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-file-pdf me-2"></i>Save PDF
+        </button>
+        <button class="btn-action" onclick="toggleShareMenu()">
+            <i class="fas fa-share-alt me-2"></i>Share
+        </button>
+    </div>
+
+    <!-- Share Menu -->
+    <div id="shareMenu" class="share-menu">
+        <div class="share-menu-header">
+            <span>Share this form template</span>
+            <button class="share-close" onclick="toggleShareMenu()">&times;</button>
+        </div>
+        <div class="share-options">
+            <a href="#" class="share-option" onclick="shareOn('linkedin')">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('twitter')">
+                <i class="fab fa-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('facebook')">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('whatsapp')">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('email')">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="#" class="share-option" onclick="copyLink()">
+                <i class="fas fa-link"></i>
+                <span>Copy Link</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-header">
+            <h1>Declaration of Extreme Hardship</h1>
+            <p style="font-size: 14px; margin-top: 10px;">
+                In Support of Form I-601 or I-601A Waiver Application
+            </p>
+        </div>
+
+        <div class="warning-box print-hide">
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>Important:</strong>
+            This declaration must demonstrate "extreme hardship" to a qualifying U.S. citizen or LPR relative (spouse or parent).
+            "Extreme hardship" is significantly more than the normal hardship of separation. Be thorough, specific, and provide
+            supporting documentation for all claims.
+        </div>
+
+        <!-- Applicant Information -->
+        <div class="section-title">I. APPLICANT INFORMATION</div>
+
+        <p style="margin-bottom: 15px;">
+            I, <input type="text" name="applicantName" placeholder="Applicant Full Legal Name" style="width: 400px;">,
+            hereby declare the following under penalty of perjury:
+        </p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date of Birth:</strong>
+                <input type="date" name="applicantDOB" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>A-Number:</strong>
+                <input type="text" name="applicantANumber" placeholder="A-" style="width: 150px;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <strong>Country of Citizenship:</strong>
+            <input type="text" name="applicantCitizenship" placeholder="Country" style="width: 200px;">
+        </div>
+
+        <div class="form-group">
+            <strong>Current Address:</strong>
+            <input type="text" name="applicantAddress" placeholder="Street Address, City, State ZIP" style="width: 600px;">
+        </div>
+
+        <!-- Qualifying Relative Information -->
+        <div class="section-title">II. QUALIFYING RELATIVE INFORMATION</div>
+
+        <div class="form-group">
+            <strong>Qualifying Relative's Name:</strong>
+            <input type="text" name="qualifyingName" placeholder="Full Legal Name" style="width: 400px;">
+            <div class="helper-text">Must be U.S. citizen or lawful permanent resident spouse or parent</div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Relationship to Applicant:</strong>
+                <label><input type="radio" name="relationship" value="spouse"> Spouse</label>
+                <label><input type="radio" name="relationship" value="parent"> Parent</label>
+            </div>
+            <div class="form-group">
+                <strong>Immigration Status:</strong>
+                <label><input type="radio" name="relativeStatus" value="usc"> U.S. Citizen</label>
+                <label><input type="radio" name="relativeStatus" value="lpr"> LPR</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date of Birth:</strong>
+                <input type="date" name="qualifyingDOB" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>Age:</strong>
+                <input type="text" name="qualifyingAge" placeholder="Age" style="width: 60px;">
+            </div>
+        </div>
+
+        <!-- Inadmissibility Ground -->
+        <div class="section-title">III. GROUND OF INADMISSIBILITY</div>
+
+        <p><strong>I am seeking a waiver for the following ground(s) of inadmissibility:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="ground212a6C"> INA §212(a)(6)(C)(i) - Fraud or willful misrepresentation</label><br>
+            <label><input type="checkbox" name="ground212a9B"> INA §212(a)(9)(B)(i) - Unlawful presence (3 or 10 year bar)</label><br>
+            <label><input type="checkbox" name="ground212a2A"> INA §212(a)(2)(A) - Criminal conviction</label><br>
+            <label><input type="checkbox" name="groundOther"> Other: <input type="text" name="groundOtherText" placeholder="Specify" style="width: 400px;"></label>
+        </div>
+
+        <p style="margin-top: 15px;"><strong>Brief explanation of inadmissibility:</strong></p>
+        <textarea name="inadmissibilityExplanation" rows="4" placeholder="Briefly explain the circumstances that led to inadmissibility. Example: 'I overstayed my B-2 visa by 2 years, triggering the 10-year bar under INA §212(a)(9)(B)(i)(II).'"></textarea>
+
+        <!-- Medical Hardship -->
+        <div class="section-title">IV. MEDICAL HARDSHIP</div>
+
+        <p><strong>Medical conditions affecting qualifying relative:</strong></p>
+        <textarea name="medicalConditions" rows="5" placeholder="Describe any serious medical conditions, disabilities, or ongoing treatment needs. Include: diagnosis, when diagnosed, treating physician, frequency of treatment, medications required, cost of treatment, availability of treatment in home country."></textarea>
+
+        <p><strong>Impact if applicant is removed:</strong></p>
+        <textarea name="medicalImpact" rows="4" placeholder="Explain how the qualifying relative's medical needs would be affected by your removal. Who provides care? Who manages medications and appointments? What would happen to their health if you were not present?"></textarea>
+
+        <p style="margin-top: 15px;"><strong>Supporting medical evidence:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="medEvDoctorLetter"> Doctor's letter or medical records</label><br>
+            <label><input type="checkbox" name="medEvPrescriptions"> Prescription records</label><br>
+            <label><input type="checkbox" name="medEvBills"> Medical bills showing treatment costs</label><br>
+            <label><input type="checkbox" name="medEvCountryResearch"> Research on medical care availability in home country</label>
+        </div>
+
+        <!-- Financial Hardship -->
+        <div class="section-title">V. FINANCIAL HARDSHIP</div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Applicant's Current Income:</strong>
+                $<input type="text" name="applicantIncome" placeholder="Annual" style="width: 120px;"> per year
+            </div>
+            <div class="form-group">
+                <strong>Qualifying Relative's Income:</strong>
+                $<input type="text" name="qualifyingIncome" placeholder="Annual" style="width: 120px;"> per year
+            </div>
+        </div>
+
+        <div class="form-group">
+            <strong>Total Household Monthly Expenses:</strong>
+            $<input type="text" name="monthlyExpenses" placeholder="Amount" style="width: 120px;">
+        </div>
+
+        <p><strong>Financial dependence and impact:</strong></p>
+        <textarea name="financialImpact" rows="5" placeholder="Explain the financial relationship. Who is the primary earner? What percentage of household income would be lost? Are there debts, mortgages, or financial obligations that couldn't be met? Could the qualifying relative maintain the same standard of living? Consider housing costs, children's education, medical expenses, elderly care, etc."></textarea>
+
+        <p><strong>Employment considerations:</strong></p>
+        <textarea name="employmentImpact" rows="4" placeholder="Could the qualifying relative work in your home country? What job prospects exist there? Would they need to abandon their career? Impact on retirement savings? Ability to support family in home country?"></textarea>
+
+        <p style="margin-top: 15px;"><strong>Supporting financial evidence:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="finEvTaxReturns"> Tax returns (3 years)</label><br>
+            <label><input type="checkbox" name="finEvPayStubs"> Pay stubs</label><br>
+            <label><input type="checkbox" name="finEvBankStatements"> Bank statements</label><br>
+            <label><input type="checkbox" name="finEvMortgage"> Mortgage/rent statements</label><br>
+            <label><input type="checkbox" name="finEvDebts"> Evidence of debts or obligations</label><br>
+            <label><input type="checkbox" name="finEvCountryWages"> Research on wages/employment in home country</label>
+        </div>
+
+        <!-- Educational Hardship -->
+        <div class="section-title">VI. EDUCATIONAL HARDSHIP</div>
+
+        <p><strong>Impact on children's education (if applicable):</strong></p>
+        <textarea name="educationImpact" rows="5" placeholder="Describe children affected, their ages, current schools, academic achievements, special needs, language barriers. How would relocation affect their education? Quality of schools in home country? Availability of English instruction? Impact on college plans? Learning disabilities or IEPs that wouldn't be available abroad?"></textarea>
+
+        <p><strong>Qualifying relative's educational ties:</strong></p>
+        <textarea name="relativeEducation" rows="3" placeholder="Is the qualifying relative currently in school? Professional licensing that wouldn't transfer? Career training that would be lost?"></textarea>
+
+        <p style="margin-top: 15px;"><strong>Supporting educational evidence:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="eduEvSchoolRecords"> School records, report cards</label><br>
+            <label><input type="checkbox" name="eduEvIEP"> IEP or special education plans</label><br>
+            <label><input type="checkbox" name="eduEvTeacherLetters"> Letters from teachers or counselors</label><br>
+            <label><input type="checkbox" name="eduEvCountryResearch"> Research on education system in home country</label>
+        </div>
+
+        <!-- Psychological/Emotional Hardship -->
+        <div class="section-title">VII. PSYCHOLOGICAL AND EMOTIONAL HARDSHIP</div>
+
+        <p><strong>Mental health impact on qualifying relative:</strong></p>
+        <textarea name="psychologicalImpact" rows="5" placeholder="Describe the emotional and psychological impact of separation or relocation. Does the qualifying relative have depression, anxiety, PTSD, or other mental health conditions? Are they receiving therapy? How dependent are they on the applicant emotionally? History of trauma that would be exacerbated? Impact of stress on existing health conditions?"></textarea>
+
+        <p><strong>Family separation and social ties:</strong></p>
+        <textarea name="socialTies" rows="4" placeholder="How would separation affect the family unit? Young children who need both parents? Elderly parents requiring care? Close family relationships that would be severed? Community ties, church, support systems that would be lost?"></textarea>
+
+        <p style="margin-top: 15px;"><strong>Supporting psychological evidence:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="psyEvTherapist"> Letter from therapist or psychologist</label><br>
+            <label><input type="checkbox" name="psyEvMedRecords"> Mental health treatment records</label><br>
+            <label><input type="checkbox" name="psyEvAffidavits"> Affidavits from family members</label><br>
+            <label><input type="checkbox" name="psyEvExpertOpinion"> Expert psychological evaluation</label>
+        </div>
+
+        <!-- Country Conditions -->
+        <div class="section-title">VIII. COUNTRY CONDITIONS</div>
+
+        <p><strong>Adverse country conditions in applicant's home country:</strong></p>
+        <textarea name="countryConditions" rows="6" placeholder="Describe conditions in your home country that would create hardship for the qualifying relative if they relocated with you. Consider: political instability, violence, crime rates, lack of healthcare, poor infrastructure, discrimination, economic conditions, lack of opportunity, corruption, environmental hazards. Be specific with sources."></textarea>
+
+        <p><strong>Qualifying relative's inability to relocate:</strong></p>
+        <textarea name="relocationImpossibility" rows="5" placeholder="Explain why the qualifying relative cannot reasonably relocate to your home country. Consider: lack of language skills, no job prospects, medical needs unavailable there, children's needs, elderly parents in U.S. requiring care, fear for safety, cultural adjustment difficulties for U.S. citizen, loss of all financial assets, etc."></textarea>
+
+        <p style="margin-top: 15px;"><strong>Supporting country conditions evidence:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="countryEvStateDept"> U.S. State Department country reports</label><br>
+            <label><input type="checkbox" name="countryEvHumanRights"> Human rights organization reports</label><br>
+            <label><input type="checkbox" name="countryEvNews"> News articles about country conditions</label><br>
+            <label><input type="checkbox" name="countryEvExpertOpinion"> Expert opinion on country conditions</label>
+        </div>
+
+        <!-- Cumulative Hardship -->
+        <div class="section-title">IX. CUMULATIVE HARDSHIP FACTORS</div>
+
+        <p><strong>Combination of all hardship factors:</strong></p>
+        <textarea name="cumulativeHardship" rows="6" placeholder="Explain how all the factors above combine to create extreme hardship that is significantly beyond normal hardship. Show how medical + financial + emotional + country conditions together create an extraordinary situation. Demonstrate that the qualifying relative will suffer extreme hardship whether they stay in the U.S. or relocate to your home country."></textarea>
+
+        <!-- Additional Factors -->
+        <div class="section-title">X. ADDITIONAL POSITIVE FACTORS</div>
+
+        <p><strong>Positive equities in favor of approval:</strong></p>
+        <textarea name="positiveFactors" rows="5" placeholder="Describe positive factors: length of residence in U.S., U.S. citizen children, community ties, employment history, payment of taxes, volunteer work, lack of criminal history, rehabilitation, family support, humanitarian concerns. These strengthen your case for discretionary approval."></textarea>
+
+        <!-- Conclusion -->
+        <div style="margin-top: 40px; text-align: justify;">
+            <p>
+                I respectfully request that USCIS approve this waiver application based on the extreme hardship that would be
+                suffered by my qualifying relative if I am denied admission to the United States. I declare under penalty of
+                perjury that the foregoing is true and correct to the best of my knowledge and belief.
+            </p>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <p>
+                <strong>Signature:</strong> <span class="signature-line"></span>
+            </p>
+            <p style="margin-left: 120px;">
+                <input type="text" name="signatureName" placeholder="Print Full Name" style="width: 300px; border-bottom: none;">
+            </p>
+
+            <p style="margin-top: 30px;">
+                <strong>Date:</strong> <input type="date" name="signatureDate" style="width: 150px;">
+            </p>
+
+            <p style="margin-top: 30px;">
+                <strong>Place:</strong> <input type="text" name="signaturePlace" placeholder="City, State" style="width: 300px;">
+            </p>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 11px; color: #666; font-style: italic;">
+            <p><strong>CRITICAL:</strong> This declaration must be supported by extensive documentation. Work closely with your
+            immigration attorney to gather evidence for each hardship factor. Extreme hardship cases are complex and highly
+            fact-specific. Professional legal guidance is essential for success.</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        const inputs = document.querySelectorAll('input[name], textarea[name]');
+
+        inputs.forEach(input => {
+            const saved = localStorage.getItem('hardship_' + input.name);
+            if (saved && input.type !== 'radio' && input.type !== 'checkbox') {
+                input.value = saved;
+            } else if (saved && input.type === 'radio' && input.value === saved) {
+                input.checked = true;
+            } else if (saved && input.type === 'checkbox') {
+                input.checked = saved === 'true';
+            }
+
+            input.addEventListener('input', function() {
+                if (input.type === 'radio') {
+                    localStorage.setItem('hardship_' + input.name, input.value);
+                } else if (input.type === 'checkbox') {
+                    localStorage.setItem('hardship_' + input.name, input.checked);
+                } else {
+                    localStorage.setItem('hardship_' + input.name, input.value);
+                }
+            });
+
+            input.addEventListener('change', function() {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    localStorage.setItem('hardship_' + input.name, input.type === 'checkbox' ? input.checked : input.value);
+                }
+            });
+        });
+
+        // Share functionality
+        function toggleShareMenu() {
+            const menu = document.getElementById('shareMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close share menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('shareMenu');
+            const shareButton = event.target.closest('.btn-action');
+
+            if (!menu.contains(event.target) && !shareButton?.textContent.includes('Share')) {
+                menu.classList.remove('active');
+            }
+        });
+
+        function shareOn(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('Extreme Hardship Declaration Template');
+            const text = encodeURIComponent('Check out this helpful Extreme Hardship Declaration template for I-601/I-601A waiver applications');
+
+            let shareUrl;
+
+            switch(platform) {
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${title}&body=${text}%20${url}`;
+                    break;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
+            toggleShareMenu();
+            return false;
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() {
+                    // Show success message
+                    const copyBtn = event.target.closest('.share-option');
+                    const originalText = copyBtn.querySelector('span').textContent;
+                    copyBtn.querySelector('span').textContent = 'Copied!';
+                    copyBtn.style.color = '#10b981';
+
+                    setTimeout(function() {
+                        copyBtn.querySelector('span').textContent = originalText;
+                        copyBtn.style.color = '';
+                    }, 2000);
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Link copied to clipboard!');
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>

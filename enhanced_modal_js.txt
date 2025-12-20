@@ -1,0 +1,277 @@
+// Add after line 893 (after the existing showChecklist function)
+
+// Store current form guide data
+let currentFormGuide = null;
+let currentFormData = null;
+let currentActiveTab = 'overview';
+
+// Tab switching function
+window.switchTab = function(tabName) {
+    // Update button states
+    $('.tab-btn').removeClass('active');
+    $(`.tab-btn[onclick="switchTab('${tabName}')"]`).addClass('active');
+
+    currentActiveTab = tabName;
+
+    // Render content based on tab
+    renderTabContent(tabName);
+};
+
+// Render tab content
+function renderTabContent(tabName) {
+    if (!currentFormData) return;
+
+    let html = '';
+
+    switch(tabName) {
+        case 'overview':
+            html = renderOverviewTab();
+            break;
+        case 'how-to-fill':
+            html = renderHowToFillTab();
+            break;
+        case 'checklist':
+            html = renderChecklistTab();
+            break;
+        case 'mistakes':
+            html = renderMistakesTab();
+            break;
+        case 'before-submit':
+            html = renderBeforeSubmitTab();
+            break;
+    }
+
+    $('#modalBody').html(html);
+
+    // Add checkbox event listeners for checklist tab
+    if (tabName === 'checklist' || tabName === 'before-submit') {
+        $('.checklist-checkbox').on('change', function() {
+            const total = $(this).data('total');
+            const checked = $('.checklist-checkbox:checked').length;
+            const percentage = (checked / total) * 100;
+
+            $('#checkedCount').text(checked);
+            $('#progressBar').css('width', percentage + '%');
+        });
+    }
+}
+
+function renderOverviewTab() {
+    const doc = currentFormData;
+    return `
+        <div class="form-info-box">
+            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">
+                <i class="fas fa-info-circle me-2"></i>Form Information
+            </h6>
+            <p style="color: #495057; margin-bottom: 1rem;">${doc.description}</p>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="info-badge">
+                    <i class="fas fa-dollar-sign"></i>${doc.fee}
+                </span>
+                <span class="info-badge">
+                    <i class="fas fa-clock"></i>${doc.processing_time}
+                </span>
+                <span class="info-badge">
+                    <i class="fas fa-calendar"></i>${formatDate(doc.last_updated)}
+                </span>
+            </div>
+        </div>
+
+        ${currentFormGuide ? `
+            <div class="alert alert-success mt-3" style="border-radius: 12px;">
+                <h6 class="mb-2">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong>Step-by-Step Filling Guide Available!</strong>
+                </h6>
+                <p class="mb-0">
+                    Click the tabs above to see:
+                </p>
+                <ul class="mb-0 mt-2" style="list-style: none; padding-left: 0;">
+                    <li><i class="fas fa-pen me-2"></i><strong>How to Fill</strong> - Detailed instructions for each section</li>
+                    <li><i class="fas fa-exclamation-triangle me-2"></i><strong>Common Mistakes</strong> - Errors to avoid</li>
+                    <li><i class="fas fa-tasks me-2"></i><strong>Before You Submit</strong> - Final checklist</li>
+                </ul>
+            </div>
+        ` : `
+            <div class="alert alert-info mt-3" style="border-radius: 12px;">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Filing Guide Coming Soon!</strong> A detailed step-by-step guide for this form will be available soon.
+            </div>
+        `}
+
+        <div class="mt-4">
+            <h6 style="color: #2c3e50; font-weight: 700; margin-bottom: 1rem;">
+                <i class="fas fa-download me-2"></i>Quick Actions
+            </h6>
+            <div class="d-grid gap-2">
+                <a href="${doc.pdf_url}" target="_blank" class="btn btn-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <i class="fas fa-file-pdf me-2"></i>Download Official PDF
+                </a>
+                <a href="${doc.info_url}" target="_blank" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-external-link-alt me-2"></i>View Official USCIS Info
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+function renderHowToFillTab() {
+    if (!currentFormGuide || !currentFormGuide.filling_steps) {
+        return '<p class="text-center text-muted">Filling guide not available.</p>';
+    }
+
+    let html = `
+        <div class="alert alert-info" style="border-radius: 12px;">
+            <i class="fas fa-lightbulb me-2"></i>
+            <strong>Read through each section before you start filling the form.</strong>
+            Having all your documents ready will make the process smoother!
+        </div>
+    `;
+
+    currentFormGuide.filling_steps.forEach((step, index) => {
+        html += `
+            <div class="guide-section">
+                <h5><i class="fas fa-list-ol me-2"></i>Step ${index + 1}: ${step.part}</h5>
+                <ul>
+                    ${step.instructions.map(inst => `<li>${inst}</li>`).join('')}
+                </ul>
+
+                ${step.tips && step.tips.length > 0 ? `
+                    <div class="tip-box">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Tips:</h6>
+                        <ul>
+                            ${step.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    });
+
+    // Add pro tips if available
+    if (currentFormGuide.pro_tips && currentFormGuide.pro_tips.length > 0) {
+        html += `
+            <div class="guide-section" style="border-left-color: #27ae60;">
+                <h5><i class="fas fa-star me-2"></i>Pro Tips</h5>
+                ${currentFormGuide.pro_tips.map(tip => `
+                    <div class="protip-item">${tip}</div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    return html;
+}
+
+function renderChecklistTab() {
+    const doc = currentFormData;
+
+    let html = `
+        <h5 class="checklist-section-title">
+            <i class="fas fa-list-check me-2"></i>Required Documents Checklist
+        </h5>
+    `;
+
+    if (doc.checklist && doc.checklist.length > 0) {
+        doc.checklist.forEach((item, index) => {
+            html += `
+                <div class="checklist-item">
+                    <div class="form-check">
+                        <input class="form-check-input checklist-checkbox" type="checkbox" id="check${index}" data-total="${doc.checklist.length}">
+                        <label class="form-check-label" for="check${index}">
+                            ${item}
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `
+            <div class="progress-indicator">
+                <div class="progress-text">
+                    <i class="fas fa-tasks me-2"></i>
+                    <span id="checkedCount">0</span> of ${doc.checklist.length} items completed
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+                </div>
+            </div>
+        `;
+    } else {
+        html += `<p class="text-muted text-center">No checklist available</p>`;
+    }
+
+    return html;
+}
+
+function renderMistakesTab() {
+    if (!currentFormGuide || !currentFormGuide.common_mistakes) {
+        return '<p class="text-center text-muted">Common mistakes guide not available.</p>';
+    }
+
+    let html = `
+        <div class="alert alert-warning" style="border-radius: 12px;">
+            <h6><i class="fas fa-exclamation-triangle me-2"></i><strong>Avoid These Common Mistakes!</strong></h6>
+            <p class="mb-0">These are the most frequent errors that cause delays or rejections. Double-check your form to make sure you haven't made any of these mistakes.</p>
+        </div>
+
+        <div class="mt-4">
+            ${currentFormGuide.common_mistakes.map(mistake => `
+                <div class="mistake-item">
+                    ${mistake}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return html;
+}
+
+function renderBeforeSubmitTab() {
+    if (!currentFormGuide || !currentFormGuide.before_submit) {
+        return '<p class="text-center text-muted">Pre-submission checklist not available.</p>';
+    }
+
+    let html = `
+        <div class="alert alert-success" style="border-radius: 12px;">
+            <h6><i class="fas fa-check-circle me-2"></i><strong>Final Checklist Before Mailing</strong></h6>
+            <p class="mb-0">Make sure you have everything on this list before you mail your application to USCIS!</p>
+        </div>
+
+        <h5 class="checklist-section-title mt-4">
+            <i class="fas fa-tasks me-2"></i>Before You Submit Checklist
+        </h5>
+    `;
+
+    currentFormGuide.before_submit.forEach((item, index) => {
+        html += `
+            <div class="checklist-item">
+                <div class="form-check">
+                    <input class="form-check-input checklist-checkbox" type="checkbox" id="submit${index}" data-total="${currentFormGuide.before_submit.length}">
+                    <label class="form-check-label" for="submit${index}">
+                        ${item}
+                    </label>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `
+        <div class="progress-indicator">
+            <div class="progress-text">
+                <i class="fas fa-tasks me-2"></i>
+                <span id="checkedCount">0</span> of ${currentFormGuide.before_submit.length} items completed
+            </div>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-4" style="border-radius: 12px;">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Remember:</strong> Keep copies of everything you send to USCIS. Use certified mail with tracking so you have proof of delivery!
+        </div>
+    `;
+
+    return html;
+}

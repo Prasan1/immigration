@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - ImmigrationForms.io</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,122.7C1248,107,1344,85,1392,74.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x bottom;
+            background-size: cover;
+            animation: wave 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes wave {
+            0% { background-position: 0 bottom; }
+            100% { background-position: 1440px bottom; }
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            padding: 3rem 2.5rem;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+            z-index: 1;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative corner elements */
+        .auth-container::before,
+        .auth-container::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            z-index: -1;
+        }
+
+        .auth-container::before {
+            top: -30px;
+            left: -30px;
+        }
+
+        .auth-container::after {
+            bottom: -30px;
+            right: -30px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo i {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo h2 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-top: 1rem;
+            font-size: 1.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo p {
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .feature-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-badge i {
+            font-size: 1rem;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .back-link a:hover {
+            color: #764ba2;
+            transform: translateX(-3px);
+        }
+
+        .back-link a i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link a:hover i {
+            transform: translateX(-3px);
+        }
+
+        .back-link .separator {
+            color: #dee2e6;
+            margin: 0 0.75rem;
+        }
+
+        /* Clerk component styling */
+        #clerk-signin {
+            min-height: 200px;
+            position: relative;
+        }
+
+        .cl-rootBox {
+            width: 100%;
+        }
+
+        .cl-card {
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .cl-formButtonPrimary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .cl-formButtonPrimary:hover {
+            opacity: 0.9;
+        }
+
+        /* Loading state */
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(102, 126, 234, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error state */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
+            color: #c0392b;
+            border-left: 4px solid #e74c3c;
+        }
+
+        /* Responsive design */
+        @media (max-width: 576px) {
+            .auth-container {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .logo h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo i {
+                font-size: 2.5rem;
+            }
+
+            .feature-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .back-link {
+                font-size: 0.9rem;
+            }
+
+            .back-link .separator {
+                display: none;
+            }
+
+            .back-link a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: all 0.2s ease;
+        }
+
+        button, a, input {
+            transition: all 0.3s ease !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo">
+            <i class="fas fa-passport"></i>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your immigration forms</p>
+        </div>
+
+        <!-- Feature Badges -->
+        <div class="feature-badges">
+            <span class="feature-badge">
+                <i class="fas fa-lock"></i>
+                Secure
+            </span>
+            <span class="feature-badge">
+                <i class="fas fa-bolt"></i>
+                Fast Access
+            </span>
+            <span class="feature-badge">
+                <i class="fas fa-check-circle"></i>
+                Verified
+            </span>
+        </div>
+
+        <!-- Clerk Sign In Component will mount here -->
+        <div id="clerk-signin">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem; color: #6c757d; font-size: 0.9rem;">Loading sign in...</p>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="/forms">
+                <i class="fas fa-arrow-left"></i>Back to Forms
+            </a>
+            <span class="separator">•</span>
+            <a href="/">
+                <i class="fas fa-home"></i>Homepage
+            </a>
+        </div>
+    </div>
+
+    <!-- Clerk Frontend API -->
+    <script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="{{ config.CLERK_PUBLISHABLE_KEY }}"
+        src="https://accounts.clerk.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+        type="text/javascript"
+    ></script>
+
+    <script>
+        window.addEventListener('load', async function() {
+            try {
+                await Clerk.load();
+
+                // Hide loading spinner
+                const loadingSpinner = document.querySelector('.loading-spinner');
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                }
+
+                // Check if user is already signed in
+                if (Clerk.user) {
+                    // User is signed in, show message and redirect
+                    document.getElementById('clerk-signin').innerHTML = `
+                        <div style="text-align: center; padding: 2rem 0;">
+                            <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                            <p style="color: #667eea; font-weight: 600;">Already signed in! Redirecting...</p>
+                        </div>
+                    `;
+                    await syncUserSession();
+                    window.location.href = '/dashboard';
+                } else {
+                    // Clear the loading content
+                    document.getElementById('clerk-signin').innerHTML = '';
+
+                    // Mount sign-in component with custom styling
+                    const signInComponent = Clerk.mountSignIn(document.getElementById('clerk-signin'), {
+                        appearance: {
+                            elements: {
+                                rootBox: 'w-100',
+                                card: 'shadow-none border-0',
+                                formButtonPrimary: 'bg-gradient',
+                                footerActionLink: 'text-primary'
+                            },
+                            variables: {
+                                colorPrimary: '#667eea'
+                            }
+                        },
+                        // Redirect URLs configuration
+                        redirectUrl: window.location.origin + '/dashboard',
+                        afterSignInUrl: window.location.origin + '/dashboard',
+                        afterSignUpUrl: window.location.origin + '/dashboard'
+                    });
+
+                    // Listen for successful sign-in
+                    Clerk.addListener(async ({ user, session }) => {
+                        if (user) {
+                            // Show syncing message
+                            document.getElementById('clerk-signin').innerHTML = `
+                                <div style="text-align: center; padding: 2rem 0;">
+                                    <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                                    <p style="color: #667eea; font-weight: 600;">Welcome back! Setting up your account...</p>
+                                </div>
+                            `;
+
+                            // Sync session with backend before redirecting
+                            const synced = await syncUserSession();
+
+                            if (synced) {
+                                // Add a small delay to ensure backend is ready
+                                setTimeout(() => {
+                                    window.location.href = '/dashboard';
+                                }, 500);
+                            } else {
+                                // If sync failed, still redirect but show warning
+                                console.warn('Session sync failed, redirecting anyway');
+                                window.location.href = '/dashboard';
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Clerk initialization error:', error);
+                document.getElementById('clerk-signin').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Authentication Error</strong><br>
+                        <small>Unable to load sign-in. Please refresh the page or contact support.</small>
+                    </div>
+                `;
+            }
+        });
+
+        // Sync user session with backend
+        async function syncUserSession() {
+            if (!Clerk.user) {
+                console.error('No Clerk user found');
+                return false;
+            }
+
+            const userData = {
+                clerk_user_id: Clerk.user.id,
+                email: Clerk.user.primaryEmailAddress?.emailAddress,
+                full_name: Clerk.user.fullName || ''
+            };
+
+            console.log('Syncing user session:', userData);
+
+            try {
+                const response = await fetch('/api/auth/session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to sync user session:', response.status);
+                    return false;
+                }
+
+                const result = await response.json();
+                console.log('Session synced successfully:', result);
+                return true;
+            } catch (error) {
+                console.error('Session sync error:', error);
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

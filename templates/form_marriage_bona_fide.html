@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Bona Fide Declaration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.8;
+            color: #000;
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 20px;
+        }
+
+        .form-header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            border: none;
+            border-bottom: 1px solid #666;
+            padding: 5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+
+        .signature-section {
+            margin-top: 60px;
+            page-break-inside: avoid;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #000;
+            width: 300px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-action:hover {
+            background: #5568d3;
+            color: white;
+        }
+
+        .btn-home {
+            background: #28a745;
+        }
+
+        .btn-home:hover {
+            background: #218838;
+        }
+
+        @media print {
+            .action-buttons, .print-hide {
+                display: none !important;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0.5in;
+            }
+        }
+
+        .helper-instruction {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Share Menu Styles */
+        .share-menu {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            min-width: 250px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .share-menu.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .share-menu-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .share-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .share-close:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .share-options {
+            padding: 8px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            gap: 12px;
+        }
+
+        .share-option:hover {
+            background: #f3f4f6;
+            color: #667eea;
+        }
+
+        .share-option i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .share-option .fa-linkedin {
+            color: #0077b5;
+        }
+
+        .share-option .fa-twitter {
+            color: #1da1f2;
+        }
+
+        .share-option .fa-facebook {
+            color: #1877f2;
+        }
+
+        .share-option .fa-whatsapp {
+            color: #25d366;
+        }
+
+        .share-option .fa-envelope {
+            color: #ea4335;
+        }
+
+        .share-option .fa-link {
+            color: #6b7280;
+        }
+
+        @media print {
+            .share-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="action-buttons">
+        <a href="/" class="btn-action btn-home">
+            <i class="fas fa-home me-2"></i>Home
+        </a>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-print me-2"></i>Print
+        </button>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-file-pdf me-2"></i>Save PDF
+        </button>
+        <button class="btn-action" onclick="toggleShareMenu()">
+            <i class="fas fa-share-alt me-2"></i>Share
+        </button>
+    </div>
+
+    <!-- Share Menu -->
+    <div id="shareMenu" class="share-menu">
+        <div class="share-menu-header">
+            <span>Share this form template</span>
+            <button class="share-close" onclick="toggleShareMenu()">&times;</button>
+        </div>
+        <div class="share-options">
+            <a href="#" class="share-option" onclick="shareOn('linkedin')">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('twitter')">
+                <i class="fab fa-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('facebook')">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('whatsapp')">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="#" class="share-option" onclick="shareOn('email')">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="#" class="share-option" onclick="copyLink()">
+                <i class="fas fa-link"></i>
+                <span>Copy Link</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-header">
+            <h1>Declaration of Bona Fide Marriage</h1>
+            <p style="font-size: 14px; margin-top: 10px;">
+                In Support of Immigration Application
+            </p>
+        </div>
+
+        <div class="helper-instruction print-hide">
+            <strong><i class="fas fa-lightbulb me-2"></i>Instructions:</strong>
+            This declaration helps prove your marriage is genuine and not entered into solely for immigration benefits.
+            Be thorough, honest, and specific. Include dates, locations, and details that demonstrate your real relationship.
+        </div>
+
+        <!-- Declarant Information -->
+        <div class="section-title">DECLARANT INFORMATION</div>
+
+        <p style="margin-bottom: 15px;">
+            I, <input type="text" name="declarantName" placeholder="Your Full Legal Name" style="width: 400px;">,
+            being duly sworn, hereby declare the following under penalty of perjury:
+        </p>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date of Birth:</strong>
+                <input type="date" name="declarantDOB" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>A-Number (if applicable):</strong>
+                <input type="text" name="declarantANumber" placeholder="A-" style="width: 150px;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <strong>Current Address:</strong>
+            <input type="text" name="declarantAddress" placeholder="Street Address" style="width: 600px;">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" name="declarantCity" placeholder="City" style="width: 200px;">,
+                <input type="text" name="declarantState" placeholder="State" style="width: 80px;">
+                <input type="text" name="declarantZip" placeholder="ZIP" style="width: 100px;">
+            </div>
+            <div class="form-group">
+                <strong>Phone:</strong>
+                <input type="text" name="declarantPhone" placeholder="(555) 123-4567" style="width: 150px;">
+            </div>
+        </div>
+
+        <!-- Spouse Information -->
+        <div class="section-title">SPOUSE INFORMATION</div>
+
+        <div class="form-group">
+            <strong>Spouse's Full Legal Name:</strong>
+            <input type="text" name="spouseName" placeholder="Spouse Full Name" style="width: 400px;">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date of Birth:</strong>
+                <input type="date" name="spouseDOB" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>Citizenship:</strong>
+                <input type="text" name="spouseCitizenship" placeholder="Country" style="width: 200px;">
+            </div>
+        </div>
+
+        <!-- Marriage Information -->
+        <div class="section-title">MARRIAGE INFORMATION</div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date of Marriage:</strong>
+                <input type="date" name="marriageDate" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>Place of Marriage:</strong>
+                <input type="text" name="marriagePlace" placeholder="City, State/Country" style="width: 250px;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <strong>Type of Ceremony:</strong>
+            <input type="text" name="ceremonyType" placeholder="e.g., Civil, Religious, Traditional" style="width: 300px;">
+        </div>
+
+        <!-- How We Met -->
+        <div class="section-title">HOW WE MET</div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <strong>Date We First Met:</strong>
+                <input type="date" name="firstMetDate" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <strong>Location:</strong>
+                <input type="text" name="firstMetPlace" placeholder="City, State" style="width: 250px;">
+            </div>
+        </div>
+
+        <p style="margin-top: 15px;"><strong>How we met and began our relationship:</strong></p>
+        <textarea name="howWeMet" rows="5" placeholder="Describe in detail how you met. Who introduced you? What were the circumstances? What attracted you to each other? Be specific about dates, places, and events."></textarea>
+
+        <!-- Relationship Development -->
+        <div class="section-title">RELATIONSHIP TIMELINE</div>
+
+        <p><strong>Dating period:</strong></p>
+        <textarea name="datingPeriod" rows="4" placeholder="Describe your dating period. Where did you go? What did you do together? How often did you see each other? Include specific dates of trips, events, celebrations."></textarea>
+
+        <div class="form-group" style="margin-top: 15px;">
+            <strong>Date of Engagement:</strong>
+            <input type="date" name="engagementDate" style="width: 150px;">
+        </div>
+
+        <p><strong>Engagement and wedding planning:</strong></p>
+        <textarea name="engagement" rows="4" placeholder="How did the proposal happen? Who knew about it? How did you plan the wedding? Who attended? Include details about engagement party, bridal shower, bachelor/bachelorette parties, etc."></textarea>
+
+        <!-- Living Arrangements -->
+        <div class="section-title">LIVING ARRANGEMENTS</div>
+
+        <div class="form-group">
+            <strong>We have lived together since:</strong>
+            <input type="date" name="livingTogetherDate" style="width: 150px;">
+        </div>
+
+        <p><strong>Our current living situation:</strong></p>
+        <textarea name="livingSituation" rows="4" placeholder="Describe your home. Do you rent or own? Whose name is on the lease/mortgage? How are household expenses divided? Describe your daily routine together."></textarea>
+
+        <p><strong>Household responsibilities:</strong></p>
+        <textarea name="householdDuties" rows="3" placeholder="Who does the cooking, cleaning, shopping, paying bills? How do you divide household tasks?"></textarea>
+
+        <!-- Financial Commingling -->
+        <div class="section-title">FINANCIAL RELATIONSHIP</div>
+
+        <p><strong>Joint financial arrangements:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="jointBank"> Joint bank account(s)</label><br>
+            <label><input type="checkbox" name="jointCredit"> Joint credit card(s)</label><br>
+            <label><input type="checkbox" name="jointLease"> Joint lease or mortgage</label><br>
+            <label><input type="checkbox" name="jointUtilities"> Joint utility accounts</label><br>
+            <label><input type="checkbox" name="jointInsurance"> Joint insurance (health, auto, life)</label><br>
+            <label><input type="checkbox" name="beneficiaries"> Listed as beneficiaries on accounts/policies</label>
+        </div>
+
+        <p style="margin-top: 15px;"><strong>Describe your financial partnership:</strong></p>
+        <textarea name="financialPartnership" rows="4" placeholder="How do you manage money as a couple? Do you pool income? How do you pay for major expenses? Who handles bills? Include information about joint purchases (car, furniture, etc.)."></textarea>
+
+        <!-- Social Life -->
+        <div class="section-title">SOCIAL LIFE & FAMILY INTEGRATION</div>
+
+        <p><strong>Family relationships:</strong></p>
+        <textarea name="familyRelations" rows="4" placeholder="Have you met each other's families? How often do you see them? Do they accept your relationship? Describe holidays, family gatherings, and family support for your marriage."></textarea>
+
+        <p><strong>Friends and social activities:</strong></p>
+        <textarea name="socialLife" rows="4" placeholder="Do you have mutual friends? What do you do together socially? Describe parties, events, trips, hobbies you share. How do friends and community view your relationship?"></textarea>
+
+        <!-- Children -->
+        <div class="section-title">CHILDREN (if applicable)</div>
+
+        <div class="form-group">
+            <strong>Do you have children together?</strong>
+            <label><input type="radio" name="hasChildren" value="yes"> Yes</label>
+            <label><input type="radio" name="hasChildren" value="no"> No</label>
+        </div>
+
+        <p><strong>Children's information:</strong></p>
+        <textarea name="childrenInfo" rows="3" placeholder="If yes, list children's names and dates of birth. If no, discuss plans for children or reasons for not having children."></textarea>
+
+        <!-- Future Plans -->
+        <div class="section-title">FUTURE PLANS</div>
+
+        <p><strong>Our plans for the future:</strong></p>
+        <textarea name="futurePlans" rows="4" placeholder="What are your goals as a couple? Where do you plan to live? Career plans? Plans for children? Long-term dreams and aspirations?"></textarea>
+
+        <!-- Supporting Evidence -->
+        <div class="section-title">SUPPORTING EVIDENCE</div>
+
+        <p><strong>We are submitting the following evidence of our bona fide marriage:</strong></p>
+        <div class="form-group">
+            <label><input type="checkbox" name="evPhotosTogether"> Photos together (dating, engagement, wedding, vacations, holidays)</label><br>
+            <label><input type="checkbox" name="evJointBank"> Joint bank account statements</label><br>
+            <label><input type="checkbox" name="evJointLease"> Joint lease or mortgage documents</label><br>
+            <label><input type="checkbox" name="evUtilityBills"> Utility bills in both names</label><br>
+            <label><input type="checkbox" name="evAffidavits"> Affidavits from friends and family</label><br>
+            <label><input type="checkbox" name="evBirthCerts"> Children's birth certificates (if applicable)</label><br>
+            <label><input type="checkbox" name="evInsurance"> Insurance policies listing spouse as beneficiary</label><br>
+            <label><input type="checkbox" name="evTravel"> Travel documents showing trips together</label><br>
+            <label><input type="checkbox" name="evCorrespondence"> Correspondence/communications during relationship</label>
+        </div>
+
+        <!-- Closing Statement -->
+        <div style="margin-top: 40px; text-align: justify;">
+            <p>
+                I declare under penalty of perjury under the laws of the United States of America that our marriage is genuine
+                and was not entered into for the purpose of evading immigration laws. The foregoing is true and correct to the
+                best of my knowledge and belief.
+            </p>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <p>
+                <strong>Signature:</strong> <span class="signature-line"></span>
+            </p>
+            <p style="margin-left: 120px;">
+                <input type="text" name="signatureName" placeholder="Print Full Name" style="width: 300px; border-bottom: none;">
+            </p>
+
+            <p style="margin-top: 30px;">
+                <strong>Date:</strong> <input type="date" name="signatureDate" style="width: 150px;">
+            </p>
+
+            <p style="margin-top: 30px;">
+                <strong>Place:</strong> <input type="text" name="signaturePlace" placeholder="City, State" style="width: 300px;">
+            </p>
+        </div>
+
+        <!-- Optional Notary Section -->
+        <div style="margin-top: 60px; border: 2px solid #000; padding: 20px;">
+            <p style="text-align: center; font-weight: bold; margin-bottom: 20px;">
+                NOTARY PUBLIC SECTION (Optional - complete if notarization required)
+            </p>
+
+            <p>Subscribed and sworn to before me this ______ day of ______________, 20______.</p>
+
+            <p style="margin-top: 40px;">
+                Notary Public: _________________________________________________
+            </p>
+
+            <p>
+                My Commission Expires: _______________________________________
+            </p>
+
+            <div style="margin-top: 30px; text-align: right;">
+                [NOTARY SEAL]
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 11px; color: #666; font-style: italic;">
+            <p><strong>Note:</strong> This declaration should be tailored to your specific relationship. Be honest and detailed.
+            False statements may result in denial and criminal penalties. Consult with your immigration attorney before submission.</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        const inputs = document.querySelectorAll('input[name], textarea[name]');
+
+        inputs.forEach(input => {
+            const saved = localStorage.getItem('marriage_' + input.name);
+            if (saved && input.type !== 'radio' && input.type !== 'checkbox') {
+                input.value = saved;
+            } else if (saved && input.type === 'radio' && input.value === saved) {
+                input.checked = true;
+            } else if (saved && input.type === 'checkbox') {
+                input.checked = saved === 'true';
+            }
+
+            input.addEventListener('input', function() {
+                if (input.type === 'radio') {
+                    localStorage.setItem('marriage_' + input.name, input.value);
+                } else if (input.type === 'checkbox') {
+                    localStorage.setItem('marriage_' + input.name, input.checked);
+                } else {
+                    localStorage.setItem('marriage_' + input.name, input.value);
+                }
+            });
+
+            input.addEventListener('change', function() {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    localStorage.setItem('marriage_' + input.name, input.type === 'checkbox' ? input.checked : input.value);
+                }
+            });
+        });
+
+        // Share functionality
+        function toggleShareMenu() {
+            const menu = document.getElementById('shareMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close share menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('shareMenu');
+            const shareButton = event.target.closest('.btn-action');
+
+            if (!menu.contains(event.target) && !shareButton?.textContent.includes('Share')) {
+                menu.classList.remove('active');
+            }
+        });
+
+        function shareOn(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('Marriage Bona Fide Declaration Template');
+            const text = encodeURIComponent('Check out this helpful Marriage Bona Fide Declaration template for spousal immigration petitions');
+
+            let shareUrl;
+
+            switch(platform) {
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${title}&body=${text}%20${url}`;
+                    break;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
+            toggleShareMenu();
+            return false;
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() {
+                    // Show success message
+                    const copyBtn = event.target.closest('.share-option');
+                    const originalText = copyBtn.querySelector('span').textContent;
+                    copyBtn.querySelector('span').textContent = 'Copied!';
+                    copyBtn.style.color = '#10b981';
+
+                    setTimeout(function() {
+                        copyBtn.querySelector('span').textContent = originalText;
+                        copyBtn.style.color = '';
+                    }, 2000);
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Link copied to clipboard!');
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>

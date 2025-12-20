@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immigration Documents Portal</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="alternate icon" href="/static/favicon.svg">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clerk@latest/dist/clerk.browser.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(44, 62, 80, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0 40px 0;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            padding: 0 0 4rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+            border: 1px solid #e0e0e0;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input-wrapper .form-control {
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            font-size: 1.05rem;
+        }
+
+        .search-input-wrapper .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+
+        .search-input-wrapper .input-group-text {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            z-index: 10;
+            color: #667eea;
+        }
+
+        .document-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .document-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            transition: all 0.4s ease;
+        }
+
+        .document-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .document-card:hover::before {
+            opacity: 1;
+        }
+
+        .document-card:hover::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0.8;
+        }
+
+        .document-title {
+            color: var(--primary-color);
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .document-description {
+            color: #495057;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .document-category {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: #667eea;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            border: 1.5px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .document-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .document-meta i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #219a52 0%, #27ae60 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            color: white;
+        }
+
+        .btn-checklist {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-checklist:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .checklist-modal .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .checklist-modal .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem 2rem;
+            border: none;
+        }
+
+        .checklist-modal .modal-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+
+        .checklist-modal .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+        }
+
+        .checklist-modal .btn-close:hover {
+            opacity: 1;
+        }
+
+        .checklist-modal .modal-body {
+            padding: 2rem;
+        }
+
+        .form-info-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .info-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: white;
+            border-radius: 10px;
+            margin: 0.25rem;
+            font-weight: 600;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-badge i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+
+        .checklist-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .checklist-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checklist-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+            transform: translateX(5px);
+        }
+
+        .checklist-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .checklist-item .form-check-input {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-top: 0.125rem;
+            border: 2px solid #667eea;
+            cursor: pointer;
+        }
+
+        .checklist-item .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+        .checklist-item .form-check-label {
+            font-size: 1rem;
+            color: #495057;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .checklist-item .form-check-input:checked + .form-check-label {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e8e8e8;
+            padding: 1.25rem 2rem;
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .progress-indicator {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed #e8e8e8;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress {
+            height: 12px;
+            border-radius: 10px;
+            background: #e8e8e8;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Preview Signup CTA */
+        .preview-signup-cta {
+            position: relative;
+            margin-top: 2rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(248,249,250,0.8) 20%, rgba(248,249,250,1) 50%);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .preview-signup-cta::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,1) 100%);
+            pointer-events: none;
+        }
+
+        .blur-overlay {
+            position: relative;
+            z-index: 1;
+        }
+
+        .preview-signup-cta h5 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-signup-cta .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 32px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .preview-signup-cta .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Modal Tabs */
+        .modal-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e8e8e8;
+            padding: 0 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .tab-btn i {
+            font-size: 1rem;
+        }
+
+        /* Guide Content Styles */
+        .guide-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .guide-section h5 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .guide-section h6 {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .guide-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .guide-section li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .guide-section li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid #667eea;
+        }
+
+        .tip-box li:before {
+            content: "💡";
+        }
+
+        .mistake-item {
+            background: #fff3cd;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid #ffc107;
+            font-weight: 500;
+        }
+
+        .protip-item {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid #27ae60;
+            font-weight: 500;
+        }
+
+        .filter-badge {
+            background: white;
+            color: #667eea;
+            padding: 0.6rem 1.3rem;
+            border-radius: 25px;
+            margin: 0.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 2px solid #e0e0e0;
+            font-weight: 500;
+        }
+
+        .filter-badge:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .filter-badge.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner-border {
+            color: var(--secondary-color);
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            display: inline-block;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            animation: pulse-premium 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-premium {
+            0%, 100% { box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(245, 87, 108, 0.4); }
+        }
+
+        .free-badge {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            display: inline-block;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3);
+            animation: pulse-free 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-free {
+            0%, 100% { box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(56, 239, 125, 0.4); }
+        }
+
+        /* Page Loading Bar */
+        #pageLoadingBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        #pageLoadingBar.loading {
+            width: 70%;
+        }
+
+        #pageLoadingBar.complete {
+            width: 100%;
+            opacity: 0;
+            transition: width 0.1s ease, opacity 0.3s ease 0.1s;
+        }
+
+        .locked-overlay {
+            position: relative;
+        }
+
+        .locked-overlay::after {
+            content: '\f023';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            color: rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-upgrade {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .document-card {
+                margin-bottom: 1rem;
+            }
+
+            .search-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+
+    <!-- Dynamic branding colors -->
+    <style>
+        :root {
+            --brand-primary: {{ g.branding.primary_color }};
+            --brand-secondary: {{ g.branding.secondary_color }};
+        }
+        body, .page-header {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loading Indicator -->
+    <div id="pageLoadingBar"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                {% if g.branding.logo_url %}
+                <img src="{{ g.branding.logo_url }}" alt="{{ g.branding.site_name }}" style="height: 40px; margin-right: 10px;">
+                {% else %}
+                <i class="fas fa-passport me-2"></i>
+                {% endif %}
+                {{ g.branding.site_name }}
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+                <a class="nav-link active" href="/forms">
+                    <i class="fas fa-file-alt me-1"></i>USCIS Forms
+                </a>
+                <a class="nav-link" href="/templates">
+                    <i class="fas fa-edit me-1"></i>Form Templates
+                </a>
+                <a class="nav-link" href="/pricing">
+                    <i class="fas fa-tags me-1"></i>Pricing
+                </a>
+                {% if user %}
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <button class="btn btn-outline-light btn-sm ms-2" id="logoutBtn">Logout</button>
+                {% else %}
+                <button class="btn btn-outline-light btn-sm ms-2" id="loginBtn">
+                    <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container text-center">
+            <h1 class="page-title">
+                <i class="fas fa-file-contract me-3"></i>
+                Immigration Forms Library
+            </h1>
+            <p class="page-subtitle">
+                Browse all immigration forms with complete checklists, fees, and processing times
+            </p>
+        </div>
+    </div>
+
+    <div class="container main-container">
+        <!-- Freemium Banner (for non-logged in users) -->
+        {% if not user %}
+        <div class="mb-4" style="background: white; border-radius: 20px; padding: 1.5rem 2rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); border: 3px solid #28a745;">
+            <div class="d-flex align-items-center">
+                <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); width: 70px; height: 70px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem;">
+                    <i class="fas fa-gift fa-2x" style="color: white;"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h4 style="color: #28a745; font-weight: 800; margin-bottom: 0.5rem; font-size: 1.4rem;">
+                        <i class="fas fa-star me-2" style="color: #ffc107;"></i>Try 3 Forms FREE - No Login Required!
+                    </h4>
+                    <p style="margin-bottom: 0; color: #495057; font-size: 1rem; font-weight: 500;">
+                        Access <strong>I-130, I-485, and N-400</strong> with full checklists instantly.
+                        <span style="color: #667eea;">Sign up to unlock all 11+ forms + fillable templates.</span>
+                    </p>
+                </div>
+                <a href="/pricing" class="btn btn-lg" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border-radius: 30px; padding: 0.75rem 2rem; font-weight: 600; box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3); white-space: nowrap;">
+                    <i class="fas fa-rocket me-2"></i>View Plans
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- User Status Banner (if logged in) -->
+        {% if user %}
+        <div class="alert alert-info border-0 shadow-sm mb-4" style="border-radius: 15px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-left: 4px solid #667eea !important;">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fa-2x me-3" style="color: #667eea;"></i>
+                <div class="flex-grow-1">
+                    <strong style="color: #667eea;">{{ user.subscription_tier.title() }} Plan</strong>
+                    <span class="ms-2" style="color: #6c757d;">•</span>
+                    <span class="ms-2" style="color: #2c3e50; font-weight: 600;" id="accessibleCount">Loading...</span> <span style="color: #495057;">forms available</span>
+                </div>
+                {% if user.subscription_tier == 'free' %}
+                <a href="/pricing" class="btn btn-sm" style="background: #667eea; color: white; border-radius: 20px;">
+                    <i class="fas fa-arrow-up me-1"></i>Upgrade
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Search and Filter Section -->
+        <div class="search-container">
+            <div class="mb-4">
+                <h3 class="search-title">
+                    <i class="fas fa-search me-2"></i>
+                    Find Your Form
+                </h3>
+                <div class="search-input-wrapper">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control" id="searchInput"
+                           placeholder="Search by form number, title, or description...">
+                </div>
+            </div>
+
+            <div>
+                <h6 class="mb-3" style="color: #6c757d; font-weight: 600;">
+                    <i class="fas fa-filter me-2"></i>Filter by Category
+                </h6>
+                <div id="categoryFilters">
+                    <span class="filter-badge active" data-category="all">
+                        <i class="fas fa-globe me-1"></i>All Categories
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents Grid -->
+        <div id="documentsContainer">
+            <div class="loading">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Loading immigration documents...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Detail Modal -->
+    <div class="modal fade checklist-modal" id="documentModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Document Checklist
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Tabs -->
+                <div class="modal-tabs">
+                    <button class="tab-btn active" onclick="switchTab('overview')">
+                        <i class="fas fa-info-circle me-1"></i>Overview
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('how-to-fill')" id="howToFillTab" style="display:none;">
+                        <i class="fas fa-pen me-1"></i>How to Fill
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('checklist')">
+                        <i class="fas fa-check-square me-1"></i>Required Documents
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('mistakes')" id="mistakesTab" style="display:none;">
+                        <i class="fas fa-exclamation-triangle me-1"></i>Common Mistakes
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('before-submit')" id="beforeSubmitTab" style="display:none;">
+                        <i class="fas fa-tasks me-1"></i>Before You Submit
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                    <button type="button" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let allDocuments = [];
+            let currentFilter = 'all';
+
+            // Load documents and categories
+            loadDocuments();
+            loadCategories();
+
+            // Search functionality
+            $('#searchInput').on('input', function() {
+                filterDocuments();
+            });
+
+            // Category filter functionality
+            $(document).on('click', '.filter-badge', function() {
+                $('.filter-badge').removeClass('active');
+                $(this).addClass('active');
+                currentFilter = $(this).data('category');
+                filterDocuments();
+            });
+
+            function loadDocuments() {
+                $.ajax({
+                    url: '/api/documents',
+                    method: 'GET',
+                    success: function(data) {
+                        allDocuments = data;
+                        renderDocuments(data);
+
+                        // Update accessible count for logged-in users
+                        const accessibleCount = data.filter(doc => doc.has_access).length;
+                        $('#accessibleCount').text(accessibleCount);
+                    },
+                    error: function() {
+                        $('#documentsContainer').html(`
+                            <div class="alert alert-danger text-center">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Failed to load documents. Please try again later.
+                            </div>
+                        `);
+                    }
+                });
+            }
+
+            function loadCategories() {
+                $.ajax({
+                    url: '/api/categories',
+                    method: 'GET',
+                    success: function(categories) {
+                        let filtersHtml = `
+                            <span class="filter-badge active" data-category="all">
+                                <i class="fas fa-globe me-1"></i>All Categories
+                            </span>
+                        `;
+                        
+                        categories.forEach(category => {
+                            const icon = getCategoryIcon(category);
+                            filtersHtml += `
+                                <span class="filter-badge" data-category="${category}">
+                                    <i class="${icon} me-1"></i>${category}
+                                </span>
+                            `;
+                        });
+                        
+                        $('#categoryFilters').html(filtersHtml);
+                    }
+                });
+            }
+
+            function getCategoryIcon(category) {
+                const icons = {
+                    'Family-Based Immigration': 'fas fa-home',
+                    'Adjustment of Status': 'fas fa-id-card',
+                    'Naturalization': 'fas fa-flag-usa',
+                    'Work Authorization': 'fas fa-briefcase',
+                    'Temporary Workers': 'fas fa-clock',
+                    'Status Changes': 'fas fa-exchange-alt',
+                    'Travel Documents': 'fas fa-plane'
+                };
+                return icons[category] || 'fas fa-file-alt';
+            }
+
+            function renderDocuments(documents) {
+                if (documents.length === 0) {
+                    $('#documentsContainer').html(`
+                        <div class="no-results">
+                            <i class="fas fa-search fa-3x mb-3" style="color: #6c757d;"></i>
+                            <h4>No documents found</h4>
+                            <p>Try adjusting your search criteria or filters.</p>
+                        </div>
+                    `);
+                    return;
+                }
+
+                let html = '';
+                documents.forEach(doc => {
+                    const categoryIcon = getCategoryIcon(doc.category);
+                    const isPremium = doc.required_tier !== 'free';
+                    const hasAccess = doc.has_access;
+                    const lockedClass = (isPremium && !hasAccess) ? 'locked-overlay' : '';
+
+                    html += `
+                        <div class="document-card ${lockedClass}" data-category="${doc.category}">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h3 class="document-title">
+                                        ${doc.title}
+                                        ${doc.required_tier === 'free' ? `<span class="free-badge"><i class="fas fa-check-circle me-1"></i>FREE - No Login Required</span>` :
+                                          isPremium ? `<span class="premium-badge"><i class="fas fa-crown me-1"></i>${doc.required_tier.toUpperCase()}</span>` : ''}
+                                    </h3>
+                                    <span class="document-category">
+                                        <i class="${categoryIcon} me-1"></i>${doc.category}
+                                    </span>
+                                    <p class="document-description">${doc.description}</p>
+
+                                    <div class="document-meta">
+                                        <div class="mb-2">
+                                            <i class="fas fa-clock"></i><strong>Processing Time:</strong> ${doc.processing_time}
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="fas fa-dollar-sign"></i><strong>Filing Fee:</strong> ${doc.fee}
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-calendar-alt"></i><strong>Last Updated:</strong> ${formatDate(doc.last_updated)}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    ${hasAccess ? `
+                                        <a href="${doc.pdf_url}" target="_blank" class="btn btn-download">
+                                            <i class="fas fa-download me-1"></i>Download PDF
+                                        </a>
+                                        <a href="${doc.info_url}" target="_blank" class="btn btn-info">
+                                            <i class="fas fa-info-circle me-1"></i>More Info
+                                        </a>
+                                        <button class="btn btn-checklist" onclick="showChecklist(${doc.id})">
+                                            <i class="fas fa-clipboard-list me-1"></i>View Checklist
+                                        </button>
+                                    ` : doc.requires_login ? `
+                                        <div class="alert alert-info mb-3">
+                                            <i class="fas fa-lock me-2"></i><strong>${doc.required_tier.toUpperCase()} Plan Required</strong>
+                                            <br><small>Sign up to access this form</small>
+                                        </div>
+                                        <button class="btn btn-upgrade mb-2" onclick="$('#loginBtn').click()">
+                                            <i class="fas fa-user-plus me-1"></i>Sign Up for ${doc.required_tier.charAt(0).toUpperCase() + doc.required_tier.slice(1)}
+                                        </button>
+                                        <br>
+                                        <a href="/pricing" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-info-circle me-1"></i>View Plans
+                                        </a>
+                                    ` : `
+                                        <div class="alert alert-warning mb-3">
+                                            <i class="fas fa-arrow-up me-2"></i><strong>Upgrade Required</strong>
+                                            <br><small>${doc.required_tier.toUpperCase()} plan needed</small>
+                                        </div>
+                                        <a href="/pricing" class="btn btn-upgrade">
+                                            <i class="fas fa-unlock me-1"></i>Upgrade to ${doc.required_tier.charAt(0).toUpperCase() + doc.required_tier.slice(1)}
+                                        </a>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                $('#documentsContainer').html(html);
+            }
+
+            function filterDocuments() {
+                const searchTerm = $('#searchInput').val().toLowerCase();
+                
+                let filteredDocs = allDocuments.filter(doc => {
+                    const matchesSearch = doc.title.toLowerCase().includes(searchTerm) ||
+                                        doc.description.toLowerCase().includes(searchTerm) ||
+                                        doc.category.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCategory = currentFilter === 'all' || doc.category === currentFilter;
+                    
+                    return matchesSearch && matchesCategory;
+                });
+                
+                renderDocuments(filteredDocs);
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+
+            // Global function for checklist modal
+            // Store current form guide data
+            let currentFormGuide = null;
+            let currentFormData = null;
+            let currentActiveTab = 'overview';
+
+            window.showChecklist = function(docId) {
+                const doc = allDocuments.find(d => d.id === docId);
+                if (!doc) return;
+
+                if (!doc.has_access) {
+                    if (doc.requires_login) {
+                        alert('Please sign up to access this checklist');
+                        $('#loginBtn').click();
+                    } else {
+                        alert('Please upgrade your subscription to access this checklist');
+                        window.location.href = '/pricing';
+                    }
+                    return;
+                }
+
+                // Store current form data
+                currentFormData = doc;
+                currentActiveTab = 'overview';
+
+                // Set modal title
+                $('#modalTitle').html(`<i class="fas fa-clipboard-list me-2"></i>${doc.title}`);
+
+                // Reset tabs
+                $('.tab-btn').removeClass('active');
+                $('.tab-btn[onclick="switchTab(\'overview\')"]').addClass('active');
+
+                // Hide guide tabs initially
+                $('#howToFillTab, #mistakesTab, #beforeSubmitTab').hide();
+
+                // Show loading
+                $('#modalBody').html(`
+                    <div class="text-center p-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading form guide...</p>
+                    </div>
+                `);
+
+                // Show modal
+                $('#documentModal').modal('show');
+
+                // Fetch form guide
+                $.ajax({
+                    url: `/api/form-guide/${docId}`,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.available) {
+                            currentFormGuide = response.guide;
+                            // Show guide tabs
+                            $('#howToFillTab, #mistakesTab, #beforeSubmitTab').show();
+                        } else {
+                            currentFormGuide = null;
+                        }
+                        // Render overview tab
+                        renderTabContent('overview');
+                    },
+                    error: function() {
+                        currentFormGuide = null;
+                        renderTabContent('overview');
+                    }
+                });
+            };
+
+            // Tab switching function
+            window.switchTab = function(tabName) {
+                $('.tab-btn').removeClass('active');
+                $(`.tab-btn[onclick="switchTab('${tabName}')"]`).addClass('active');
+                currentActiveTab = tabName;
+                renderTabContent(tabName);
+            };
+
+            // Render tab content
+            function renderTabContent(tabName) {
+                if (!currentFormData) return;
+
+                let html = '';
+                switch(tabName) {
+                    case 'overview':
+                        html = renderOverviewTab();
+                        break;
+                    case 'how-to-fill':
+                        html = renderHowToFillTab();
+                        break;
+                    case 'checklist':
+                        html = renderChecklistTab();
+                        break;
+                    case 'mistakes':
+                        html = renderMistakesTab();
+                        break;
+                    case 'before-submit':
+                        html = renderBeforeSubmitTab();
+                        break;
+                }
+
+                $('#modalBody').html(html);
+
+                // Add checkbox listeners
+                if (tabName === 'checklist' || tabName === 'before-submit') {
+                    $('.checklist-checkbox').on('change', function() {
+                        const total = $(this).data('total');
+                        const checked = $('.checklist-checkbox:checked').length;
+                        const percentage = (checked / total) * 100;
+                        $('#checkedCount').text(checked);
+                        $('#progressBar').css('width', percentage + '%');
+                    });
+                }
+            }
+
+            function renderOverviewTab() {
+                const doc = currentFormData;
+                return `
+                    <div class="form-info-box">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle me-2"></i>Form Information
+                        </h6>
+                        <p style="color: #495057; margin-bottom: 1rem;">${doc.description}</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="info-badge"><i class="fas fa-dollar-sign"></i>${doc.fee}</span>
+                            <span class="info-badge"><i class="fas fa-clock"></i>${doc.processing_time}</span>
+                            <span class="info-badge"><i class="fas fa-calendar"></i>${formatDate(doc.last_updated)}</span>
+                        </div>
+                    </div>
+
+                    ${currentFormGuide ? `
+                        <div class="alert alert-success mt-3" style="border-radius: 12px;">
+                            <h6 class="mb-2"><i class="fas fa-check-circle me-2"></i><strong>Step-by-Step Filling Guide Available!</strong></h6>
+                            <p class="mb-2">Click the tabs above to see:</p>
+                            <ul class="mb-0 mt-2" style="list-style: none; padding-left: 0;">
+                                <li><i class="fas fa-pen me-2" style="color: #667eea;"></i><strong>How to Fill</strong> - Detailed instructions</li>
+                                <li><i class="fas fa-exclamation-triangle me-2" style="color: #ffc107;"></i><strong>Common Mistakes</strong> - Errors to avoid</li>
+                                <li><i class="fas fa-tasks me-2" style="color: #27ae60;"></i><strong>Before You Submit</strong> - Final checklist</li>
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    <div class="mt-4">
+                        <h6 style="color: #2c3e50; font-weight: 700; margin-bottom: 1rem;">
+                            <i class="fas fa-download me-2"></i>Quick Actions
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <a href="${doc.pdf_url}" target="_blank" class="btn btn-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <i class="fas fa-file-pdf me-2"></i>Download Official PDF
+                            </a>
+                            <a href="${doc.info_url}" target="_blank" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>View Official USCIS Info
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderHowToFillTab() {
+                const doc = currentFormData;
+
+                // Show signup prompt for preview mode users
+                if (doc.is_preview) {
+                    return `
+                        <div class="preview-signup-cta" style="margin-top: 0;">
+                            <div class="blur-overlay">
+                                <i class="fas fa-lock mb-3" style="font-size: 3rem; color: #667eea;"></i>
+                                <h5>Sign up to access filling instructions</h5>
+                                <p class="text-muted mb-4">Get step-by-step guidance on how to fill out this form correctly</p>
+                                <a href="/login" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Create Free Account
+                                </a>
+                                <p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (!currentFormGuide || !currentFormGuide.filling_steps) {
+                    return '<p class="text-center text-muted p-5">Filling guide not available.</p>';
+                }
+
+                let html = '<div class="alert alert-info" style="border-radius: 12px;"><i class="fas fa-lightbulb me-2"></i><strong>Read each section before filling the form.</strong> Having documents ready makes the process smoother!</div>';
+
+                currentFormGuide.filling_steps.forEach((step, index) => {
+                    html += `
+                        <div class="guide-section">
+                            <h5><i class="fas fa-list-ol me-2"></i>Step ${index + 1}: ${step.part}</h5>
+                            <ul>${step.instructions.map(inst => `<li>${inst}</li>`).join('')}</ul>
+                            ${step.tips && step.tips.length > 0 ? `
+                                <div class="tip-box">
+                                    <h6><i class="fas fa-lightbulb me-2"></i>Tips:</h6>
+                                    <ul>${step.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                if (currentFormGuide.pro_tips) {
+                    html += `<div class="guide-section" style="border-left-color: #27ae60;"><h5><i class="fas fa-star me-2"></i>Pro Tips</h5>`;
+                    currentFormGuide.pro_tips.forEach(tip => {
+                        html += `<div class="protip-item">${tip}</div>`;
+                    });
+                    html += '</div>';
+                }
+
+                return html;
+            }
+
+            function renderChecklistTab() {
+                const doc = currentFormData;
+                let html = '<h5 class="checklist-section-title"><i class="fas fa-list-check me-2"></i>Required Documents Checklist</h5>';
+
+                if (doc.checklist && doc.checklist.length > 0) {
+                    // Show preview badge if this is a preview
+                    if (doc.is_preview) {
+                        html += `<div class="alert alert-info" style="border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;"><div class="d-flex align-items-center justify-content-between"><div><i class="fas fa-eye me-2"></i><strong>Preview Mode</strong><p class="mb-0 mt-1" style="font-size: 0.9rem;">Showing ${doc.checklist.length} of ${doc.checklist_total} items</p></div><i class="fas fa-lock" style="font-size: 2rem; opacity: 0.3;"></i></div></div>`;
+                    }
+
+                    // Render checklist items
+                    doc.checklist.forEach((item, index) => {
+                        html += `<div class="checklist-item"><div class="form-check"><input class="form-check-input checklist-checkbox" type="checkbox" id="check${index}" data-total="${doc.checklist.length}"><label class="form-check-label" for="check${index}">${item}</label></div></div>`;
+                    });
+
+                    // Show signup CTA if preview mode
+                    if (doc.is_preview && doc.checklist_total > doc.checklist.length) {
+                        const remainingItems = doc.checklist_total - doc.checklist.length;
+                        html += `<div class="preview-signup-cta"><div class="blur-overlay"><i class="fas fa-lock mb-3" style="font-size: 3rem; color: #667eea;"></i><h5>Sign up to see all ${doc.checklist_total} items</h5><p class="text-muted mb-4">${remainingItems} more checklist items available</p><a href="/login" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Create Free Account</a><p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p></div></div>`;
+                    }
+
+                    // Progress indicator (only for full checklist)
+                    if (!doc.is_preview) {
+                        html += `<div class="progress-indicator"><div class="progress-text"><i class="fas fa-tasks me-2"></i><span id="checkedCount">0</span> of ${doc.checklist.length} items completed</div><div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div></div></div>`;
+                    }
+                } else {
+                    html += '<p class="text-muted text-center">No checklist available</p>';
+                }
+
+                return html;
+            }
+
+            function renderMistakesTab() {
+                const doc = currentFormData;
+
+                // Show signup prompt for preview mode users
+                if (doc.is_preview) {
+                    return `
+                        <div class="preview-signup-cta" style="margin-top: 0;">
+                            <div class="blur-overlay">
+                                <i class="fas fa-lock mb-3" style="font-size: 3rem; color: #667eea;"></i>
+                                <h5>Sign up to see common mistakes</h5>
+                                <p class="text-muted mb-4">Learn which errors cause delays or rejections so you can avoid them</p>
+                                <a href="/login" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Create Free Account
+                                </a>
+                                <p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (!currentFormGuide || !currentFormGuide.common_mistakes) {
+                    return '<p class="text-center text-muted p-5">Common mistakes guide not available.</p>';
+                }
+
+                let html = '<div class="alert alert-warning" style="border-radius: 12px;"><h6><i class="fas fa-exclamation-triangle me-2"></i><strong>Avoid These Common Mistakes!</strong></h6><p class="mb-0">These errors cause delays or rejections. Double-check your form!</p></div><div class="mt-4">';
+
+                currentFormGuide.common_mistakes.forEach(mistake => {
+                    html += `<div class="mistake-item">${mistake}</div>`;
+                });
+
+                return html + '</div>';
+            }
+
+            function renderBeforeSubmitTab() {
+                const doc = currentFormData;
+
+                // Show signup prompt for preview mode users
+                if (doc.is_preview) {
+                    return `
+                        <div class="preview-signup-cta" style="margin-top: 0;">
+                            <div class="blur-overlay">
+                                <i class="fas fa-lock mb-3" style="font-size: 3rem; color: #667eea;"></i>
+                                <h5>Sign up for the pre-submission checklist</h5>
+                                <p class="text-muted mb-4">Get a final checklist to ensure you have everything before mailing to USCIS</p>
+                                <a href="/login" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Create Free Account
+                                </a>
+                                <p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (!currentFormGuide || !currentFormGuide.before_submit) {
+                    return '<p class="text-center text-muted p-5">Pre-submission checklist not available.</p>';
+                }
+
+                let html = '<div class="alert alert-success" style="border-radius: 12px;"><h6><i class="fas fa-check-circle me-2"></i><strong>Final Checklist Before Mailing</strong></h6><p class="mb-0">Make sure you have everything before mailing to USCIS!</p></div><h5 class="checklist-section-title mt-4"><i class="fas fa-tasks me-2"></i>Before You Submit Checklist</h5>';
+
+                currentFormGuide.before_submit.forEach((item, index) => {
+                    html += `<div class="checklist-item"><div class="form-check"><input class="form-check-input checklist-checkbox" type="checkbox" id="submit${index}" data-total="${currentFormGuide.before_submit.length}"><label class="form-check-label" for="submit${index}">${item}</label></div></div>`;
+                });
+
+                html += `<div class="progress-indicator"><div class="progress-text"><i class="fas fa-tasks me-2"></i><span id="checkedCount">0</span> of ${currentFormGuide.before_submit.length} items completed</div><div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div></div></div><div class="alert alert-info mt-4" style="border-radius: 12px;"><i class="fas fa-info-circle me-2"></i><strong>Remember:</strong> Keep copies! Use certified mail with tracking!</div>`;
+
+                return html;
+            }
+
+            // Logout handler
+            $('#logoutBtn').click(async function() {
+                try {
+                    // Logout from Flask
+                    await $.post('/api/auth/logout');
+
+                    // Sign out from Clerk if available
+                    if (typeof Clerk !== 'undefined' && Clerk.signOut) {
+                        await Clerk.signOut();
+                    }
+
+                    // Redirect to home
+                    window.location.href = '/';
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    // Force redirect even on error
+                    window.location.href = '/';
+                }
+            });
+
+            // Auth redirect
+            $('#loginBtn').click(function() {
+                window.location.href = '/login';
+            });
+
+            // Page loading indicator
+            const loadingBar = document.getElementById('pageLoadingBar');
+
+            // Show loading bar on navigation
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && link.href && !link.target && !link.href.includes('#') &&
+                    !link.href.includes('mailto:') && !link.href.includes('javascript:')) {
+                    loadingBar.classList.add('loading');
+                }
+            });
+
+            // Complete loading bar when page loads
+            window.addEventListener('load', function() {
+                loadingBar.classList.add('complete');
+                setTimeout(function() {
+                    loadingBar.classList.remove('loading', 'complete');
+                    loadingBar.style.width = '0%';
+                    loadingBar.style.opacity = '1';
+                }, 400);
+            });
+
+            // Start loading bar on DOMContentLoaded
+            if (document.readyState === 'loading') {
+                loadingBar.classList.add('loading');
+            }
+        });
+    </script>
+</body>
+</html>
