@@ -224,8 +224,8 @@
                         <button class="btn btn-outline-secondary" id="manageSubscriptionBtn" style="display: none;">
                             <i class="fas fa-cog me-2"></i>Manage Subscription
                         </button>
-                        <button class="btn btn-outline-primary" id="syncSubscriptionBtn">
-                            <i class="fas fa-sync-alt me-2"></i>Sync Subscription
+                        <button class="btn btn-outline-secondary btn-sm" id="syncSubscriptionBtn" style="display: none;">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
                         </button>
                     </div>
                 </div>
@@ -289,6 +289,15 @@
             loadUserProfile();
             loadStats();
 
+            // Auto-sync subscription after successful payment
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                // Show processing message
+                showProcessingMessage();
+                // Start polling for subscription update
+                pollSubscriptionStatus();
+            }
+
             $('#logoutBtn').click(async function() {
                 try {
                     // Logout from Flask
@@ -326,19 +335,25 @@
 
             $('#syncSubscriptionBtn').click(function() {
                 const btn = $(this);
-                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Syncing...');
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>');
 
                 $.ajax({
                     url: '/api/sync-subscription',
                     method: 'POST',
                     success: function(response) {
-                        alert('✓ Subscription synced! Tier: ' + response.tier.toUpperCase());
+                        // Smooth reload without alert
                         location.reload();
                     },
                     error: function(xhr) {
-                        const error = xhr.responseJSON?.error || 'Failed to sync subscription';
-                        alert('Error: ' + error);
-                        btn.prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i>Sync Subscription');
+                        const error = xhr.responseJSON?.error || 'Failed to refresh';
+                        btn.prop('disabled', false).html('<i class="fas fa-sync-alt me-1"></i>Refresh');
+                        // Show error in processing alert if it exists
+                        if ($('#processingAlert').length) {
+                            $('#processingAlert').removeClass('alert-info').addClass('alert-danger')
+                                .html('<h5><i class="fas fa-exclamation-circle me-2"></i>Error</h5><p class="mb-0">' + error + '</p>');
+                        } else {
+                            alert('Error: ' + error);
+                        }
                     }
                 });
             });
@@ -421,6 +436,57 @@
 
             function capitalizeFirstLetter(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            function showProcessingMessage() {
+                const html = `
+                    <div class="alert alert-info" id="processingAlert">
+                        <h5><i class="fas fa-spinner fa-spin me-2"></i>Processing Your Subscription...</h5>
+                        <p class="mb-0">Please wait while we activate your account. This usually takes 3-5 seconds.</p>
+                    </div>
+                `;
+                $('.dashboard-container').prepend(html);
+            }
+
+            function pollSubscriptionStatus(attempt = 0) {
+                const maxAttempts = 10; // Poll for up to 20 seconds (10 attempts × 2 seconds)
+
+                if (attempt >= maxAttempts) {
+                    // Polling timeout - show manual sync button
+                    $('#processingAlert').removeClass('alert-info').addClass('alert-warning')
+                        .html('<h5><i class="fas fa-exclamation-triangle me-2"></i>Taking Longer Than Expected</h5><p class="mb-0">Your payment was successful! Click the Refresh button below if your subscription doesn\'t update automatically.</p>');
+                    $('#syncSubscriptionBtn').show();
+                    return;
+                }
+
+                $.ajax({
+                    url: '/api/user/profile',
+                    method: 'GET',
+                    success: function(user) {
+                        // Check if subscription is updated
+                        if (user.subscription_tier !== 'free' && user.subscription_status === 'active') {
+                            // Success! Subscription is active
+                            $('#processingAlert').removeClass('alert-info').addClass('alert-success')
+                                .html('<h5><i class="fas fa-check-circle me-2"></i>Subscription Activated!</h5><p class="mb-0">Redirecting...</p>');
+
+                            // Clean URL and reload after 1 second
+                            setTimeout(function() {
+                                window.location.href = '/dashboard';
+                            }, 1000);
+                        } else {
+                            // Not updated yet, poll again
+                            setTimeout(function() {
+                                pollSubscriptionStatus(attempt + 1);
+                            }, 2000); // Poll every 2 seconds
+                        }
+                    },
+                    error: function() {
+                        // Error, try again
+                        setTimeout(function() {
+                            pollSubscriptionStatus(attempt + 1);
+                        }, 2000);
+                    }
+                });
             }
         });
     </script>
