@@ -1,10 +1,11 @@
 """
 Team Management API Routes
 """
-from flask import jsonify, request, session
+from flask import jsonify, request, session, render_template
 from functools import wraps
 from models import db, User
 from team_models import Team, TeamMembership, TeamInvitation
+from config import Config
 import secrets
 from datetime import datetime, timedelta
 
@@ -26,6 +27,16 @@ def get_current_user():
 
 def register_team_routes(app):
     """Register all team-related routes"""
+
+    @app.route('/team/dashboard')
+    @login_required
+    def team_dashboard():
+        """Team management page"""
+        user = get_current_user()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        return render_template('team_management.html', user=user, config=Config)
 
     @app.route('/api/team/current', methods=['GET'])
     @login_required

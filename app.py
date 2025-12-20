@@ -74,7 +74,7 @@ def load_branding():
     """Load branding settings into g object for templates"""
     # Default branding
     g.branding = {
-        'site_name': 'Immigration Forms and Templates',
+        'site_name': 'Immigration Templates',
         'logo_url': None,
         'primary_color': '#667eea',
         'secondary_color': '#764ba2',

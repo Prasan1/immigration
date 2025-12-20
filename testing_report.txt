@@ -1,0 +1,5 @@
+1. Team management route is not enabled. Clicking on the Team Management button on Quick Action section of the dashboard is failing
+2. Favicon icon is missing and not consistent acros all tabs and routes
+3. Immigrationforms.io should be removed from the page as this domain is not what we have We have www.immigrationtemplates.com therefore
+   we need to focus on this name instead.
+4. 
