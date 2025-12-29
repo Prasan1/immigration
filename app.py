@@ -86,23 +86,37 @@ def load_branding():
         'show_powered_by': True
     }
 
-    # If user is logged in, load branding from their team owner (if in a team)
-    user = get_current_user()
-    if user:
-        # Check if user is part of a team
-        team_membership = TeamMembership.query.filter_by(
-            user_id=user.id,
-            status='active'
-        ).first()
+    # If database tables don't exist yet, skip branding customization
+    try:
+        # If user is logged in, load branding from their team owner (if in a team)
+        user = get_current_user()
+        if user:
+            # Check if user is part of a team
+            team_membership = TeamMembership.query.filter_by(
+                user_id=user.id,
+                status='active'
+            ).first()
 
-        if team_membership:
-            # Load branding from team owner
-            team = team_membership.team
-            team_owner = team.owner
+            if team_membership:
+                # Load branding from team owner
+                team = team_membership.team
+                team_owner = team.owner
 
-            # If team owner has enterprise settings, use those
-            if team_owner.subscription_tier == 'enterprise':
-                settings = EnterpriseSettings.query.filter_by(user_id=team_owner.id).first()
+                # If team owner has enterprise settings, use those
+                if team_owner.subscription_tier == 'enterprise':
+                    settings = EnterpriseSettings.query.filter_by(user_id=team_owner.id).first()
+                    if settings:
+                        g.branding = {
+                            'site_name': settings.site_name,
+                            'logo_url': settings.logo_url,
+                            'primary_color': settings.primary_color,
+                            'secondary_color': settings.secondary_color,
+                            'footer_text': settings.footer_text,
+                            'show_powered_by': settings.show_powered_by
+                        }
+            elif user.subscription_tier == 'enterprise':
+                # User is not in a team but has business tier (they are the owner)
+                settings = EnterpriseSettings.query.filter_by(user_id=user.id).first()
                 if settings:
                     g.branding = {
                         'site_name': settings.site_name,
@@ -112,18 +126,9 @@ def load_branding():
                         'footer_text': settings.footer_text,
                         'show_powered_by': settings.show_powered_by
                     }
-        elif user.subscription_tier == 'enterprise':
-            # User is not in a team but has business tier (they are the owner)
-            settings = EnterpriseSettings.query.filter_by(user_id=user.id).first()
-            if settings:
-                g.branding = {
-                    'site_name': settings.site_name,
-                    'logo_url': settings.logo_url,
-                    'primary_color': settings.primary_color,
-                    'secondary_color': settings.secondary_color,
-                    'footer_text': settings.footer_text,
-                    'show_powered_by': settings.show_powered_by
-                }
+    except Exception:
+        # Database tables don't exist yet or other DB error - use default branding
+        pass
 
 # Helper function to get current user from Clerk session
 def get_current_user():
@@ -982,6 +987,123 @@ def enterprise_settings():
             'message': 'Branding settings updated successfully',
             'settings': settings.to_dict()
         })
+
+
+@app.route('/initialize-database')
+def initialize_database():
+    """Initialize database tables and load forms data"""
+    try:
+        # Create all tables
+        db.create_all()
+
+        # Check if forms already exist
+        existing_forms = ImmigrationForm.query.count()
+        if existing_forms > 0:
+            return jsonify({
+                'success': True,
+                'message': f'Database already initialized with {existing_forms} forms',
+                'forms_count': existing_forms
+            })
+
+        # Load forms data from init_db.py
+        from datetime import datetime
+        forms_data = [
+            {
+                "title": "Form I-130 - Immediate Relative/Family Preference Petition",
+                "category": "Family-Based Immigration",
+                "description": "Petition filed by U.S. citizens and lawful permanent residents to establish qualifying family relationship for relatives seeking to immigrate to or adjust status in the United States.",
+                "pdf_url": "https://www.uscis.gov/sites/default/files/document/forms/i-130.pdf",
+                "info_url": "https://www.uscis.gov/i-130",
+                "last_updated": "2024-01-15",
+                "processing_time": "12-33 months",
+                "fee": "$535",
+                "access_level": "free",
+                "checklist": [
+                    "Completed Form I-130",
+                    "Filing fee of $535",
+                    "Proof of U.S. citizenship or permanent residence",
+                    "Proof of relationship to beneficiary",
+                    "Passport-style photos of petitioner and beneficiary",
+                    "Birth certificates",
+                    "Marriage certificate (if applicable)",
+                    "Divorce decree (if previously married)"
+                ]
+            },
+            {
+                "title": "Form I-485 - Application to Adjust Status to Permanent Resident",
+                "category": "Adjustment of Status",
+                "description": "Used to apply for adjustment of status to become a lawful permanent resident of the United States.",
+                "pdf_url": "https://www.uscis.gov/sites/default/files/document/forms/i-485.pdf",
+                "info_url": "https://www.uscis.gov/i-485",
+                "last_updated": "2024-02-01",
+                "processing_time": "13-25 months",
+                "fee": "$1,225",
+                "access_level": "free",
+                "checklist": [
+                    "Completed Form I-485",
+                    "Filing fee of $1,225",
+                    "Form I-693 Medical Examination",
+                    "Two passport-style photographs",
+                    "Copy of birth certificate",
+                    "Copy of passport and I-94",
+                    "Form I-864 Affidavit of Support",
+                    "Tax returns for past 3 years",
+                    "Employment authorization (if applicable)"
+                ]
+            },
+            {
+                "title": "Form N-400 - Naturalization Application for U.S. Citizenship",
+                "category": "Naturalization",
+                "description": "Used to apply for U.S. citizenship through naturalization.",
+                "pdf_url": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+                "info_url": "https://www.uscis.gov/n-400",
+                "last_updated": "2024-01-20",
+                "processing_time": "14-22 months",
+                "fee": "$725",
+                "access_level": "free",
+                "checklist": [
+                    "Completed Form N-400",
+                    "Filing fee of $725",
+                    "Copy of Permanent Resident Card",
+                    "Copy of marriage certificate (if applicable)",
+                    "Divorce decree (if previously married)",
+                    "Tax returns for past 5 years",
+                    "Travel history records",
+                    "Two passport-style photographs"
+                ]
+            }
+        ]
+
+        # Add forms to database
+        for form_data in forms_data:
+            form = ImmigrationForm(
+                title=form_data['title'],
+                category=form_data['category'],
+                description=form_data['description'],
+                pdf_url=form_data['pdf_url'],
+                info_url=form_data['info_url'],
+                processing_time=form_data['processing_time'],
+                fee=form_data['fee'],
+                last_updated=datetime.strptime(form_data['last_updated'], '%Y-%m-%d').date(),
+                access_level=form_data.get('access_level', 'free')
+            )
+            form.set_checklist(form_data['checklist'])
+            db.session.add(form)
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'message': 'Database initialized successfully!',
+            'forms_loaded': len(forms_data)
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'message': 'Failed to initialize database'
+        }), 500
 
 
 if __name__ == '__main__':
