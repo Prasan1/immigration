@@ -133,10 +133,14 @@ def load_branding():
 # Helper function to get current user from Clerk session
 def get_current_user():
     """Get current user from session"""
-    clerk_user_id = session.get('clerk_user_id')
-    if clerk_user_id:
-        return User.query.filter_by(clerk_user_id=clerk_user_id).first()
-    return None
+    try:
+        clerk_user_id = session.get('clerk_user_id')
+        if clerk_user_id:
+            return User.query.filter_by(clerk_user_id=clerk_user_id).first()
+        return None
+    except Exception:
+        # Database tables don't exist yet
+        return None
 
 # Authentication decorator
 def login_required(f):
@@ -174,6 +178,15 @@ def subscription_required(required_tier='basic'):
 
 
 # ============== ROUTES ==============
+
+@app.route('/health')
+def health_check():
+    """Simple health check that doesn't touch the database"""
+    return jsonify({
+        'status': 'ok',
+        'message': 'App is running',
+        'version': 'fix-db-init-v2'
+    })
 
 @app.route('/')
 def home():
