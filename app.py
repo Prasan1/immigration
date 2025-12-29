@@ -57,20 +57,32 @@ def create_app():
 app, limiter = create_app()
 
 # Register team routes
-from team_routes import register_team_routes
-register_team_routes(app)
+try:
+    from team_routes import register_team_routes
+    register_team_routes(app)
+except Exception as e:
+    print(f"WARNING: Failed to register team routes: {e}", flush=True)
 
 # Register passport processing routes
-from passport_routes import register_passport_routes
-register_passport_routes(app, limiter)
+try:
+    from passport_routes import register_passport_routes
+    register_passport_routes(app, limiter)
+except Exception as e:
+    print(f"WARNING: Failed to register passport routes: {e}", flush=True)
 
 # Register document processing routes (checklists, cover letters, I-94)
-from document_routes import register_document_routes
-register_document_routes(app, limiter)
+try:
+    from document_routes import register_document_routes
+    register_document_routes(app, limiter)
+except Exception as e:
+    print(f"WARNING: Failed to register document routes: {e}", flush=True)
 
 # Register file compressor routes
-from file_compressor_routes import register_file_compressor_routes
-register_file_compressor_routes(app, limiter)
+try:
+    from file_compressor_routes import register_file_compressor_routes
+    register_file_compressor_routes(app, limiter)
+except Exception as e:
+    print(f"WARNING: Failed to register file compressor routes: {e}", flush=True)
 
 # Load branding settings for each request
 @app.before_request
@@ -236,58 +248,62 @@ def dashboard():
 @app.route('/api/documents')
 def get_documents():
     """Get all documents with access control"""
-    user = get_current_user()
+    try:
+        user = get_current_user()
 
-    forms = ImmigrationForm.query.all()
-    documents = []
+        forms = ImmigrationForm.query.all()
+        documents = []
 
-    for form in forms:
-        form_dict = form.to_dict()
+        for form in forms:
+            form_dict = form.to_dict()
 
-        # Access control logic:
-        # 1. Free tier forms show PREVIEW to anonymous users, FULL to logged-in users
-        # 2. Paid tier forms require login AND appropriate subscription
-        if form.access_level == 'free':
-            if user:
-                # Logged in users get full access to free forms
+            # Access control logic:
+            # 1. Free tier forms show PREVIEW to anonymous users, FULL to logged-in users
+            # 2. Paid tier forms require login AND appropriate subscription
+            if form.access_level == 'free':
+                if user:
+                    # Logged in users get full access to free forms
+                    form_dict['has_access'] = True
+                    form_dict['requires_login'] = False
+                    form_dict['is_preview'] = False
+                else:
+                    # Anonymous users get preview (first 3 items)
+                    checklist = form.get_checklist()
+                    if checklist and len(checklist) > 3:
+                        form_dict['checklist'] = checklist[:3]  # Only first 3 items
+                        form_dict['checklist_total'] = len(checklist)
+                        form_dict['is_preview'] = True
+                    else:
+                        form_dict['checklist_total'] = len(checklist) if checklist else 0
+                        form_dict['is_preview'] = False
+                    form_dict['has_access'] = True  # Can still view modal
+                    form_dict['requires_login'] = True  # But needs login for full list
+            elif user and user.can_access_form(form):
+                # User is logged in and has appropriate subscription
                 form_dict['has_access'] = True
                 form_dict['requires_login'] = False
                 form_dict['is_preview'] = False
+            elif user:
+                # User is logged in but needs to upgrade
+                form_dict['has_access'] = False
+                form_dict['requires_login'] = False
+                form_dict['requires_upgrade'] = True
+                form_dict['is_preview'] = False
+                form_dict['checklist'] = []  # Hide checklist
             else:
-                # Anonymous users get preview (first 3 items)
-                checklist = form.get_checklist()
-                if checklist and len(checklist) > 3:
-                    form_dict['checklist'] = checklist[:3]  # Only first 3 items
-                    form_dict['checklist_total'] = len(checklist)
-                    form_dict['is_preview'] = True
-                else:
-                    form_dict['checklist_total'] = len(checklist) if checklist else 0
-                    form_dict['is_preview'] = False
-                form_dict['has_access'] = True  # Can still view modal
-                form_dict['requires_login'] = True  # But needs login for full list
-        elif user and user.can_access_form(form):
-            # User is logged in and has appropriate subscription
-            form_dict['has_access'] = True
-            form_dict['requires_login'] = False
-            form_dict['is_preview'] = False
-        elif user:
-            # User is logged in but needs to upgrade
-            form_dict['has_access'] = False
-            form_dict['requires_login'] = False
-            form_dict['requires_upgrade'] = True
-            form_dict['is_preview'] = False
-            form_dict['checklist'] = []  # Hide checklist
-        else:
-            # User not logged in - needs to sign up
-            form_dict['has_access'] = False
-            form_dict['requires_login'] = True
-            form_dict['is_preview'] = False
-            form_dict['checklist'] = []  # Hide checklist
+                # User not logged in - needs to sign up
+                form_dict['has_access'] = False
+                form_dict['requires_login'] = True
+                form_dict['is_preview'] = False
+                form_dict['checklist'] = []  # Hide checklist
 
-        form_dict['required_tier'] = form.access_level
-        documents.append(form_dict)
+            form_dict['required_tier'] = form.access_level
+            documents.append(form_dict)
 
-    return jsonify(documents)
+        return jsonify(documents)
+    except Exception as e:
+        # Database not initialized yet
+        return jsonify([])
 
 @app.route('/api/documents/<int:doc_id>')
 def get_document(doc_id):
