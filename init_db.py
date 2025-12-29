@@ -1,6 +1,6 @@
 from app import create_app
 from models import db, ImmigrationForm
-from document_models import PassportApplication, DocumentProcessingTransaction
+from document_models import PassportApplication, DocumentProcessingTransaction, FileCompressionJob
 from datetime import datetime
 
 def init_database():

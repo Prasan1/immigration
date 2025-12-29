@@ -68,6 +68,10 @@ register_passport_routes(app, limiter)
 from document_routes import register_document_routes
 register_document_routes(app, limiter)
 
+# Register file compressor routes
+from file_compressor_routes import register_file_compressor_routes
+register_file_compressor_routes(app, limiter)
+
 # Load branding settings for each request
 @app.before_request
 def load_branding():
@@ -385,6 +389,7 @@ def create_session():
         db.session.commit()
 
     # Set session
+    session.permanent = True  # Make session persist for 24 hours
     session['clerk_user_id'] = clerk_user_id
 
     return jsonify({'success': True, 'user': user.to_dict()})
@@ -399,6 +404,34 @@ def logout():
         'message': 'Logged out successfully',
         'clerk_signout': True  # Signal frontend to sign out from Clerk
     })
+
+# Development-only login endpoint
+@app.route('/dev-login')
+def dev_login():
+    """Development-only endpoint to quickly log in as test user"""
+    if Config.ENV != 'development':
+        return jsonify({'error': 'Only available in development mode'}), 403
+
+    # Find or create test user
+    test_user = User.query.filter_by(email='test@example.com').first()
+    if not test_user:
+        test_user = User(
+            clerk_user_id='dev_test_user',
+            email='test@example.com',
+            full_name='Test User (Dev)',
+            subscription_tier='basic',  # Professional tier for testing
+            subscription_status='active'
+        )
+        db.session.add(test_user)
+        db.session.commit()
+
+    # Set session
+    session.permanent = True
+    session['clerk_user_id'] = test_user.clerk_user_id
+
+    # Redirect to file compressor or dashboard
+    from flask import redirect
+    return redirect('/file-compressor')
 
 
 # ============== STRIPE INTEGRATION ==============

@@ -38,6 +38,7 @@ class Config:
 
     # Document Processing Pricing (one-time charges)
     STRIPE_PRICE_ID_PASSPORT = os.getenv('STRIPE_PRICE_ID_PASSPORT')  # $12 per passport application
+    STRIPE_PRICE_ID_FILE_COMPRESSOR = os.getenv('STRIPE_PRICE_ID_FILE_COMPRESSOR')  # $5 per premium compression
 
     # Security Settings
     SESSION_COOKIE_SECURE = ENV == 'production'
@@ -68,6 +69,7 @@ class Config:
                 'Filing fee information',
                 'Processing time estimates',
                 '10+ fillable templates',
+                'File compressor (5 files/month, up to 2MB)',
                 'No credit card required'
             ],
             'document_processing': False
@@ -86,6 +88,7 @@ class Config:
                 'Step-by-step guides',
                 'Regular form updates',
                 'Email support',
+                'File compressor (unlimited, premium quality)',
                 'Passport processing ($12/application)'
             ],
             'document_processing': True
@@ -104,6 +107,7 @@ class Config:
                 'Team member invitations',
                 'Priority email support',
                 'Collaborative access',
+                'File compressor (unlimited, premium quality)',
                 'Passport processing ($12/application)'
             ],
             'document_processing': True
@@ -122,6 +126,7 @@ class Config:
                 'Custom logo & colors',
                 'Remove "Powered by" footer',
                 'Custom domain support',
+                'File compressor (unlimited, premium quality)',
                 'Passport processing ($12/application)'
             ],
             'document_processing': True
@@ -137,6 +142,35 @@ class Config:
             'price_id': os.getenv('STRIPE_PRICE_ID_PASSPORT'),
             'form_type': 'DS-11',
             'required_tier': 'basic'
+        },
+        'file_compressor_premium': {
+            'name': 'Premium File Compression',
+            'description': 'Compress PDF files to 70-85% of original size with premium quality',
+            'price': 5.00,
+            'price_id': os.getenv('STRIPE_PRICE_ID_FILE_COMPRESSOR'),
+            'required_tier': 'free'  # Available to all, but charges for premium
+        }
+    }
+
+    # File Compressor Configuration
+    FILE_COMPRESSOR_LIMITS = {
+        'free': {
+            'monthly_limit': 5,  # 5 compressions per month
+            'max_file_size_mb': 2,  # 2MB max file size
+            'compression_quality': 'basic',  # 50-60% compression
+            'target_compression_ratio': 0.55  # Target 55% of original size
+        },
+        'basic': {
+            'monthly_limit': None,  # Unlimited
+            'max_file_size_mb': 50,  # 50MB max file size
+            'compression_quality': 'premium',  # 70-85% compression
+            'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
+        },
+        'premium_onetime': {
+            'monthly_limit': None,  # Unlimited after paying $5
+            'max_file_size_mb': 50,  # 50MB max file size
+            'compression_quality': 'premium',  # 70-85% compression
+            'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
         }
     }
 
