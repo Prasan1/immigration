@@ -7,7 +7,9 @@ bind = f"0.0.0.0:{os.getenv('PORT', '8000')}"
 backlog = 2048
 
 # Worker Processes
-workers = int(os.getenv('GUNICORN_WORKERS', multiprocessing.cpu_count() * 2 + 1))
+# For free tier: use 2 workers to avoid out-of-memory errors
+# For paid tier with more RAM: can increase via GUNICORN_WORKERS env var
+workers = int(os.getenv('GUNICORN_WORKERS', 2))
 worker_class = 'sync'
 worker_connections = 1000
 timeout = 60
