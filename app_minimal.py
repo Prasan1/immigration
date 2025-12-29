@@ -21,7 +21,7 @@ def health():
     return jsonify({
         'status': 'ok',
         'message': 'Minimal app running',
-        'version': 'minimal-test'
+        'version': 'minimal-test-v2'
     })
 
 @app.route('/initialize-database')
