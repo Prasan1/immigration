@@ -95,6 +95,21 @@
             color: #6B7280;
         }
 
+        /* New Tiers */
+        .subscription-badge.complete {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: var(--brand-purple);
+            border: 1px solid var(--brand-purple);
+            font-weight: 600;
+        }
+
+        .subscription-badge.agency {
+            background: #1e293b;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Legacy Tiers (backward compatibility) */
         .subscription-badge.basic {
             background: #E3F2FD;
             color: #1976d2;
@@ -164,7 +179,7 @@
                     <li class="nav-item"><a class="nav-link" href="/file-compressor"><i class="fas fa-file-archive me-1"></i>Compressor</a></li>
                     <li class="nav-item"><a class="nav-link" href="/pricing"><i class="fas fa-tags me-1"></i>Pricing</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
-                    {% if user and user.subscription_tier == 'enterprise' %}
+                    {% if user and user.subscription_tier in ['enterprise', 'agency'] %}
                     <li class="nav-item"><a class="nav-link" href="/enterprise/settings"><i class="fas fa-cog me-1"></i>Settings</a></li>
                     {% endif %}
                     <li class="nav-item">
@@ -191,7 +206,7 @@
             <h4><i class="fas fa-star me-2" style="color: var(--brand-purple);"></i>PDF Document Automation</h4>
             <p class="text-muted">Generate professional USCIS-ready documents instantly</p>
             <div class="row mt-3">
-                {% if user.subscription_tier != 'free' %}
+                {% if user.subscription_tier not in ['free'] %}
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/documents/passport'">
                         <div class="card-body text-center">
@@ -275,9 +290,13 @@
                     </div>
 
                     <div class="mt-4">
-                        {% if(user.subscription_tier != 'enterprise') %}
+                        {% if user.subscription_tier in ['free'] %}
                             <a href="/pricing" class="btn btn-primary">
-                                <i class="fas fa-arrow-up me-2"></i>Upgrade Plan
+                                <i class="fas fa-arrow-up me-2"></i>Get Complete Package
+                            </a>
+                        {% elif user.subscription_tier in ['complete'] %}
+                            <a href="/pricing" class="btn btn-outline-primary">
+                                <i class="fas fa-briefcase me-2"></i>Upgrade to Agency
                             </a>
                         {% endif %}
                         <button class="btn btn-outline-secondary" id="manageSubscriptionBtn" style="display: none;">
@@ -304,14 +323,14 @@
                                 <i class="fas fa-file-alt me-2"></i>Fillable Templates
                             </a>
                         </div>
-                        {% if user.subscription_tier == 'pro' or user.subscription_tier == 'enterprise' %}
+                        {% if user.subscription_tier in ['pro', 'enterprise', 'agency'] %}
                         <div class="col-md-6 mb-2">
                             <a href="/team/dashboard" class="btn btn-outline-success w-100">
                                 <i class="fas fa-users me-2"></i>Team Management
                             </a>
                         </div>
                         {% endif %}
-                        {% if user.subscription_tier == 'enterprise' %}
+                        {% if user.subscription_tier in ['enterprise', 'agency'] %}
                         <div class="col-md-6 mb-2">
                             <a href="/enterprise/settings" class="btn btn-outline-warning w-100">
                                 <i class="fas fa-palette me-2"></i>Branding Settings
@@ -506,7 +525,15 @@
                     $('#userName').text(user.full_name || user.email);
 
                     const badge = $('#subscriptionBadge');
-                    badge.text(capitalizeFirstLetter(user.subscription_tier));
+                    const tierNames = {
+                        'free': 'Free Starter',
+                        'complete': 'Complete Package',
+                        'agency': 'Immigration Preparer',
+                        'basic': 'Professional',
+                        'pro': 'Team',
+                        'enterprise': 'Business'
+                    };
+                    badge.text(tierNames[user.subscription_tier] || capitalizeFirstLetter(user.subscription_tier));
                     badge.addClass(user.subscription_tier);
 
                     const status = user.subscription_status === 'active' ?
@@ -519,7 +546,9 @@
                         $('#subscriptionEndDate').text(new Date(user.subscription_ends_at).toLocaleDateString());
                     }
 
-                    if (user.stripe_customer_id) {
+                    // Only show "Manage Subscription" for subscription-based tiers (not one-time payments)
+                    const subscriptionTiers = ['agency', 'basic', 'pro', 'enterprise'];
+                    if (user.stripe_customer_id && subscriptionTiers.includes(user.subscription_tier)) {
                         $('#manageSubscriptionBtn').show();
                     }
 
@@ -540,10 +569,32 @@
             function loadBenefits(tier) {
                 const benefits = {
                     'free': [
-                        'Access to 3 basic immigration forms',
-                        'Basic checklists',
-                        'Filing fee information'
+                        'Basic I-130 checklist (view only)',
+                        'Sample cover letter template',
+                        'Required forms list',
+                        'Evidence categories overview'
                     ],
+                    'complete': [
+                        'Complete I-130 & I-485 checklists (personalized)',
+                        'Auto-generated cover letters (USCIS-ready)',
+                        'Evidence organizer (photos, texts, financial docs)',
+                        'PDF compressor (unlimited use)',
+                        'I-94 travel history generator',
+                        'Document review checklist',
+                        'Interview prep guide',
+                        'RFE response templates',
+                        'Lifetime access - pay once, use forever'
+                    ],
+                    'agency': [
+                        'Unlimited client cases',
+                        'All Complete Package features (for every client)',
+                        'White-label branding (logo, colors, site name)',
+                        'Team collaboration (up to 5 members)',
+                        'Client workspace management',
+                        'Remove "Powered by" footer',
+                        'Priority support'
+                    ],
+                    // Legacy tiers (backward compatibility)
                     'basic': [
                         'Access to ALL immigration forms',
                         'Detailed checklists',
