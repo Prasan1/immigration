@@ -536,6 +536,23 @@
                     handleFileSelect({ target: { files: e.dataTransfer.files } });
                 }
             });
+
+            // Clear jobs list and reload when user logs in/out to prevent session data leakage
+            if (typeof Clerk !== 'undefined') {
+                Clerk.load().then(clerk => {
+                    clerk.addListener(({ session }) => {
+                        // Clear jobs list
+                        const jobsList = document.getElementById('jobsList');
+                        if (jobsList) {
+                            jobsList.innerHTML = '<p class="text-muted text-center"><i class="fas fa-spinner fa-spin me-2"></i>Loading...</p>';
+                        }
+                        // Reload jobs after short delay to allow session to fully update
+                        setTimeout(() => {
+                            loadRecentJobs();
+                        }, 500);
+                    });
+                });
+            }
         });
 
         function handleFileSelect(e) {

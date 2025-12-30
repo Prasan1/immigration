@@ -94,7 +94,12 @@ def register_file_compressor_routes(app, limiter):
             FileCompressionJob.created_at.desc()
         ).limit(50).all()
 
-        return jsonify([job.to_dict() for job in jobs])
+        response = jsonify([job.to_dict() for job in jobs])
+        # Prevent caching of sensitive user data
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, private, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
 
     @app.route('/api/file-compressor/upload', methods=['POST'])
     @login_required
