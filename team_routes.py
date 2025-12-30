@@ -129,7 +129,7 @@ def register_team_routes(app):
                 'error': 'Team has reached maximum members',
                 'max_seats': team.max_seats,
                 'current_members': team.get_active_members_count(),
-                'upgrade_message': 'Upgrade to Enterprise for unlimited team members'
+                'upgrade_message': 'Upgrade to Agency plan for unlimited team members'
             }), 400
 
         # Check if user is already a member

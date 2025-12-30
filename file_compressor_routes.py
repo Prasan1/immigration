@@ -133,7 +133,7 @@ def register_file_compressor_routes(app, limiter):
                     'error': 'Monthly compression limit reached',
                     'limit': usage_info['limit'],
                     'used': usage_info['used'],
-                    'message': 'Upgrade to Professional plan for unlimited compressions, or pay $5 for premium compression of this file',
+                    'message': 'Get Complete Package for unlimited compressions, or pay $5 for premium compression of this file',
                     'redirect': '/pricing'
                 }), 403
 

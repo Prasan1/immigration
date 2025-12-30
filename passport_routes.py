@@ -38,8 +38,8 @@ def register_passport_routes(app, limiter):
             if not tier_info.get('document_processing', False):
                 return jsonify({
                     'error': 'Subscription upgrade required',
-                    'message': 'Upgrade to Professional plan or higher to access document processing',
-                    'required_tier': 'basic',
+                    'message': 'Get Complete Package to access document processing',
+                    'required_tier': 'complete',
                     'current_tier': user.subscription_tier,
                     'redirect': '/pricing'
                 }), 403

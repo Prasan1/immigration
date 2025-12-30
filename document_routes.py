@@ -35,8 +35,8 @@ def register_document_routes(app, limiter):
             if user.subscription_tier == 'free' or not user.has_active_subscription():
                 return jsonify({
                     'error': 'Subscription required',
-                    'message': 'Upgrade to Professional plan or higher to access PDF features',
-                    'required_tier': 'basic',
+                    'message': 'Get Complete Package to access PDF features',
+                    'required_tier': 'complete',
                     'current_tier': user.subscription_tier,
                     'redirect': '/pricing'
                 }), 403
