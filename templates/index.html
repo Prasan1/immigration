@@ -1166,6 +1166,17 @@
     </div>
 
     <script>
+        // Map internal tier names to display names
+        function getTierDisplayName(internalName) {
+            const tierNames = {
+                'free': 'Solo',
+                'basic': 'Professional',
+                'pro': 'Team',
+                'enterprise': 'Business'
+            };
+            return tierNames[internalName] || internalName;
+        }
+
         $(document).ready(function() {
             let allDocuments = [];
             let currentFilter = 'all';
@@ -1306,11 +1317,11 @@
                                         </button>
                                     ` : doc.requires_login ? `
                                         <div class="alert alert-info mb-3">
-                                            <i class="fas fa-lock me-2"></i><strong>${doc.required_tier.toUpperCase()} Plan Required</strong>
+                                            <i class="fas fa-lock me-2"></i><strong>${getTierDisplayName(doc.required_tier)} Plan Required</strong>
                                             <br><small>Sign up to access this form</small>
                                         </div>
                                         <button class="btn btn-upgrade mb-2" onclick="$('#loginBtn').click()">
-                                            <i class="fas fa-user-plus me-1"></i>Sign Up for ${doc.required_tier.charAt(0).toUpperCase() + doc.required_tier.slice(1)}
+                                            <i class="fas fa-user-plus me-1"></i>Sign Up for ${getTierDisplayName(doc.required_tier)}
                                         </button>
                                         <br>
                                         <a href="/pricing" class="btn btn-sm btn-outline-secondary">
@@ -1319,10 +1330,10 @@
                                     ` : `
                                         <div class="alert alert-warning mb-3">
                                             <i class="fas fa-arrow-up me-2"></i><strong>Upgrade Required</strong>
-                                            <br><small>${doc.required_tier.toUpperCase()} plan needed</small>
+                                            <br><small>${getTierDisplayName(doc.required_tier)} plan needed</small>
                                         </div>
                                         <a href="/pricing" class="btn btn-upgrade">
-                                            <i class="fas fa-unlock me-1"></i>Upgrade to ${doc.required_tier.charAt(0).toUpperCase() + doc.required_tier.slice(1)}
+                                            <i class="fas fa-unlock me-1"></i>Upgrade to ${getTierDisplayName(doc.required_tier)}
                                         </a>
                                     `}
                                 </div>

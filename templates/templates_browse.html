@@ -336,6 +336,17 @@
         let allTemplates = [];
         let currentCategory = 'all';
 
+        // Map internal tier names to display names
+        function getTierDisplayName(internalName) {
+            const tierNames = {
+                'free': 'Solo',
+                'basic': 'Professional',
+                'pro': 'Team',
+                'enterprise': 'Business'
+            };
+            return tierNames[internalName] || internalName;
+        }
+
         $(document).ready(function() {
             loadTemplates();
 
@@ -407,7 +418,7 @@
                 } else {
                     actionButton = `
                         <button class="btn btn-use-template btn-locked" onclick="window.location.href='/pricing'">
-                            <i class="fas fa-arrow-up me-2"></i>Upgrade to ${template.access_level}
+                            <i class="fas fa-arrow-up me-2"></i>Upgrade to ${getTierDisplayName(template.access_level)}
                         </button>
                     `;
                 }
