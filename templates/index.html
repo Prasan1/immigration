@@ -74,7 +74,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.5;
+            opacity: 0.35;
             z-index: 0;
             animation: gentleFlagFlow 40s ease-in-out infinite;
             will-change: transform;
@@ -89,23 +89,28 @@
             }
         }
 
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
         .page-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
             color: var(--text-dark);
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .page-subtitle {
             font-size: 1.125rem;
-            color: var(--text-dark);
+            color: var(--text-muted);
             font-weight: 500;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-            position: relative;
-            z-index: 1;
+            margin-bottom: 0;
         }
 
         .main-container {
@@ -1012,13 +1017,15 @@
     <!-- Page Header -->
     <div class="page-header">
         <div class="container text-center">
-            <h1 class="page-title">
-                <i class="fas fa-file-contract me-3"></i>
-                Immigration Forms Library
-            </h1>
-            <p class="page-subtitle">
-                Browse all immigration forms with complete checklists, fees, and processing times
-            </p>
+            <div class="page-header-content">
+                <h1 class="page-title">
+                    <i class="fas fa-file-contract me-3"></i>
+                    Immigration Forms Library
+                </h1>
+                <p class="page-subtitle">
+                    Browse all immigration forms with complete checklists, fees, and processing times
+                </p>
+            </div>
         </div>
     </div>
 
