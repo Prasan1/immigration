@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}Immigration Templates - Simplify Your Immigration Journey{% endblock %}</title>
+    <meta name="description" content="{% block description %}Professional immigration form templates, checklists, and document preparation tools. I-130, I-485, N-400 and more. USCIS-compliant resources for your immigration process.{% endblock %}">
+    <meta name="keywords" content="immigration forms, I-130, I-485, N-400, USCIS forms, immigration checklists, green card application, naturalization, visa forms">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-primary: #667eea;
+            --brand-secondary: #764ba2;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Professional Footer */
+        .site-footer {
+            margin-top: 80px;
+            padding: 64px 0 32px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .site-footer .footer-content {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .site-footer .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .site-footer .footer-column h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .site-footer .footer-tagline {
+            font-size: 0.95rem;
+            color: var(--brand-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .site-footer .footer-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .site-footer .footer-column h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .site-footer .footer-links,
+        .site-footer .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .site-footer .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .site-footer .footer-links a,
+        .site-footer .footer-contact a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .site-footer .footer-links a:hover {
+            color: var(--brand-primary);
+            padding-left: 4px;
+        }
+
+        .site-footer .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .site-footer .footer-contact i {
+            color: var(--brand-primary);
+            font-size: 1rem;
+        }
+
+        .site-footer .footer-contact a:hover {
+            color: var(--brand-primary);
+        }
+
+        .site-footer .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 32px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .site-footer .footer-copyright {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Trust Badges Section */
+        .site-footer .footer-trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 32px 0;
+            margin-top: 32px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .site-footer .trust-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .site-footer .trust-badge-item i {
+            color: var(--brand-primary);
+            font-size: 1.1rem;
+        }
+
+        .site-footer .trust-badge-item strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 1024px) {
+            .site-footer .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .site-footer .footer-brand {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                margin-top: 60px;
+                padding: 48px 0 32px;
+            }
+
+            .site-footer .footer-content {
+                padding: 0 24px;
+            }
+
+            .site-footer .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .site-footer .footer-brand {
+                grid-column: 1;
+            }
+
+            .site-footer .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .site-footer .footer-copyright {
+                font-size: 0.85rem;
+            }
+
+            .site-footer .footer-trust-badges {
+                gap: 16px;
+                padding: 24px 0;
+            }
+
+            .site-footer .trust-badge-item {
+                font-size: 0.85rem;
+            }
+
+            .site-footer .trust-badge-item i {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <!-- Company Info -->
+                <div class="footer-column footer-brand">
+                    <h3>Immigration Templates</h3>
+                    <p class="footer-tagline">Simplifying Your Immigration Journey</p>
+                    <p class="footer-description">
+                        Professional immigration form templates, comprehensive checklists, and document preparation tools. Access USCIS-compliant resources for I-130, I-485, N-400, and more. Expert guidance for every step of your immigration process.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="/forms">Forms Library</a></li>
+                        <li><a href="/templates">Templates</a></li>
+                        <li><a href="/file-compressor">File Compressor</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="bi bi-envelope"></i>
+                            <a href="mailto:support@immigrationtemplates.com">support@immigrationtemplates.com</a>
+                        </li>
+                        <li>
+                            <i class="bi bi-globe"></i>
+                            <a href="https://www.immigrationtemplates.com" target="_blank">Visit Website</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="footer-trust-badges">
+                <div class="trust-badge-item">
+                    <i class="bi bi-lock-fill"></i>
+                    <span>SSL Secured</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="bi bi-credit-card-fill"></i>
+                    <span>Powered by Stripe</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                    <span>USCIS Resources</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Secure & Compliant</span>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 Immigration Templates. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
