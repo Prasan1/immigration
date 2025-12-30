@@ -4,44 +4,109 @@
 
 {% block head %}
     <style>
+        :root {
+            --accent-navy: #1E3A5F;
+            --text-dark: #2C3E50;
+            --text-muted: #6B7280;
+            --border-gray: #E5E7EB;
+            --brand-purple: #667eea;
+        }
+
         body {
-            background: linear-gradient(135deg, var(--brand-primary, #667eea) 0%, var(--brand-secondary, #764ba2) 100%);
+            background: white;
             min-height: 100vh;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* White Navbar */
         .navbar {
-            background: rgba(44, 62, 80, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white !important;
+            border-bottom: 1px solid var(--border-gray);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--text-dark) !important;
+        }
+
+        .navbar .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+        }
+
+        .navbar .nav-link.active {
+            color: var(--brand-purple) !important;
+        }
+
+        /* Page Header with Artistic Flag */
         .page-header {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F4F8 100%);
+            color: var(--text-dark);
+            padding: 100px 0 80px 0;
+            margin-bottom: 3rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Artistic Wavy US Flag */
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 110%;
+            height: 120%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='starstemplates' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23starstemplates)' opacity='0.8'/%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.85;
+            z-index: 0;
+            animation: gentleFlagFlow 40s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes gentleFlagFlow {
+            0%, 100% {
+                transform: translateX(0) translateY(0) scale(1.05);
+            }
+            50% {
+                transform: translateX(-1%) translateY(1%) scale(1.05);
+            }
         }
 
         .page-header h1 {
             font-size: 2.5rem;
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header .lead {
+            position: relative;
+            z-index: 1;
+            color: var(--text-muted);
+            font-weight: 400;
         }
 
         .template-card {
             background: white;
-            border-radius: 15px;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
             position: relative;
         }
 
         .template-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--brand-purple);
         }
 
         .template-badge {
@@ -49,126 +114,161 @@
             top: 15px;
             right: 15px;
             padding: 0.4rem 0.9rem;
-            border-radius: 20px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .badge-free {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
+            background: #E8F5E9;
+            color: #16a34a;
         }
 
         .badge-professional {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
+            background: #E3F2FD;
+            color: #1976d2;
         }
 
         .badge-team {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            background: #F3E5F5;
+            color: #7b1fa2;
         }
 
         .badge-business {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #EDE7F6;
+            color: var(--brand-purple);
         }
 
         .template-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            background: #F5F7FA;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 24px;
+            color: var(--brand-purple);
+            font-size: 20px;
             margin-bottom: 1rem;
         }
 
         .template-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #2c3e50;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
         }
 
         .template-category {
-            color: #667eea;
-            font-size: 0.9rem;
+            color: var(--brand-purple);
+            font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .template-description {
-            color: #666;
-            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
             margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
         .template-use-case {
-            background: #f8f9fa;
+            background: #F9FAFB;
             padding: 0.75rem;
             border-radius: 8px;
-            font-size: 0.9rem;
-            color: #555;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             margin-bottom: 1rem;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid var(--brand-purple);
         }
 
         .btn-use-template {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--accent-navy);
             color: white;
             border: none;
             padding: 0.7rem 1.5rem;
             border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            transition: all 0.2s ease;
             width: 100%;
         }
 
         .btn-use-template:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: #2C5282;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
             color: white;
         }
 
         .btn-locked {
-            background: #6c757d;
+            background: #94a3b8;
             cursor: not-allowed;
+        }
+
+        .btn-locked:hover {
+            background: #94a3b8;
+            transform: none;
+            box-shadow: none;
         }
 
         .info-banner {
             background: white;
-            border-radius: 15px;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-banner h5 {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .info-banner p {
+            color: var(--text-muted);
+        }
+
+        .info-banner .badge {
+            background: var(--brand-purple);
+            font-weight: 500;
         }
 
         .category-filter {
             background: white;
+            border: 1px solid var(--border-gray);
             border-radius: 10px;
             padding: 1rem;
             margin-bottom: 2rem;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         .filter-btn {
-            border: 2px solid #e0e0e0;
+            border: 1px solid var(--border-gray);
             background: white;
-            color: #666;
+            color: var(--text-muted);
             padding: 0.5rem 1.2rem;
-            border-radius: 25px;
+            border-radius: 8px;
             margin: 0.3rem;
             transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
         }
 
         .filter-btn.active {
-            background: #667eea;
+            background: var(--brand-purple);
             color: white;
-            border-color: #667eea;
+            border-color: var(--brand-purple);
         }
     </style>
 {% endblock %}
@@ -184,32 +284,53 @@
                 {% endif %}
                 {{ g.branding.site_name }}
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/">
-                    <i class="fas fa-home me-1"></i>Home
-                </a>
-                <a class="nav-link" href="/forms">
-                    <i class="fas fa-file-alt me-1"></i>USCIS Forms
-                </a>
-                <a class="nav-link active" href="/templates">
-                    <i class="fas fa-edit me-1"></i>Form Templates
-                </a>
-                <a class="nav-link" href="/file-compressor">
-                    <i class="fas fa-file-archive me-1"></i>File Compressor
-                </a>
-                <a class="nav-link" href="/pricing">
-                    <i class="fas fa-tags me-1"></i>Pricing
-                </a>
-                {% if user %}
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                </a>
-                <button class="btn btn-outline-light btn-sm ms-2" id="logoutBtn">Logout</button>
-                {% else %}
-                <button class="btn btn-outline-light btn-sm ms-2" id="loginBtn">
-                    <i class="fas fa-sign-in-alt me-1"></i>Sign In
-                </button>
-                {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>USCIS Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Form Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>File Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    {% if user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm ms-2" id="logoutBtn">Logout</button>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <button class="btn btn-light btn-sm ms-3" id="loginBtn">
+                            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                        </button>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>

@@ -5,16 +5,67 @@
 {% block head %}
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+        :root {
+            --accent-navy: #1E3A5F;
+            --text-dark: #2C3E50;
+            --text-muted: #6B7280;
+            --border-gray: #E5E7EB;
+            --brand-purple: #667eea;
         }
 
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+        }
+
+        /* Hero Section with Artistic Flag */
         .hero-section {
-            background: linear-gradient(135deg, {{ g.branding.primary_color }}, {{ g.branding.secondary_color }});
-            color: white;
-            padding: 60px 0;
-            margin-bottom: 40px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F4F8 100%);
+            color: var(--text-dark);
+            padding: 100px 0 80px 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Artistic Wavy US Flag */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 110%;
+            height: 120%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='starscompressor' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23starscompressor)' opacity='0.8'/%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.85;
+            z-index: 0;
+            animation: gentleFlagFlow 40s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes gentleFlagFlow {
+            0%, 100% {
+                transform: translateX(0) translateY(0) scale(1.05);
+            }
+            50% {
+                transform: translateX(-1%) translateY(1%) scale(1.05);
+            }
+        }
+
+        .hero-section h1 {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .hero-section .lead,
+        .hero-section p {
+            position: relative;
+            z-index: 1;
+            color: var(--text-muted);
         }
 
         .main-container {
@@ -25,28 +76,28 @@
 
         .upload-zone {
             background: white;
-            border: 3px dashed #ddd;
-            border-radius: 15px;
+            border: 2px dashed var(--border-gray);
+            border-radius: 12px;
             padding: 60px 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-bottom: 30px;
         }
 
         .upload-zone:hover {
-            border-color: {{ g.branding.primary_color }};
-            background: #f8f9fa;
+            border-color: var(--brand-purple);
+            background: #F9FAFB;
         }
 
         .upload-zone.dragover {
-            border-color: {{ g.branding.primary_color }};
-            background: #e3f2fd;
+            border-color: var(--brand-purple);
+            background: #F5F7FA;
         }
 
         .upload-icon {
             font-size: 64px;
-            color: {{ g.branding.primary_color }};
+            color: var(--brand-purple);
             margin-bottom: 20px;
         }
 
@@ -56,10 +107,16 @@
 
         .info-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             padding: 30px;
             margin-bottom: 30px;
+        }
+
+        .info-card h4 {
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .tier-comparison {
@@ -71,27 +128,29 @@
 
         .tier-card {
             background: white;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
             padding: 25px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .tier-card.premium {
-            border-color: {{ g.branding.primary_color }};
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            border-color: var(--brand-purple);
+            border-width: 2px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
 
         .tier-card h4 {
             margin-bottom: 15px;
-            color: #333;
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .tier-price {
             font-size: 32px;
             font-weight: 700;
-            color: {{ g.branding.primary_color }};
+            color: var(--accent-navy);
             margin: 15px 0;
         }
 
@@ -102,63 +161,84 @@
 
         .tier-features li {
             margin-bottom: 10px;
-            color: #666;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .usage-badge {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
+            background: #FEF3C7;
+            border: 1px solid #F59E0B;
+            color: #92400E;
             padding: 12px 20px;
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .usage-badge.unlimited {
-            background: #d4edda;
-            border-color: #28a745;
-            color: #155724;
+            background: #D1FAE5;
+            border-color: #10B981;
+            color: #065F46;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, {{ g.branding.primary_color }}, {{ g.branding.secondary_color }});
+            background: var(--accent-navy);
             border: none;
             padding: 14px 35px;
-            font-weight: 600;
+            font-weight: 500;
             border-radius: 8px;
             font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #2C5282;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
         }
 
         .btn-outline-primary {
-            border: 2px solid {{ g.branding.primary_color }};
-            color: {{ g.branding.primary_color }};
+            border: 1px solid var(--border-gray);
+            color: var(--text-dark);
             background: white;
             padding: 14px 35px;
-            font-weight: 600;
+            font-weight: 500;
             border-radius: 8px;
             font-size: 16px;
+            transition: all 0.2s ease;
         }
 
         .btn-outline-primary:hover {
-            background: {{ g.branding.primary_color }};
-            color: white;
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
+            background: white;
         }
 
         .job-item {
             background: white;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-gray);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .job-item:hover {
+            border-color: var(--brand-purple);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .job-info {
             flex: 1;
+        }
+
+        .job-info h6 {
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .job-actions {
@@ -168,31 +248,32 @@
 
         .status-badge {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: #FEF3C7;
+            color: #92400E;
         }
 
         .status-processing {
-            background: #cfe2ff;
-            color: #084298;
+            background: #DBEAFE;
+            color: #1E40AF;
         }
 
         .status-completed {
-            background: #d4edda;
-            color: #155724;
+            background: #D1FAE5;
+            color: #065F46;
         }
 
         .status-failed {
-            background: #f8d7da;
-            color: #842029;
+            background: #FEE2E2;
+            color: #991B1B;
         }
 
         .loading-overlay {
@@ -240,32 +321,40 @@
         }
 
         .btn-action {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid var(--border-gray);
+            padding: 10px 20px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
         }
 
         .btn-action:hover {
-            background: #5568d3;
-            color: white;
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
             text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
 
         .btn-home {
-            background: #28a745;
+            background: var(--accent-navy);
+            color: white;
+            border-color: var(--accent-navy);
         }
 
         .btn-home:hover {
-            background: #218838;
+            background: #2C5282;
+            border-color: #2C5282;
+            color: white;
         }
     </style>
 {% endblock %}

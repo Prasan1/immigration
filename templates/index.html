@@ -16,41 +16,96 @@
     <script src="https://cdn.jsdelivr.net/npm/clerk@latest/dist/clerk.browser.js"></script>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
+            --accent-navy: #1E3A5F;
+            --text-dark: #2C3E50;
+            --text-muted: #6B7280;
+            --border-gray: #E5E7EB;
+            --bg-light: #F9FAFB;
+            --brand-purple: #667eea;
+            --success-green: #16a34a;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
             min-height: 100vh;
         }
 
+        /* White Navbar */
         .navbar {
-            background: rgba(44, 62, 80, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white !important;
+            border-bottom: 1px solid var(--border-gray);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--text-dark) !important;
+        }
+
+        .navbar .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+        }
+
+        .navbar .nav-link.active {
+            color: var(--brand-purple) !important;
+        }
+
+        /* Page Header with Artistic Flag */
         .page-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 0 40px 0;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F4F8 100%);
+            color: var(--text-dark);
+            padding: 100px 0 80px 0;
             margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Artistic Wavy US Flag */
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 110%;
+            height: 120%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='starsforms' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23starsforms)' opacity='0.8'/%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: 0;
+            animation: gentleFlagFlow 40s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes gentleFlagFlow {
+            0%, 100% {
+                transform: translateX(0) translateY(0) scale(1.05);
+            }
+            50% {
+                transform: translateX(-1%) translateY(1%) scale(1.05);
+            }
         }
 
         .page-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            color: var(--text-dark);
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
         .page-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
         }
 
         .main-container {
@@ -698,6 +753,203 @@
 
             .search-container {
                 padding: 1rem;
+            }
+        }
+
+        /* Professional Footer */
+        .site-footer {
+            margin-top: 80px;
+            padding: 64px 0 32px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .site-footer .footer-content {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .site-footer .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .site-footer .footer-column h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .site-footer .footer-tagline {
+            font-size: 0.95rem;
+            color: var(--brand-purple);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .site-footer .footer-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .site-footer .footer-column h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .site-footer .footer-links,
+        .site-footer .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .site-footer .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .site-footer .footer-links a,
+        .site-footer .footer-contact a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .site-footer .footer-links a:hover {
+            color: var(--brand-purple);
+            padding-left: 4px;
+        }
+
+        .site-footer .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .site-footer .footer-contact i {
+            color: var(--brand-purple);
+            font-size: 1rem;
+        }
+
+        .site-footer .footer-contact a:hover {
+            color: var(--brand-purple);
+        }
+
+        .site-footer .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 32px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .site-footer .footer-copyright {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Trust Badges Section */
+        .site-footer .footer-trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 32px 0;
+            margin-top: 32px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .site-footer .trust-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .site-footer .trust-badge-item i {
+            color: var(--brand-purple);
+            font-size: 1.1rem;
+        }
+
+        .site-footer .trust-badge-item strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 1024px) {
+            .site-footer .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .site-footer .footer-brand {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                margin-top: 60px;
+                padding: 48px 0 32px;
+            }
+
+            .site-footer .footer-content {
+                padding: 0 24px;
+            }
+
+            .site-footer .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .site-footer .footer-brand {
+                grid-column: 1;
+            }
+
+            .site-footer .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .site-footer .footer-copyright {
+                font-size: 0.85rem;
+            }
+
+            .site-footer .footer-trust-badges {
+                gap: 16px;
+                padding: 24px 0;
+            }
+
+            .site-footer .trust-badge-item {
+                font-size: 0.85rem;
+            }
+
+            .site-footer .trust-badge-item i {
+                font-size: 1rem;
             }
         }
     </style>
@@ -1453,5 +1705,84 @@
             }
         });
     </script>
+
+    <!-- Professional Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <!-- Company Info -->
+                <div class="footer-column footer-brand">
+                    <h3>Immigration Templates</h3>
+                    <p class="footer-tagline">Simplifying Your Immigration Journey</p>
+                    <p class="footer-description">
+                        Professional immigration form templates, comprehensive checklists, and document preparation tools. Access USCIS-compliant resources for I-130, I-485, N-400, and more. Expert guidance for every step of your immigration process.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="/forms">Forms Library</a></li>
+                        <li><a href="/templates">Templates</a></li>
+                        <li><a href="/file-compressor">File Compressor</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:support@immigrationtemplates.com">support@immigrationtemplates.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-globe"></i>
+                            <a href="https://www.immigrationtemplates.com" target="_blank">Visit Website</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="footer-trust-badges">
+                <div class="trust-badge-item">
+                    <i class="fas fa-lock"></i>
+                    <span>SSL Secured</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Powered by Stripe</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>USCIS Resources</span>
+                </div>
+                <div class="trust-badge-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure & Compliant</span>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 Immigration Templates. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

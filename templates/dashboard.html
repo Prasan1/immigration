@@ -21,21 +21,40 @@
     ></script>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --success-color: #27ae60;
+            --accent-navy: #1E3A5F;
+            --text-dark: #2C3E50;
+            --text-muted: #6B7280;
+            --border-gray: #E5E7EB;
+            --bg-light: #F9FAFB;
+            --brand-purple: #667eea;
+            --success-green: #16a34a;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
             min-height: 100vh;
         }
 
+        /* White Navbar */
         .navbar {
-            background: rgba(44, 62, 80, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white !important;
+            border-bottom: 1px solid var(--border-gray);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--text-dark) !important;
+        }
+
+        .navbar .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+        }
+
+        .navbar .nav-link.active {
+            color: var(--brand-purple) !important;
         }
 
         .dashboard-container {
@@ -44,45 +63,59 @@
 
         .dashboard-card {
             background: white;
-            border-radius: 20px;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .dashboard-card h2 {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .dashboard-card h4 {
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .subscription-badge {
             display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1.1rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .subscription-badge.free {
-            background: #6c757d;
-            color: white;
+            background: #F3F4F6;
+            color: #6B7280;
         }
 
         .subscription-badge.basic {
-            background: #3498db;
-            color: white;
+            background: #E3F2FD;
+            color: #1976d2;
         }
 
         .subscription-badge.pro {
-            background: #e74c3c;
-            color: white;
+            background: #F3E5F5;
+            color: #7b1fa2;
         }
 
         .subscription-badge.enterprise {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #EDE7F6;
+            color: var(--brand-purple);
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: var(--bg-light);
+            border: 1px solid var(--border-gray);
+            color: var(--text-dark);
             padding: 1.5rem;
-            border-radius: 15px;
+            border-radius: 12px;
             text-align: center;
             margin-bottom: 1rem;
         }
@@ -90,11 +123,14 @@
         .stat-card h3 {
             font-size: 2.5rem;
             margin: 0;
+            font-weight: 700;
+            color: var(--accent-navy);
         }
 
         .stat-card p {
             margin: 0;
-            opacity: 0.9;
+            color: var(--text-muted);
+            font-weight: 500;
         }
     </style>
 
@@ -104,16 +140,10 @@
             --brand-primary: {{ g.branding.primary_color }};
             --brand-secondary: {{ g.branding.secondary_color }};
         }
-        body, .stat-card {
-            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%) !important;
-        }
-        .subscription-badge.enterprise {
-            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%) !important;
-        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="/">
                 {% if g.branding.logo_url %}
@@ -136,7 +166,7 @@
                     {% if user and user.subscription_tier == 'enterprise' %}
                     <li class="nav-item"><a class="nav-link" href="/enterprise/settings"><i class="fas fa-cog me-1"></i>Settings</a></li>
                     {% endif %}
-                    <li class="nav-item"><button class="btn btn-outline-light btn-sm ms-2" id="logoutBtn">Logout</button></li>
+                    <li class="nav-item"><button class="btn btn-outline-primary btn-sm ms-2" id="logoutBtn">Logout</button></li>
                 </ul>
             </div>
         </div>
@@ -152,8 +182,8 @@
         </div>
 
         <!-- Quick Access to PDF Features -->
-        <div class="dashboard-card" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
-            <h4><i class="fas fa-star text-warning me-2"></i>PDF Document Automation</h4>
+        <div class="dashboard-card" style="background: #F9FAFB;">
+            <h4><i class="fas fa-star me-2" style="color: var(--brand-purple);"></i>PDF Document Automation</h4>
             <p class="text-muted">Generate professional USCIS-ready documents instantly</p>
             <div class="row mt-3">
                 <div class="col-md-3 col-sm-6 mb-3">
