@@ -171,7 +171,7 @@ def init_database():
             },
             {
                 "title": "Form I-90 - Permanent Resident Card Replacement Application",
-                "category": "Travel Documents",
+                "category": "Green Card / Permanent Residence",
                 "description": "Application to replace, renew, or obtain a permanent resident card (Green Card) due to loss, theft, damage, or expiration.",
                 "pdf_url": "https://www.uscis.gov/sites/default/files/document/forms/i-90.pdf",
                 "info_url": "https://www.uscis.gov/i-90",
@@ -192,7 +192,7 @@ def init_database():
             },
             {
                 "title": "Form DS-160 - Online Nonimmigrant Visa Application",
-                "category": "Travel Documents",
+                "category": "Visa Applications",
                 "description": "Mandatory online application form for nonimmigrant visa applicants applying at U.S. consulates and embassies worldwide.",
                 "pdf_url": "https://ceac.state.gov/genniv/",
                 "info_url": "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/forms/ds-160-online-nonimmigrant-visa-application.html",
@@ -213,7 +213,7 @@ def init_database():
             },
             {
                 "title": "Form DS-260 - Online Immigrant Visa and Alien Registration Application",
-                "category": "Travel Documents",
+                "category": "Visa Applications",
                 "description": "Electronic application for immigrant visas processed by the National Visa Center for family-based and employment-based immigrant petitions.",
                 "pdf_url": "https://ceac.state.gov/iv/",
                 "info_url": "https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-1-submit-a-petition/step-2-begin-nvc-process.html",
@@ -236,7 +236,7 @@ def init_database():
             },
             {
                 "title": "Form I-407 - Voluntary Abandonment of Permanent Resident Status",
-                "category": "Travel Documents",
+                "category": "Green Card / Permanent Residence",
                 "description": "Record of abandonment by lawful permanent residents who voluntarily relinquish their permanent resident status in the United States.",
                 "pdf_url": "https://www.uscis.gov/sites/default/files/document/forms/i-407.pdf",
                 "info_url": "https://www.uscis.gov/i-407",
