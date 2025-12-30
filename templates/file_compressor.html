@@ -259,65 +259,10 @@
             margin-top: 20px;
             font-size: 18px;
         }
-
-        .action-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-action {
-            background: white;
-            color: var(--text-dark);
-            border: 1px solid var(--border-gray);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-
-        .btn-action:hover {
-            border-color: var(--brand-purple);
-            color: var(--brand-purple);
-            text-decoration: none;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        }
-
-        .btn-home {
-            background: var(--accent-navy);
-            color: white;
-            border-color: var(--accent-navy);
-        }
-
-        .btn-home:hover {
-            background: #2C5282;
-            border-color: #2C5282;
-            color: white;
-        }
     </style>
 {% endblock %}
 
 {% block content %}
-    <div class="action-buttons">
-        <a href="/" class="btn-action btn-home">
-            <i class="fas fa-home"></i> Home
-        </a>
-        <a href="/forms" class="btn-action">
-            <i class="fas fa-file-alt"></i> Forms
-        </a>
-    </div>
-
     <div class="hero-section">
         <div class="container text-center">
             <h1><i class="fas fa-file-archive"></i> PDF File Compressor</h1>
