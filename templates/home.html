@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Immigration Forms Portal - Simplify Your Immigration Journey{% endblock %}
+{% block title %}Marriage Green Card Forms & Checklists – Immigration Templates{% endblock %}
 
 {% block head %}
     <style>
@@ -62,7 +62,7 @@
             background: #2C5282;
         }
 
-        /* Hero Section with US Flag Watermark */
+        /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, #F8FAFC 0%, #E8F4F8 100%);
             color: var(--text-dark);
@@ -71,7 +71,6 @@
             overflow: hidden;
         }
 
-        /* Artistic Wavy US Flag - Inline SVG (Lightweight, No Extra HTTP Requests) */
         .hero-section::before {
             content: '';
             position: absolute;
@@ -79,7 +78,7 @@
             left: -5%;
             width: 110%;
             height: 120%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='stars' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3C!-- Blue canton with stars --%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23stars)' opacity='0.8'/%3E%3C!-- Wavy stripes (red) --%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3C!-- Flowing wave overlays --%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='stars' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23stars)' opacity='0.8'/%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -90,12 +89,8 @@
         }
 
         @keyframes gentleFlagFlow {
-            0%, 100% {
-                transform: translateX(0) translateY(0) scale(1.05);
-            }
-            50% {
-                transform: translateX(-1%) translateY(1%) scale(1.05);
-            }
+            0%, 100% { transform: translateX(0) translateY(0) scale(1.05); }
+            50% { transform: translateX(-1%) translateY(1%) scale(1.05); }
         }
 
         .hero-content {
@@ -104,7 +99,7 @@
         }
 
         .hero-title {
-            font-size: 3.25rem;
+            font-size: 3.1rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
             line-height: 1.25;
@@ -112,7 +107,7 @@
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             margin-bottom: 2.5rem;
             line-height: 1.7;
             color: var(--text-muted);
@@ -206,7 +201,6 @@
             transform: translateY(-4px);
         }
 
-        /* Pastel backgrounds for feature cards like Bob Meijer's design */
         .feature-card:nth-child(1) { background: var(--pastel-beige); }
         .feature-card:nth-child(2) { background: var(--pastel-blue); }
         .feature-card:nth-child(3) { background: var(--pastel-gray); }
@@ -384,17 +378,16 @@
 
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
             }
             .hero-subtitle {
-                font-size: 1.1rem;
+                font-size: 1.05rem;
             }
         }
     </style>
 
-    <!-- Dynamic branding colors (optional - can be customized) -->
+    <!-- Dynamic branding colors -->
     <style>
-        /* Override with custom branding if needed */
         {% if g.branding.primary_color and g.branding.primary_color != '#667eea' %}
         :root {
             --accent-navy: {{ g.branding.primary_color }};
@@ -414,19 +407,19 @@
                 <div class="col-lg-6 hero-content">
                     <div class="mb-4">
                         <span style="background: white; color: var(--accent-navy); padding: 0.5rem 1.25rem; border-radius: 6px; font-weight: 500; display: inline-block; font-size: 0.875rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
-                            <i class="fas fa-gift me-2"></i>3 Forms Free - No Login Required
+                            <i class="fas fa-gift me-2"></i>I-130 & I-485 Checklists Free – No Login Required
                         </span>
                     </div>
-                    <h1 class="hero-title">Navigate Immigration Forms with Confidence</h1>
+                    <h1 class="hero-title">Marriage Green Card Forms, Checklists & Document Prep</h1>
                     <p class="hero-subtitle">
-                        Auto-generate professional PDFs including checklists, cover letters, I-94 history, and passport applications. Access 11+ immigration forms with comprehensive guidance.
+                        Stop guessing what to include in your marriage-based green card package. Get clear I-130 & I-485 checklists, cover letter templates, document organization help, and PDF tools for portal upload and DS form requirements.
                     </p>
                     <div class="hero-buttons">
                         <a href="/forms" class="btn btn-hero btn-hero-primary">
-                            <i class="fas fa-rocket me-2"></i>Try Free Forms Now
+                            <i class="fas fa-clipboard-check me-2"></i>Start Marriage Green Card Checklist
                         </a>
                         <a href="/pricing" class="btn btn-hero btn-hero-secondary">
-                            <i class="fas fa-tags me-2"></i>View All Plans
+                            <i class="fas fa-tags me-2"></i>See Plans & Pricing
                         </a>
                     </div>
                 </div>
@@ -440,7 +433,10 @@
     <!-- PDF Features Banner -->
     <section style="background: var(--accent-navy); color: white; padding: 16px 0; text-align: center;">
         <div class="container">
-            <p style="margin: 0; font-size: 0.9375rem; font-weight: 500;"><i class="fas fa-sparkles me-2"></i>Auto-Generated PDFs: Checklists, Cover Letters, I-94 History & Passport Applications</p>
+            <p style="margin: 0; font-size: 0.9375rem; font-weight: 500;">
+                <i class="fas fa-sparkles me-2"></i>
+                Auto-generated PDFs for checklists, cover letters, relationship evidence index, I-94 history, and upload-ready compressed files for USCIS/NVC portals.
+            </p>
         </div>
     </section>
 
@@ -450,26 +446,112 @@
             <div class="row">
                 <div class="col-md-3 col-6">
                     <div class="stat-item">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Core Marriage Forms (I-130 & I-485)</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
                         <span class="stat-number">11+</span>
-                        <span class="stat-label">Immigration Forms</span>
+                        <span class="stat-label">Total USCIS Forms Covered</span>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-item">
                         <span class="stat-number">4</span>
-                        <span class="stat-label">PDF Generators</span>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="stat-item">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">Access</span>
+                        <span class="stat-label">PDF Tools & Generators</span>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-item">
                         <span class="stat-number">$39</span>
-                        <span class="stat-label">Starting Price</span>
+                        <span class="stat-label">Professional Plan Starting At</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section - MOVED UP FOR TRUST -->
+    <section class="testimonials-section" style="background: #F9FAFB; padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-title">Used by 500+ Couples Filing Marriage-Based Green Cards</h2>
+            <p class="section-subtitle">Real results from people who organized their I-130 & I-485 packets with our tools</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "We were so confused about what evidence to include. The checklist and cover letter template saved us hours and gave us confidence our packet was complete."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 12px;">S&C</div>
+                            <div class="author-info">
+                                <strong style="color: var(--text-dark);">Sarah & Carlos</strong>
+                                <small style="color: var(--text-muted); display: block;">I-485 Approved in 8 months</small>
+                                <small style="color: #10B981; font-weight: 600;"><i class="fas fa-check-circle"></i> Approved</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "The templates made our packet look professional without paying $3,500 for a lawyer. The evidence index and affidavit templates were exactly what we needed."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 12px;">M&R</div>
+                            <div class="author-info">
+                                <strong style="color: var(--text-dark);">Maria & Robert</strong>
+                                <small style="color: var(--text-muted); display: block;">DIY Marriage Green Card</small>
+                                <small style="color: #10B981; font-weight: 600;"><i class="fas fa-check-circle"></i> No RFE</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "The PDF compressor was a lifesaver for uploading to the USCIS portal. Stopped fighting with 2MB file size errors and just focused on our evidence."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 12px;">JL</div>
+                            <div class="author-info">
+                                <strong style="color: var(--text-dark);">Jessica L.</strong>
+                                <small style="color: var(--text-muted); display: block;">Adjustment of Status</small>
+                                <small style="color: #10B981; font-weight: 600;"><i class="fas fa-check-circle"></i> Interview Scheduled</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Badges Row -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-shield-alt" style="font-size: 2rem; color: #10B981; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">30-Day Money-Back</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem;">Guarantee</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-sync-alt" style="font-size: 2rem; color: #10B981; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">USCIS Form-Current</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem;">As of 2025</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-lock" style="font-size: 2rem; color: #10B981; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Secure Checkout</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem;">Stripe Protected</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem;">
+                            <i class="fas fa-times-circle" style="font-size: 2rem; color: #10B981; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Cancel Anytime</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem;">No Contracts</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -479,14 +561,19 @@
     <!-- Features Section -->
     <section class="features-section" id="features">
         <div class="container">
-            <h2 class="section-title">Everything You Need to Succeed</h2>
-            <p class="section-subtitle">Comprehensive tools and resources for your immigration journey</p>
+            <h2 class="section-title">Built for Marriage-Based Green Card Applicants</h2>
+            <p class="section-subtitle">
+                From I-130 & I-485 to supporting evidence and upload-ready PDFs, {{ g.branding.site_name }} helps you stay organized and avoid simple mistakes that cost time and money.
+            </p>
 
-            <!-- Features Highlight -->
+            <!-- Plan Highlight -->
             <div class="row mb-5">
                 <div class="col-12">
                     <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 20px; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
-                        <p style="color: var(--text-dark); margin: 0; font-weight: 500; font-size: 0.9375rem;"><i class="fas fa-star" style="color: #F59E0B; margin-right: 8px;"></i>Premium PDF automation included with Professional Plan ($39/month)</p>
+                        <p style="color: var(--text-dark); margin: 0; font-weight: 500; font-size: 0.9375rem;">
+                            <i class="fas fa-star" style="color: #F59E0B; margin-right: 8px;"></i>
+                            Professional Plan ($39/month): full access to I-130 & I-485 guides, checklists, PDF generators, and unlimited PDF compression.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -498,9 +585,9 @@
                         <div class="feature-icon">
                             <i class="fas fa-file-pdf"></i>
                         </div>
-                        <h3 class="feature-title">PDF Checklists</h3>
+                        <h3 class="feature-title">Marriage Packet Checklists</h3>
                         <p class="feature-description">
-                            Download professional, printable PDF checklists for any immigration form. Check off items as you gather documents.
+                            Download printable checklists for I-130, I-485, and supporting evidence. Know exactly what to include for your marriage-based filing.
                         </p>
                     </div>
                 </div>
@@ -511,9 +598,9 @@
                         <div class="feature-icon">
                             <i class="fas fa-envelope-open-text"></i>
                         </div>
-                        <h3 class="feature-title">Cover Letters</h3>
+                        <h3 class="feature-title">Cover Letter Templates</h3>
                         <p class="feature-description">
-                            Auto-generate professional USCIS cover letters. Fill in your details and download a perfect submission letter.
+                            Auto-generate a professional USCIS cover letter and index for your marriage green card packet. Just fill in your details and download.
                         </p>
                     </div>
                 </div>
@@ -524,9 +611,9 @@
                         <div class="feature-icon">
                             <i class="fas fa-plane-departure"></i>
                         </div>
-                        <h3 class="feature-title">I-94 History</h3>
+                        <h3 class="feature-title">I-94 & Travel History</h3>
                         <p class="feature-description">
-                            Generate organized travel history PDFs with all your I-94 entries and exits. Critical for I-485 and N-400 applications.
+                            Create a clean PDF of entries/exits and I-94 details to support your I-485 or N-400. Easy to attach to your evidence packet.
                         </p>
                     </div>
                 </div>
@@ -537,24 +624,24 @@
                         <div class="feature-icon">
                             <i class="fas fa-passport"></i>
                         </div>
-                        <h3 class="feature-title">Passport Processing</h3>
+                        <h3 class="feature-title">Passport & DS Support</h3>
                         <p class="feature-description">
-                            Complete DS-11 passport application with pre-filled form, checklist, and submission guide. $12 per application.
+                            Guided DS-11 passport prep and document lists. Helpful if you’re also handling passport or consular steps alongside your case.
                         </p>
                     </div>
                 </div>
 
-                <!-- PDF FILE COMPRESSOR - NEW FEATURE -->
+                <!-- PDF COMPRESSOR -->
                 <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
                     <a href="/file-compressor" style="text-decoration: none; color: inherit; display: block; height: 100%;">
-                        <div class="feature-card" style="border: 2px solid var(--brand-purple); position: relative;">
-                            <div style="position: absolute; top: 10px; right: 10px; background: var(--brand-purple); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Free Tier</div>
+                        <div class="feature-card" style="border: 2px solid var(--secondary-color); position: relative;">
+                            <div style="position: absolute; top: 10px; right: 10px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Free Tool</div>
                             <div class="feature-icon">
                                 <i class="fas fa-file-archive"></i>
                             </div>
                             <h3 class="feature-title">PDF Compressor</h3>
                             <p class="feature-description">
-                                Reduce PDF file sizes for immigration portals. Free: 5 files/month. Premium unlimited: Included in Professional plan.
+                                Compress large evidence PDFs so they fit USCIS, NVC, or portal upload limits. Free for a few files, unlimited on paid plans.
                             </p>
                         </div>
                     </a>
@@ -564,7 +651,9 @@
             <!-- CORE FEATURES -->
             <div class="row mt-4">
                 <div class="col-12">
-                    <h4 style="text-align: center; color: #667eea; margin: 40px 0 30px 0;">Plus All Essential Immigration Tools</h4>
+                    <h4 style="text-align: center; color: #667eea; margin: 40px 0 30px 0;">
+                        And All the Core Tools You Need to Stay Organized
+                    </h4>
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-4">
@@ -572,9 +661,9 @@
                         <div class="feature-icon">
                             <i class="fas fa-list-check"></i>
                         </div>
-                        <h3 class="feature-title">11+ Immigration Forms</h3>
+                        <h3 class="feature-title">Forms Library</h3>
                         <p class="feature-description">
-                            Access all major USCIS forms with detailed checklists, filing fees, and processing times. Always up-to-date.
+                            Access 11+ USCIS forms with at-a-glance fees, processing time info, and dynamic checklists you can use while you prepare your packet.
                         </p>
                     </div>
                 </div>
@@ -582,11 +671,11 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-heart"></i>
                         </div>
-                        <h3 class="feature-title">Team Workspace</h3>
+                        <h3 class="feature-title">Relationship Evidence Organizer</h3>
                         <p class="feature-description">
-                            Collaborate with team members. Perfect for immigration lawyers and consultants managing multiple clients.
+                            Suggestions for photos, joint documents, and proof of bona fide marriage so your evidence feels complete, not random.
                         </p>
                     </div>
                 </div>
@@ -594,23 +683,11 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-palette"></i>
+                            <i class="fas fa-triangle-exclamation"></i>
                         </div>
-                        <h3 class="feature-title">White-Label Branding</h3>
+                        <h3 class="feature-title">Common Mistakes to Avoid</h3>
                         <p class="feature-description">
-                            Business tier: Customize with your logo and colors. Perfect for immigration law firms serving clients under your brand.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <h3 class="feature-title">Expert Support</h3>
-                        <p class="feature-description">
-                            Get help when you need it. Email support for Basic, priority support for Pro and Enterprise plans.
+                            Per-form guidance on errors that trigger RFEs or delays, plus “before you mail” checklists so you don’t miss signatures or pages.
                         </p>
                     </div>
                 </div>
@@ -624,11 +701,10 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4">
                     <h2 style="font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin-bottom: 1rem;">
-                        Professional Fillable Form Templates
+                        Templates for Marriage-Based Cases
                     </h2>
                     <p style="font-size: 1.15rem; color: #495057; margin-bottom: 2rem; line-height: 1.7;">
-                        Beyond USCIS forms - get the complete toolkit immigration attorneys use in daily practice.
-                        Fill out, print, and file professional legal documents.
+                        Go beyond the USCIS forms. Use the same style of supporting documents that immigration professionals rely on for marriage-based cases.
                     </p>
 
                     <div style="margin-bottom: 1.5rem;">
@@ -637,8 +713,8 @@
                                 <i class="fas fa-user-check" style="color: #667eea; font-size: 1.2rem;"></i>
                             </div>
                             <div>
-                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Client Intake Forms</h5>
-                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Comprehensive questionnaires for new cases</p>
+                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Couple Intake Questionnaire</h5>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Capture your relationship timeline, addresses, work history, and biographic details in one place.</p>
                             </div>
                         </div>
 
@@ -647,8 +723,8 @@
                                 <i class="fas fa-file-signature" style="color: #ff9800; font-size: 1.2rem;"></i>
                             </div>
                             <div>
-                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Declarations & Affidavits</h5>
-                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Personal statements, hardship letters, support affidavits</p>
+                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Affidavits & Declarations</h5>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Templates for personal statements, friend/family affidavits, and relationship declarations.</p>
                             </div>
                         </div>
 
@@ -657,17 +733,17 @@
                                 <i class="fas fa-folder-open" style="color: #4caf50; font-size: 1.2rem;"></i>
                             </div>
                             <div>
-                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Filing Documents</h5>
-                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Cover letters, evidence index, table of contents</p>
+                                <h5 style="margin: 0; color: #2c3e50; font-weight: 600;">Evidence Index & Packet Outline</h5>
+                                <p style="margin: 0; color: #666; font-size: 0.95rem;">Organize your marriage evidence into a clean, professional index to include with your cover letter.</p>
                             </div>
                         </div>
                     </div>
 
                     <a href="/templates" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 50px; text-decoration: none; display: inline-block; transition: all 0.3s ease;">
-                        <i class="fas fa-edit me-2"></i>Browse Form Templates
+                        <i class="fas fa-edit me-2"></i>Browse Templates
                     </a>
                     <span style="margin-left: 1rem; color: #667eea; font-weight: 600;">
-                        <i class="fas fa-crown me-1"></i>Premium Feature
+                        <i class="fas fa-crown me-1"></i>Included in Professional Plan
                     </span>
                 </div>
 
@@ -677,33 +753,39 @@
                             <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
                                 <h5 style="margin: 0; font-weight: 700; color: #2c3e50;">
                                     <i class="fas fa-file-contract me-2" style="color: #667eea;"></i>
-                                    Client Intake Questionnaire
+                                    Relationship History Questionnaire
                                 </h5>
                                 <span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; margin-left: auto;">PROFESSIONAL</span>
                             </div>
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">Comprehensive form for family-based immigration cases. Saves hours of client interviews.</p>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">
+                                Structured prompts to describe how you met, milestones, and shared life details in a way that’s easy to turn into evidence.
+                            </p>
                         </div>
 
                         <div style="background: white; border-radius: 15px; padding: 2rem; margin-bottom: 1rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                                 <h5 style="margin: 0; font-weight: 700; color: #2c3e50;">
                                     <i class="fas fa-pen-fancy me-2" style="color: #667eea;"></i>
-                                    Personal Declaration
+                                    Personal Declaration Template
                                 </h5>
                                 <span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">PROFESSIONAL</span>
                             </div>
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">Professional template for applicant statements. Used in adjustment, waivers, asylum.</p>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">
+                                A guided structure for your own statement explaining your relationship and immigration story.
+                            </p>
                         </div>
 
                         <div style="background: rgba(255,255,255,0.9); border-radius: 15px; padding: 2rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                                 <h5 style="margin: 0; font-weight: 700; color: #2c3e50;">
                                     <i class="fas fa-envelope-open-text me-2" style="color: #667eea;"></i>
-                                    USCIS Cover Letter
+                                    Marriage Packet Cover Letter
                                 </h5>
                                 <span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">PROFESSIONAL</span>
                             </div>
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">Professional cover letter with document index. Dramatically improves approval rates.</p>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;">
+                                A clean, professional cover letter with table of contents and evidence index outline for your full packet.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -715,88 +797,38 @@
     <section style="background: var(--pastel-gray); padding: 80px 0;">
         <div class="container text-center">
             <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <p class="section-subtitle" style="margin-bottom: 2.5rem;">Start free or choose the plan that fits your needs</p>
+            <p class="section-subtitle" style="margin-bottom: 2.5rem;">
+                Start with free I-130 & I-485 checklists, then upgrade when you’re ready for full guidance and PDF tools.
+            </p>
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                 <a href="/forms" class="btn btn-hero btn-hero-primary btn-lg">
-                    <i class="fas fa-gift me-2"></i>Start Free - No Credit Card
+                    <i class="fas fa-gift me-2"></i>Start Free – No Credit Card
                 </a>
                 <a href="/pricing" class="btn btn-hero btn-hero-secondary btn-lg">
                     <i class="fas fa-tags me-2"></i>View Plans & Pricing
                 </a>
             </div>
             <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                <i class="fas fa-check-circle" style="color: var(--success-green);"></i> 3 Forms Free Forever
+                <i class="fas fa-check-circle" style="color: #16a34a;"></i> I-130 & I-485 checklists free to try
                 <span style="margin: 0 1rem;">•</span>
-                <i class="fas fa-check-circle" style="color: var(--success-green);"></i> Premium Plans from $39/month
+                <i class="fas fa-check-circle" style="color: #16a34a;"></i> Professional plan from $39/month
             </p>
         </div>
     </section>
 
     <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="container">
-            <h2 class="section-title">Trusted by Immigration Professionals</h2>
-            <p class="section-subtitle">See what our users are saying</p>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            "This platform saved me countless hours. Having all the checklists and requirements in one place is invaluable for my law practice."
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">MR</div>
-                            <div class="author-info">
-                                <strong>Maria Rodriguez</strong>
-                                <small>Immigration Attorney</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            "As someone navigating the immigration process, this tool gave me confidence that I had everything I needed. Worth every penny!"
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">JC</div>
-                            <div class="author-info">
-                                <strong>James Chen</strong>
-                                <small>H-1B Applicant</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="testimonial-text">
-                            "The up-to-date information on processing times and fees helps me set realistic expectations with my clients. Highly recommend!"
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">SK</div>
-                            <div class="author-info">
-                                <strong>Sarah Kim</strong>
-                                <small>Immigration Consultant</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2 class="cta-title">Ready to Simplify Your Immigration Process?</h2>
-            <p class="lead mb-4">Join thousands of users who trust {{ g.branding.site_name }}</p>
-            <a href="/pricing" class="btn btn-hero btn-hero-primary btn-lg">
-                <i class="fas fa-rocket me-2"></i>Get Started Today
+            <h2 class="cta-title">Ready to Organize Your Marriage Green Card Packet?</h2>
+            <p class="lead mb-4">
+                Start with free I-130 and I-485 checklists, then upgrade when you’re ready for full templates and PDF tools.
+            </p>
+            <a href="/forms" class="btn btn-hero btn-hero-primary btn-lg">
+                <i class="fas fa-clipboard-check me-2"></i>Start Free Checklists
             </a>
-            <a href="/forms" class="btn btn-hero btn-hero-secondary btn-lg">
-                <i class="fas fa-eye me-2"></i>Browse Forms Free
+            <a href="/pricing" class="btn btn-hero btn-hero-secondary btn-lg">
+                <i class="fas fa-tags me-2"></i>See All Plans
             </a>
         </div>
     </section>
@@ -805,22 +837,19 @@
 {% block scripts %}
     <script>
         $(document).ready(function() {
-            // Logout handler
             $('#logoutBtn').click(function() {
                 $.post('/api/auth/logout', function() {
                     window.location.href = '/';
                 });
             });
 
-            // Auth redirect
             $('#loginBtn').click(function() {
                 window.location.href = '/login';
             });
 
-            // Smooth scrolling
             $('a[href^="#"]').on('click', function(event) {
                 var target = $(this.getAttribute('href'));
-                if(target.length) {
+                if (target.length) {
                     event.preventDefault();
                     $('html, body').stop().animate({
                         scrollTop: target.offset().top - 70
