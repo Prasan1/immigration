@@ -1171,10 +1171,13 @@
         // Map internal tier names to display names
         function getTierDisplayName(internalName) {
             const tierNames = {
-                'free': 'Solo',
-                'basic': 'Professional',
-                'pro': 'Team',
-                'enterprise': 'Business'
+                'free': 'Free Starter',
+                'complete': 'Complete Package',
+                'agency': 'Agency',
+                // Legacy tiers (backward compatibility)
+                'basic': 'Complete Package',
+                'pro': 'Complete Package',
+                'enterprise': 'Agency'
             };
             return tierNames[internalName] || internalName;
         }
@@ -1287,7 +1290,7 @@
                                     <h3 class="document-title">
                                         ${doc.title}
                                         ${doc.required_tier === 'free' ? `<span class="free-badge"><i class="fas fa-check-circle me-1"></i>FREE - No Login Required</span>` :
-                                          isPremium ? `<span class="premium-badge"><i class="fas fa-crown me-1"></i>${doc.required_tier.toUpperCase()}</span>` : ''}
+                                          isPremium ? `<span class="premium-badge"><i class="fas fa-crown me-1"></i>${getTierDisplayName(doc.required_tier)}</span>` : ''}
                                     </h3>
                                     <span class="document-category">
                                         <i class="${categoryIcon} me-1"></i>${doc.category}
