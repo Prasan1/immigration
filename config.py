@@ -90,8 +90,8 @@ class Config:
                 'Never miss a form update or deadline',
                 'File-ready templates save hours of work',
                 'Professional support when you need help',
-                'Unlimited PDF compression (premium quality)',
-                'Auto-filled passport applications ($12 each)'
+                'Unlimited PDF compression included (premium quality)',
+                'Passport processing available ($12 per application)'
             ],
             'document_processing': True
         },
@@ -110,8 +110,8 @@ class Config:
                 'Faster processing with team collaboration',
                 'Invite colleagues and manage permissions',
                 'Priority support when deadlines are tight',
-                'Everyone has full access to all tools',
-                'One bill for your entire team'
+                'Unlimited PDF compression for entire team',
+                'Passport processing available ($12 per application)'
             ],
             'document_processing': True
         },
@@ -130,8 +130,8 @@ class Config:
                 'Custom logo and colors match your firm',
                 'Professional appearance without "Powered by"',
                 'Build trust with branded immigration tools',
-                'Complete control over your client experience',
-                'Enterprise-grade support and reliability'
+                'Unlimited PDF compression for all members',
+                'Passport processing available ($12 per application)'
             ],
             'document_processing': True
         }
@@ -146,14 +146,9 @@ class Config:
             'price_id': os.getenv('STRIPE_PRICE_ID_PASSPORT'),
             'form_type': 'DS-11',
             'required_tier': 'basic'
-        },
-        'file_compressor_premium': {
-            'name': 'Premium File Compression',
-            'description': 'Compress PDF files to 70-85% of original size with premium quality',
-            'price': 5.00,
-            'price_id': os.getenv('STRIPE_PRICE_ID_FILE_COMPRESSOR'),
-            'required_tier': 'free'  # Available to all, but charges for premium
         }
+        # NOTE: PDF Compression is now bundled into subscriptions (free: 5/month, paid: unlimited)
+        # No longer offered as separate $5 purchase
     }
 
     # File Compressor Configuration
@@ -165,17 +160,24 @@ class Config:
             'target_compression_ratio': 0.55  # Target 55% of original size
         },
         'basic': {
-            'monthly_limit': None,  # Unlimited
+            'monthly_limit': None,  # Unlimited - bundled into Professional subscription
             'max_file_size_mb': 50,  # 50MB max file size
             'compression_quality': 'premium',  # 70-85% compression
             'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
         },
-        'premium_onetime': {
-            'monthly_limit': None,  # Unlimited after paying $5
+        'pro': {
+            'monthly_limit': None,  # Unlimited - bundled into Team subscription
+            'max_file_size_mb': 50,  # 50MB max file size
+            'compression_quality': 'premium',  # 70-85% compression
+            'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
+        },
+        'enterprise': {
+            'monthly_limit': None,  # Unlimited - bundled into Business subscription
             'max_file_size_mb': 50,  # 50MB max file size
             'compression_quality': 'premium',  # 70-85% compression
             'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
         }
+        # NOTE: Removed 'premium_onetime' - PDF compression is now bundled into subscriptions
     }
 
     # Passport Application Data Model

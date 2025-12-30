@@ -142,10 +142,9 @@ def register_file_compressor_routes(app, limiter):
         file_size = file.tell()
         file.seek(0)
 
-        # Determine which limits to use
-        tier_limits = Config.FILE_COMPRESSOR_LIMITS.get(
-            usage_info['tier'] if requested_tier == 'free' else 'premium_onetime'
-        )
+        # Determine which limits to use based on user's subscription tier
+        # PDF compression is now bundled into subscriptions
+        tier_limits = Config.FILE_COMPRESSOR_LIMITS.get(usage_info['tier'], Config.FILE_COMPRESSOR_LIMITS['free'])
 
         max_size_bytes = tier_limits['max_file_size_mb'] * 1024 * 1024
 
@@ -207,9 +206,11 @@ def register_file_compressor_routes(app, limiter):
             # Import PDF compression utility
             from pdf_compressor import compress_pdf
 
-            # Determine compression settings
+            # Determine compression settings based on job's tier
+            # Map to user's subscription tier for compression quality
             tier_limits = Config.FILE_COMPRESSOR_LIMITS.get(
-                job.compression_tier if job.compression_tier == 'free' else 'premium_onetime'
+                job.compression_tier,
+                Config.FILE_COMPRESSOR_LIMITS['free']
             )
 
             job.status = 'processing'
@@ -246,11 +247,23 @@ def register_file_compressor_routes(app, limiter):
             db.session.commit()
             return jsonify({'error': f'Compression failed: {str(e)}'}), 500
 
+    # NOTE: Premium compression checkout removed - now bundled into subscriptions
+    # Free users get 5/month basic compression, paid users get unlimited premium compression
+    # No separate $5 payment option anymore
+
     @app.route('/api/file-compressor/jobs/<int:job_id>/checkout', methods=['POST'])
     @login_required
     @limiter.limit("5 per minute")
     def create_compression_checkout(job_id):
-        """Create Stripe checkout for premium compression"""
+        """DEPRECATED: Premium compression is now bundled into subscriptions"""
+        return jsonify({
+            'error': 'Premium compression is now included in Professional, Team, and Business subscriptions',
+            'message': 'Upgrade your subscription to get unlimited premium compression',
+            'redirect': '/pricing'
+        }), 400
+
+        # LEGACY CODE - Removed separate $5 premium compression payment
+        """
         user = get_current_user()
         job = FileCompressionJob.query.filter_by(id=job_id, user_id=user.id).first_or_404()
 
@@ -295,7 +308,15 @@ def register_file_compressor_routes(app, limiter):
     @app.route('/api/file-compressor/jobs/<int:job_id>/confirm-payment', methods=['POST'])
     @login_required
     def confirm_compression_payment(job_id):
-        """Confirm payment and upgrade compression to premium"""
+        """DEPRECATED: Premium compression is now bundled into subscriptions"""
+        return jsonify({
+            'error': 'Premium compression is now included in Professional, Team, and Business subscriptions',
+            'message': 'Upgrade your subscription to get unlimited premium compression',
+            'redirect': '/pricing'
+        }), 400
+
+        # LEGACY CODE - Payment confirmation no longer needed
+        """
         user = get_current_user()
         job = FileCompressionJob.query.filter_by(id=job_id, user_id=user.id).first_or_404()
 
@@ -324,6 +345,7 @@ def register_file_compressor_routes(app, limiter):
 
         except Exception as e:
             return jsonify({'error': str(e)}), 500
+        """
 
     @app.route('/api/file-compressor/jobs/<int:job_id>/download', methods=['GET'])
     @login_required
