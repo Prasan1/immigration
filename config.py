@@ -125,7 +125,6 @@ class Config:
                 'White-label branding',
                 'Custom logo & colors',
                 'Remove "Powered by" footer',
-                'Custom domain support',
                 'File compressor (unlimited, premium quality)',
                 'Passport processing ($12/application)'
             ],
