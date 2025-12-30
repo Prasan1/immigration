@@ -950,6 +950,37 @@ def template_immigration_history():
 
     return render_template('form_immigration_history.html', user=user)
 
+@app.route('/templates/affidavit-support')
+def template_affidavit_support():
+    """Affidavit of Support Guide (I-864) - FREE template, no login required"""
+    user = get_current_user()
+    return render_template('form_affidavit_support.html', user=user)
+
+@app.route('/templates/client-intake-employment')
+@login_required
+def template_client_intake_employment():
+    """Client Intake Questionnaire (Employment-Based) - PRO tier"""
+    user = get_current_user()
+
+    # Pro tier required
+    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
+    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+        return redirect('/pricing')
+
+    return render_template('form_client_intake_employment.html', user=user)
+
+@app.route('/templates/marriage-evidence')
+@login_required
+def template_marriage_evidence():
+    """Bona Fide Marriage Evidence Checklist - BASIC tier"""
+    user = get_current_user()
+
+    # Basic tier required
+    if user.subscription_tier == 'free':
+        return redirect('/pricing')
+
+    return render_template('form_marriage_evidence.html', user=user)
+
 
 # ============== ENTERPRISE SETTINGS ==============
 

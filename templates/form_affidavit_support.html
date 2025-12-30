@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affidavit of Support Guide (I-864)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+
+        .template-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 50px;
+        }
+
+        .template-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .template-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .template-header p {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        .checklist-section {
+            margin-bottom: 30px;
+        }
+
+        .checklist-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: start;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .checklist-item label {
+            margin: 0;
+            color: #2d3748;
+            cursor: pointer;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .template-container {
+                box-shadow: none;
+                padding: 0;
+            }
+            .btn-print, .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="template-container">
+        <div class="template-header">
+            <h1><i class="fas fa-file-contract"></i> Affidavit of Support Guide (Form I-864)</h1>
+            <p>Step-by-step checklist for completing the Affidavit of Support</p>
+        </div>
+
+        <div class="checklist-section">
+            <h2>1. Sponsor Eligibility</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item1">
+                <label for="item1">Confirm you are a U.S. citizen or lawful permanent resident</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item2">
+                <label for="item2">Verify you are at least 18 years old</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item3">
+                <label for="item3">Check that your income meets 125% of poverty guidelines (or 100% if sponsoring spouse and you're a U.S. citizen)</label>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2>2. Required Documents</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item4">
+                <label for="item4">Completed Form I-864 (download latest version from USCIS.gov)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item5">
+                <label for="item5">Proof of U.S. citizenship or permanent residence (copy of passport, birth certificate, or green card)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item6">
+                <label for="item6">Most recent federal tax return (IRS Tax Return Transcript or copy of 1040 with W-2s)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item7">
+                <label for="item7">Proof of current income (recent pay stubs, employment letter, or self-employment records)</label>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2>3. Income Evidence</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item8">
+                <label for="item8">Last 6 months of pay stubs (if employed)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item9">
+                <label for="item9">Employment verification letter on company letterhead</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item10">
+                <label for="item10">Tax returns for the last 3 years (recommended, required minimum: 1 year)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item11">
+                <label for="item11">W-2 forms for the last 3 years</label>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2>4. If Income Insufficient</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item12">
+                <label for="item12">Consider using household member income (requires separate I-864A)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item13">
+                <label for="item13">Or use assets (cash, stocks, property) worth 5x the income shortfall (3x if sponsoring spouse)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item14">
+                <label for="item14">Gather asset documentation (bank statements, property appraisals, stock certificates)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item15">
+                <label for="item15">Or find a joint sponsor (requires separate complete I-864 from them)</label>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2>5. Form Completion</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item16">
+                <label for="item16">Part 1: Fill in sponsor information (name, address, SSN)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item17">
+                <label for="item17">Part 2: Fill in beneficiary information</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item18">
+                <label for="item18">Part 3: List household size correctly (include yourself, spouse, dependents, and beneficiary)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item19">
+                <label for="item19">Part 6: Enter income information from tax returns</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item20">
+                <label for="item20">Part 7: Sign and date the form (use black ink only)</label>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2>6. Before Submitting</h2>
+            <div class="checklist-item">
+                <input type="checkbox" id="item21">
+                <label for="item21">Make copies of everything for your records</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item22">
+                <label for="item22">Verify all signatures are present and in black ink</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item23">
+                <label for="item23">Ensure no fields are left blank (write "N/A" if not applicable)</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="item24">
+                <label for="item24">Organize documents in order: I-864 form first, then supporting documents</label>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-print" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Checklist
+            </button>
+            <a href="/templates" class="btn btn-outline-secondary ms-2">
+                <i class="fas fa-arrow-left"></i> Back to Templates
+            </a>
+        </div>
+    </div>
+</body>
+</html>

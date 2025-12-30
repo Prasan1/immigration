@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Intake Questionnaire (Employment-Based)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+
+        .intake-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 50px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="intake-container">
+        <div class="text-center mb-5">
+            <h1><i class="fas fa-briefcase"></i> Client Intake Questionnaire</h1>
+            <p class="text-muted">Employment-Based Immigration Cases</p>
+        </div>
+
+        <form id="intakeForm">
+            <div class="form-section">
+                <h2 class="section-title">Personal Information</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Legal Name</label>
+                        <input type="text" class="form-control" placeholder="First, Middle, Last">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Country of Birth</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Country of Citizenship</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Passport Number</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Social Security Number (if any)</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Current Immigration Status</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Current Visa Type</label>
+                        <select class="form-select">
+                            <option value="">Select...</option>
+                            <option value="H-1B">H-1B</option>
+                            <option value="L-1">L-1</option>
+                            <option value="O-1">O-1</option>
+                            <option value="F-1">F-1</option>
+                            <option value="OPT">OPT</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Visa Expiration Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">I-94 Number</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date of Last Entry to U.S.</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Employment Information</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Current Employer Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Employer Address</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Annual Salary</label>
+                        <input type="text" class="form-control" placeholder="$">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Job Duties (detailed description)</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe your primary job responsibilities..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Education</h2>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Highest Degree Obtained</label>
+                        <select class="form-select">
+                            <option value="">Select...</option>
+                            <option value="PhD">PhD/Doctorate</option>
+                            <option value="Masters">Master's Degree</option>
+                            <option value="Bachelors">Bachelor's Degree</option>
+                            <option value="Associates">Associate's Degree</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">University/Institution</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Field of Study</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Year Graduated</label>
+                        <input type="number" class="form-control" placeholder="YYYY">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Country Where Degree Was Obtained</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Immigration Goal</h2>
+                <div class="mb-3">
+                    <label class="form-label">Desired Immigration Benefit</label>
+                    <select class="form-select">
+                        <option value="">Select...</option>
+                        <option value="h1b">H-1B Visa</option>
+                        <option value="l1">L-1 Transfer</option>
+                        <option value="o1">O-1 Extraordinary Ability</option>
+                        <option value="eb1">EB-1 Green Card</option>
+                        <option value="eb2">EB-2 Green Card (PERM)</option>
+                        <option value="eb2niw">EB-2 NIW (National Interest Waiver)</option>
+                        <option value="eb3">EB-3 Green Card</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Preferred Timeline</label>
+                    <select class="form-select">
+                        <option value="">Select...</option>
+                        <option value="urgent">Urgent (1-3 months)</option>
+                        <option value="standard">Standard (3-6 months)</option>
+                        <option value="flexible">Flexible (6+ months)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Intake Form
+                </button>
+                <a href="/templates" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-arrow-left"></i> Back to Templates
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('intakeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('In a production environment, this would submit to your case management system.');
+        });
+    </script>
+</body>
+</html>

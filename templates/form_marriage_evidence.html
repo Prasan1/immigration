@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bona Fide Marriage Evidence Checklist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+
+        .checklist-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 50px;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-title i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .evidence-item {
+            display: flex;
+            align-items: start;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .evidence-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .evidence-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .evidence-item label {
+            margin: 0;
+            color: #2d3748;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .pro-tip {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+
+        .pro-tip strong {
+            color: #f39c12;
+        }
+
+        .btn-actions {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .checklist-container {
+                box-shadow: none;
+            }
+            .btn-actions {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checklist-container">
+        <div class="text-center mb-5">
+            <h1><i class="fas fa-heart"></i> Bona Fide Marriage Evidence Checklist</h1>
+            <p class="text-muted">Comprehensive guide for gathering marriage-based green card evidence</p>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-file-alt"></i> Official Documents
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc1">
+                <label for="doc1">Marriage certificate (certified copy with translation if not in English)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc2">
+                <label for="doc2">Joint tax returns for all years married (Form 1040)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc3">
+                <label for="doc3">Joint bank account statements (past 12 months)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc4">
+                <label for="doc4">Joint credit card statements</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc5">
+                <label for="doc5">Mortgage or lease agreement with both names</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc6">
+                <label for="doc6">Utility bills with both names (electric, gas, water, internet)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="doc7">
+                <label for="doc7">Car insurance, health insurance, or life insurance listing spouse as beneficiary</label>
+            </div>
+            <div class="pro-tip">
+                <strong><i class="fas fa-lightbulb"></i> Pro Tip:</strong> The more joint financial documents, the better. USCIS wants to see commingled finances.
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-camera"></i> Photos & Documentation
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="photo1">
+                <label for="photo1">Wedding photos (ceremony, reception, family members present)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="photo2">
+                <label for="photo2">Honeymoon photos (with dates and locations labeled)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="photo3">
+                <label for="photo3">Photos from throughout the relationship (dating, engagement, married life)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="photo4">
+                <label for="photo4">Photos with each other's families (holidays, gatherings, birthdays)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="photo5">
+                <label for="photo5">Vacation/travel photos together (with proof of travel like boarding passes)</label>
+            </div>
+            <div class="pro-tip">
+                <strong><i class="fas fa-lightbulb"></i> Pro Tip:</strong> Include 20-30 photos total spanning the relationship. Label each with date, location, and who's in the photo.
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-home"></i> Shared Residence Evidence
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="home1">
+                <label for="home1">Current lease or mortgage with both names</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="home2">
+                <label for="home2">Mail addressed to both at same address (different dates)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="home3">
+                <label for="home3">Utility bills in both names or alternating names at same address</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="home4">
+                <label for="home4">Driver's licenses or state IDs showing same address</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="home5">
+                <label for="home5">Voter registration cards showing same address</label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-users"></i> Affidavits from Family & Friends
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="aff1">
+                <label for="aff1">Affidavits from 4-6 people who know the couple well</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="aff2">
+                <label for="aff2">Include mix of family and friends from both sides</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="aff3">
+                <label for="aff3">Each affidavit should include: affiant's relationship to couple, how long they've known you, details about your relationship, statement about marriage being genuine</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="aff4">
+                <label for="aff4">Notarize all affidavits</label>
+            </div>
+            <div class="pro-tip">
+                <strong><i class="fas fa-lightbulb"></i> Pro Tip:</strong> More detailed affidavits are better than short ones. Ask affiants to share specific stories or memories.
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-baby"></i> Children (if applicable)
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="child1">
+                <label for="child1">Birth certificates listing both spouses as parents</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="child2">
+                <label for="child2">School records, medical records for children</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="child3">
+                <label for="child3">Photos of family together</label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-envelope"></i> Communication Evidence
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="comm1">
+                <label for="comm1">Text message screenshots (select meaningful conversations, not every message)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="comm2">
+                <label for="comm2">Email correspondence (especially if relationship started long-distance)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="comm3">
+                <label for="comm3">Chat logs from dating period (if relationship started online)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="comm4">
+                <label for="comm4">Social media posts showing relationship (Facebook, Instagram posts mentioning each other)</label>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <h2 class="category-title">
+                <i class="fas fa-plane"></i> Travel & Activities Together
+            </h2>
+            <div class="evidence-item">
+                <input type="checkbox" id="travel1">
+                <label for="travel1">Boarding passes, flight itineraries, hotel reservations</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="travel2">
+                <label for="travel2">Event tickets (concerts, movies, sports events)</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="travel3">
+                <label for="travel3">Gym membership, club membership in both names</label>
+            </div>
+            <div class="evidence-item">
+                <input type="checkbox" id="travel4">
+                <label for="travel4">Restaurant receipts, shopping receipts on joint credit cards</label>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-4">
+            <h5><i class="fas fa-info-circle"></i> How Much Evidence to Submit</h5>
+            <p class="mb-2"><strong>Minimum:</strong> 10-15 pieces of strong evidence</p>
+            <p class="mb-2"><strong>Recommended:</strong> 30-50 pieces spanning multiple categories</p>
+            <p class="mb-0"><strong>Quality over quantity:</strong> Better to have strong evidence from multiple categories than 100 weak items from one category</p>
+        </div>
+
+        <div class="btn-actions">
+            <button class="btn btn-primary btn-lg" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Checklist
+            </button>
+            <a href="/templates" class="btn btn-outline-secondary btn-lg ms-2">
+                <i class="fas fa-arrow-left"></i> Back to Templates
+            </a>
+        </div>
+    </div>
+</body>
+</html>
