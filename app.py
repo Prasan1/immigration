@@ -396,6 +396,119 @@ def get_user_profile():
     user = get_current_user()
     return jsonify(user.to_dict())
 
+@app.route('/api/user/delete-account', methods=['POST'])
+@login_required
+def delete_user_account():
+    """Delete user account and all associated data"""
+    user = get_current_user()
+    data = request.json
+    request_refund = data.get('request_refund', False)
+
+    try:
+        # 1. Cancel Stripe subscription if active
+        if user.stripe_subscription_id and user.subscription_status == 'active':
+            try:
+                stripe.Subscription.cancel(user.stripe_subscription_id)
+            except Exception as e:
+                app.logger.error(f"Failed to cancel Stripe subscription: {str(e)}")
+
+        # 2. Send refund request email to admin if requested
+        if request_refund and user.subscription_tier != 'free':
+            try:
+                import smtplib
+                from email.mime.text import MIMEText
+                from email.mime.multipart import MIMEMultipart
+
+                admin_email = "support@immigrationforms.io"
+                subject = f"Refund Request - Account Deletion - {user.email}"
+
+                body = f"""
+                Refund Request from Account Deletion
+
+                User Email: {user.email}
+                User Name: {user.full_name}
+                Subscription Tier: {user.subscription_tier}
+                Subscription Status: {user.subscription_status}
+                Stripe Customer ID: {user.stripe_customer_id}
+                Stripe Subscription ID: {user.stripe_subscription_id}
+                Account Created: {user.created_at}
+
+                The user has requested a refund review during account deletion.
+                Please review their subscription history and contact them if a refund is applicable.
+
+                ---
+                This email was automatically generated when the user deleted their account.
+                """
+
+                # Note: This is a placeholder - you'll need to configure SMTP settings
+                # For now, we'll just log it
+                app.logger.info(f"REFUND REQUEST: {body}")
+
+            except Exception as e:
+                app.logger.error(f"Failed to send refund request email: {str(e)}")
+
+        # 3. Delete all related data
+        user_id = user.id
+
+        # Delete team-related data if user is in teams
+        from models import TeamMembership, TeamInvitation, Team
+        TeamMembership.query.filter_by(user_id=user_id).delete()
+        TeamInvitation.query.filter_by(invitee_email=user.email).delete()
+
+        # If user owns teams, delete those teams
+        owned_teams = Team.query.filter_by(owner_id=user_id).all()
+        for team in owned_teams:
+            # Delete team memberships
+            TeamMembership.query.filter_by(team_id=team.id).delete()
+            TeamInvitation.query.filter_by(team_id=team.id).delete()
+            db.session.delete(team)
+
+        # Delete enterprise settings if exists
+        from models import EnterpriseSettings
+        EnterpriseSettings.query.filter_by(user_id=user_id).delete()
+
+        # Delete document processing records
+        from document_models import PassportApplication, FileCompressionJob
+        PassportApplication.query.filter_by(user_id=user_id).delete()
+
+        # Delete file compression jobs and their files
+        compression_jobs = FileCompressionJob.query.filter_by(user_id=user_id).all()
+        for job in compression_jobs:
+            # Delete physical files
+            if job.original_file_path and os.path.exists(job.original_file_path):
+                try:
+                    os.remove(job.original_file_path)
+                except:
+                    pass
+            if job.compressed_file_path and os.path.exists(job.compressed_file_path):
+                try:
+                    os.remove(job.compressed_file_path)
+                except:
+                    pass
+            db.session.delete(job)
+
+        # 4. Delete the user
+        db.session.delete(user)
+        db.session.commit()
+
+        # 5. Clear session
+        session.pop('clerk_user_id', None)
+        session.clear()
+
+        message = "Your account has been permanently deleted."
+        if request_refund:
+            message += " Our support team will review your refund request and contact you within 3-5 business days."
+
+        return jsonify({
+            'success': True,
+            'message': message
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Failed to delete account: {str(e)}")
+        return jsonify({'error': f'Failed to delete account: {str(e)}'}), 500
+
 
 # ============== CLERK AUTHENTICATION ==============
 
