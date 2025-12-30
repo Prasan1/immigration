@@ -237,9 +237,56 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            background: #5568d3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-home {
+            background: #28a745;
+        }
+
+        .btn-home:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
+    <div class="action-buttons">
+        <a href="/" class="btn-action btn-home">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="/forms" class="btn-action">
+            <i class="fas fa-file-alt"></i> Forms
+        </a>
+    </div>
+
     <div class="hero-section">
         <div class="container text-center">
             <h1><i class="fas fa-file-archive"></i> PDF File Compressor</h1>
