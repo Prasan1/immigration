@@ -69,7 +69,7 @@ class Config:
                 'Avoid common filing mistakes',
                 'Know exactly what documents to include',
                 'Get estimated processing times',
-                '10+ professional fillable templates',
+                '2 professional fillable templates',
                 'Compress PDFs for USCIS portals (5/month)',
                 'No credit card required to start'
             ],
