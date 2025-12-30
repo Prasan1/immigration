@@ -304,6 +304,7 @@ def register_file_compressor_routes(app, limiter):
 
         except Exception as e:
             return jsonify({'error': str(e)}), 500
+        """
 
     @app.route('/api/file-compressor/jobs/<int:job_id>/confirm-payment', methods=['POST'])
     @login_required
