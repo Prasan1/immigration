@@ -586,9 +586,10 @@ def dev_login():
 @app.route('/api/create-checkout-session', methods=['POST'])
 @login_required
 def create_checkout_session():
-    """Create Stripe checkout session for subscription"""
+    """Create Stripe checkout session for subscription or one-time payment"""
     data = request.json
     tier = data.get('tier')
+    pricing_type = data.get('pricing_type')  # Can be 'one_time' or 'subscription'
 
     if tier not in Config.SUBSCRIPTION_TIERS:
         return jsonify({'error': 'Invalid subscription tier'}), 400
@@ -598,6 +599,15 @@ def create_checkout_session():
 
     if not price_id:
         return jsonify({'error': 'Price ID not configured'}), 500
+
+    # Determine payment mode from tier info or explicit pricing_type parameter
+    if pricing_type:
+        # Use explicit pricing_type if provided
+        mode = 'payment' if pricing_type == 'one_time' else 'subscription'
+    else:
+        # Fall back to tier configuration
+        tier_pricing_type = tier_info.get('pricing_type', 'subscription')
+        mode = 'payment' if tier_pricing_type == 'one_time' else 'subscription'
 
     user = get_current_user()
 
@@ -611,7 +621,7 @@ def create_checkout_session():
             user.stripe_customer_id = customer.id
             db.session.commit()
 
-        # Create checkout session
+        # Create checkout session with appropriate mode
         checkout_session = stripe.checkout.Session.create(
             customer=user.stripe_customer_id,
             payment_method_types=['card'],
@@ -619,12 +629,13 @@ def create_checkout_session():
                 'price': price_id,
                 'quantity': 1,
             }],
-            mode='subscription',
+            mode=mode,  # 'payment' for one-time, 'subscription' for recurring
             success_url=request.host_url + 'dashboard?success=true',
             cancel_url=request.host_url + 'pricing?canceled=true',
             metadata={
                 'user_id': user.id,
-                'tier': tier
+                'tier': tier,
+                'pricing_type': mode
             }
         )
 
