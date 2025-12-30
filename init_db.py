@@ -96,7 +96,7 @@ def init_database():
                 "last_updated": "2024-01-10",
                 "processing_time": "3-6 months",
                 "fee": "$410",
-                "access_level": "basic",  # Form 4 of 7 in Basic tier
+                "access_level": "free",  # Marriage-based forms are free
                 "checklist": [
                     "Completed Form I-765",
                     "Filing fee of $410",
@@ -157,7 +157,7 @@ def init_database():
                 "last_updated": "2024-02-10",
                 "processing_time": "4-8 months",
                 "fee": "$575",
-                "access_level": "pro",
+                "access_level": "free",  # Marriage-based forms are free
                 "checklist": [
                     "Completed Form I-131",
                     "Filing fee of $575",

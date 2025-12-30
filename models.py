@@ -13,7 +13,7 @@ class User(db.Model):
     full_name = db.Column(db.String(255))
 
     # Subscription info
-    subscription_tier = db.Column(db.String(50), default='free')  # free, basic, pro, enterprise
+    subscription_tier = db.Column(db.String(50), default='free')  # free, complete, agency (+ legacy: basic, pro, enterprise)
     subscription_status = db.Column(db.String(50), default='inactive')  # active, inactive, cancelled, past_due
     stripe_customer_id = db.Column(db.String(255), unique=True)
     stripe_subscription_id = db.Column(db.String(255))
@@ -49,6 +49,9 @@ class User(db.Model):
 
         tier_hierarchy = {
             'free': 0,
+            'complete': 2,      # Complete Package: full access (one-time payment)
+            'agency': 3,        # Immigration Preparer: full access + team features
+            # Legacy tiers (backward compatibility)
             'basic': 1,
             'pro': 2,
             'enterprise': 3
@@ -66,6 +69,9 @@ class User(db.Model):
 
         tier_hierarchy = {
             'free': 0,
+            'complete': 2,      # Complete Package: full access (one-time payment)
+            'agency': 3,        # Immigration Preparer: full access + team features
+            # Legacy tiers (backward compatibility)
             'basic': 1,
             'pro': 2,
             'enterprise': 3
@@ -92,8 +98,8 @@ class ImmigrationForm(db.Model):
     fee = db.Column(db.String(100))
     last_updated = db.Column(db.Date)
 
-    # Access control
-    access_level = db.Column(db.String(50), default='free')  # free, basic, pro, enterprise
+    # Access control (what tier is required to access this form)
+    access_level = db.Column(db.String(50), default='free')  # free, basic (paid access)
 
     # Checklist stored as JSON
     checklist = db.Column(db.Text)  # JSON array of checklist items
@@ -209,8 +215,8 @@ class FormTemplate(db.Model):
     description = db.Column(db.Text)
     template_url = db.Column(db.String(500))  # URL to the template page
 
-    # Access control
-    access_level = db.Column(db.String(50), default='free')  # free, basic, pro, enterprise
+    # Access control (what tier is required to access this form)
+    access_level = db.Column(db.String(50), default='free')  # free, basic (paid access)
 
     # Metadata
     use_case = db.Column(db.String(500))  # e.g., "Client intake", "Court filing"
