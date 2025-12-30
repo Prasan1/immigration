@@ -186,6 +186,7 @@
             <h4><i class="fas fa-star me-2" style="color: var(--brand-purple);"></i>PDF Document Automation</h4>
             <p class="text-muted">Generate professional USCIS-ready documents instantly</p>
             <div class="row mt-3">
+                {% if user.subscription_tier != 'free' %}
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/documents/passport'">
                         <div class="card-body text-center">
@@ -216,6 +217,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/forms'">
                         <div class="card-body text-center">
@@ -226,6 +228,22 @@
                         </div>
                     </div>
                 </div>
+                {% if user.subscription_tier == 'free' %}
+                <div class="col-md-9 col-sm-6 mb-3">
+                    <div class="card h-100" style="border: 2px solid var(--brand-purple); background: #F9FAFB;">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <i class="fas fa-lock fa-3x mb-3" style="color: var(--brand-purple);"></i>
+                            <h5>Unlock Professional PDF Features</h5>
+                            <p class="text-muted mb-3">Get instant access to Passport Applications, Cover Letters, and I-94 Travel History generators</p>
+                            <div>
+                                <a href="/pricing" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-arrow-up me-2"></i>Upgrade to Professional
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
 
