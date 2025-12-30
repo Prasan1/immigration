@@ -8,110 +8,134 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 0;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #000;
         }
 
-        .template-container {
-            max-width: 900px;
+        .container {
+            max-width: 8.5in;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 50px;
+            padding: 0.5in;
         }
 
-        .template-header {
+        .form-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 20px;
         }
 
-        .template-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2d3748;
+        .form-header h1 {
+            font-size: 24px;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .template-header p {
-            color: #718096;
+        .form-header p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .section-title {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            font-weight: bold;
             font-size: 16px;
-        }
-
-        .checklist-section {
-            margin-bottom: 30px;
-        }
-
-        .checklist-section h2 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #667eea;
+            margin-top: 25px;
             margin-bottom: 15px;
+            border-left: 4px solid #667eea;
         }
 
         .checklist-item {
             display: flex;
             align-items: start;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: #f7fafc;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            padding: 10px 0;
+            margin-bottom: 8px;
         }
 
         .checklist-item input[type="checkbox"] {
-            margin-right: 15px;
-            margin-top: 5px;
-            width: 20px;
-            height: 20px;
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
         }
 
         .checklist-item label {
             margin: 0;
-            color: #2d3748;
             cursor: pointer;
+            font-size: 14px;
         }
 
-        .btn-print {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .action-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #667eea;
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-weight: 600;
-            margin-top: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn-print:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        .btn-action:hover {
+            background: #5568d3;
+            color: white;
+        }
+
+        .btn-home {
+            background: #28a745;
+        }
+
+        .btn-home:hover {
+            background: #218838;
         }
 
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .template-container {
-                box-shadow: none;
-                padding: 0;
-            }
-            .btn-print, .no-print {
+            .action-buttons {
                 display: none;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0.25in;
             }
         }
     </style>
 </head>
 <body>
-    <div class="template-container">
-        <div class="template-header">
-            <h1><i class="fas fa-file-contract"></i> Affidavit of Support Guide (Form I-864)</h1>
+    <div class="action-buttons">
+        <a href="/templates" class="btn-action btn-home">
+            <i class="fas fa-home"></i> Templates
+        </a>
+        <button class="btn-action" onclick="window.print()">
+            <i class="fas fa-print"></i> Print
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="form-header">
+            <h1>Affidavit of Support Guide (Form I-864)</h1>
             <p>Step-by-step checklist for completing the Affidavit of Support</p>
         </div>
 
-        <div class="checklist-section">
-            <h2>1. Sponsor Eligibility</h2>
+        <div class="section-title">1. Sponsor Eligibility</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item1">
                 <label for="item1">Confirm you are a U.S. citizen or lawful permanent resident</label>
@@ -126,8 +150,7 @@
             </div>
         </div>
 
-        <div class="checklist-section">
-            <h2>2. Required Documents</h2>
+        <div class="section-title">2. Required Documents</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item4">
                 <label for="item4">Completed Form I-864 (download latest version from USCIS.gov)</label>
@@ -146,8 +169,7 @@
             </div>
         </div>
 
-        <div class="checklist-section">
-            <h2>3. Income Evidence</h2>
+        <div class="section-title">3. Income Evidence</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item8">
                 <label for="item8">Last 6 months of pay stubs (if employed)</label>
@@ -166,8 +188,7 @@
             </div>
         </div>
 
-        <div class="checklist-section">
-            <h2>4. If Income Insufficient</h2>
+        <div class="section-title">4. If Income Insufficient</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item12">
                 <label for="item12">Consider using household member income (requires separate I-864A)</label>
@@ -186,8 +207,7 @@
             </div>
         </div>
 
-        <div class="checklist-section">
-            <h2>5. Form Completion</h2>
+        <div class="section-title">5. Form Completion</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item16">
                 <label for="item16">Part 1: Fill in sponsor information (name, address, SSN)</label>
@@ -210,8 +230,7 @@
             </div>
         </div>
 
-        <div class="checklist-section">
-            <h2>6. Before Submitting</h2>
+        <div class="section-title">6. Before Submitting</div>
             <div class="checklist-item">
                 <input type="checkbox" id="item21">
                 <label for="item21">Make copies of everything for your records</label>
@@ -230,14 +249,6 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <button class="btn btn-print" onclick="window.print()">
-                <i class="fas fa-print"></i> Print Checklist
-            </button>
-            <a href="/templates" class="btn btn-outline-secondary ms-2">
-                <i class="fas fa-arrow-left"></i> Back to Templates
-            </a>
-        </div>
     </div>
 </body>
 </html>
