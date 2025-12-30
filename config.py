@@ -63,14 +63,15 @@ class Config:
             'max_users': 1,
             'forms_access': 3,
             'forms_included': 'I-130, I-485, N-400',
+            'tagline': 'Perfect for first-time filers',
             'features': [
-                'Access to 3 essential forms',
-                'Basic checklists',
-                'Filing fee information',
-                'Processing time estimates',
-                '10+ fillable templates',
-                'File compressor (5 files/month, up to 2MB)',
-                'No credit card required'
+                'Try key forms for free',
+                'Avoid common filing mistakes',
+                'Know exactly what documents to include',
+                'Get estimated processing times',
+                '10+ professional fillable templates',
+                'Compress PDFs for USCIS portals (5/month)',
+                'No credit card required to start'
             ],
             'document_processing': False
         },
@@ -81,15 +82,16 @@ class Config:
             'max_users': 1,
             'forms_access': 'all',
             'forms_included': 'All 11+ forms',
+            'tagline': 'For individuals & immigration consultants',
             'features': [
-                'Access to ALL immigration forms',
-                'Comprehensive checklists',
-                'All fillable templates',
-                'Step-by-step guides',
-                'Regular form updates',
-                'Email support',
-                'File compressor (unlimited, premium quality)',
-                'Passport processing ($12/application)'
+                'Avoid mistakes with expert-level checklists',
+                'Access every immigration form without restrictions',
+                'Get guidance, not just blank forms',
+                'Never miss a form update or deadline',
+                'File-ready templates save hours of work',
+                'Professional support when you need help',
+                'Unlimited PDF compression (premium quality)',
+                'Auto-filled passport applications ($12 each)'
             ],
             'document_processing': True
         },
@@ -100,15 +102,16 @@ class Config:
             'max_users': 5,
             'forms_access': 'all',
             'forms_included': 'All 11+ forms',
+            'tagline': 'Perfect for small legal teams & NGOs',
             'features': [
-                'Everything in Professional',
-                'Up to 5 team members',
-                'Shared team workspace',
-                'Team member invitations',
-                'Priority email support',
-                'Collaborative access',
-                'File compressor (unlimited, premium quality)',
-                'Passport processing ($12/application)'
+                'Everything in Professional, plus:',
+                'Work together safely with up to 5 team members',
+                'Centralized case management saves time',
+                'Faster processing with team collaboration',
+                'Invite colleagues and manage permissions',
+                'Priority support when deadlines are tight',
+                'Everyone has full access to all tools',
+                'One bill for your entire team'
             ],
             'document_processing': True
         },
@@ -119,14 +122,16 @@ class Config:
             'max_users': 15,
             'forms_access': 'all',
             'forms_included': 'All 11+ forms',
+            'tagline': 'For law firms & universities',
             'features': [
-                'Everything in Team',
-                'Up to 15 team members',
-                'White-label branding',
-                'Custom logo & colors',
-                'Remove "Powered by" footer',
-                'File compressor (unlimited, premium quality)',
-                'Passport processing ($12/application)'
+                'Everything in Team, plus:',
+                'Scale to 15 team members as you grow',
+                'Your brand, your clients - white-label platform',
+                'Custom logo and colors match your firm',
+                'Professional appearance without "Powered by"',
+                'Build trust with branded immigration tools',
+                'Complete control over your client experience',
+                'Enterprise-grade support and reliability'
             ],
             'document_processing': True
         }

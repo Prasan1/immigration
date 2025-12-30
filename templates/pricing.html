@@ -584,6 +584,12 @@
 
                 <div class="tier-name">{{ tier.name }}</div>
 
+                {% if tier.get('tagline') %}
+                <div class="tier-tagline" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; font-style: italic;">
+                    {{ tier.tagline }}
+                </div>
+                {% endif %}
+
                 <div class="tier-price">
                     {% if tier.price == 0 %}
                     Free
