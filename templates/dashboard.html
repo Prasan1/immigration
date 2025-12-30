@@ -167,7 +167,11 @@
                     {% if user and user.subscription_tier == 'enterprise' %}
                     <li class="nav-item"><a class="nav-link" href="/enterprise/settings"><i class="fas fa-cog me-1"></i>Settings</a></li>
                     {% endif %}
-                    <li class="nav-item"><button class="btn btn-outline-primary btn-sm ms-2" id="logoutBtn">Logout</button></li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-danger btn-sm ms-2" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
