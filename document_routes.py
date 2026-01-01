@@ -25,17 +25,39 @@ def register_document_routes(app, limiter):
         return decorated_function
 
     def subscription_required(f):
-        """Check if user has active subscription"""
+        """Check if user has active subscription OR purchased standalone tool"""
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            from models import OneTimePurchase
+
             user = get_current_user()
             if not user:
                 return jsonify({'error': 'Authentication required'}), 401
 
-            if user.subscription_tier == 'free' or not user.has_active_subscription():
+            # Check if user has subscription
+            has_subscription = user.subscription_tier != 'free' and user.has_active_subscription()
+
+            # Check if user purchased standalone tool for this specific route
+            has_standalone_access = False
+            route = request.endpoint
+
+            # Map routes to tool types
+            if 'i94' in route or 'i94-history' in request.path:
+                # Check for travel_history purchase
+                has_standalone_access = OneTimePurchase.query.filter_by(
+                    user_id=user.id,
+                    tool_type='travel_history',
+                    status='completed'
+                ).first() is not None
+            elif 'cover-letter' in request.path:
+                # Cover letter is always subscription-only (no standalone purchase)
+                has_standalone_access = False
+
+            # Allow access if either subscription or standalone purchase
+            if not has_subscription and not has_standalone_access:
                 return jsonify({
-                    'error': 'Subscription required',
-                    'message': 'Get Complete Package to access PDF features',
+                    'error': 'Access required',
+                    'message': 'Purchase this tool or upgrade to Complete Package to access this feature',
                     'required_tier': 'complete',
                     'current_tier': user.subscription_tier,
                     'redirect': '/pricing'
@@ -115,7 +137,8 @@ def register_document_routes(app, limiter):
             # Prepare form info
             form_info = {
                 'title': data.get('form_title', 'Immigration Application'),
-                'documents': data.get('documents', [])
+                'documents': data.get('documents', []),
+                'mailing_address': data.get('mailing_address', '')
             }
 
             # Generate PDF

@@ -26,19 +26,31 @@ def register_passport_routes(app, limiter):
         return decorated_function
 
     def subscription_required_for_doc_processing(f):
-        """Check if user has subscription tier that allows document processing"""
+        """Check if user has subscription tier that allows document processing OR purchased standalone tool"""
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            from models import OneTimePurchase
+
             user = get_current_user()
             if not user:
                 return jsonify({'error': 'Authentication required'}), 401
 
             # Check if user's tier allows document processing
             tier_info = Config.SUBSCRIPTION_TIERS.get(user.subscription_tier, {})
-            if not tier_info.get('document_processing', False):
+            has_subscription_access = tier_info.get('document_processing', False)
+
+            # Check if user purchased passport tool as standalone
+            has_passport_purchase = OneTimePurchase.query.filter_by(
+                user_id=user.id,
+                tool_type='passport',
+                status='completed'
+            ).first() is not None
+
+            # Allow access if either subscription or standalone purchase
+            if not has_subscription_access and not has_passport_purchase:
                 return jsonify({
-                    'error': 'Subscription upgrade required',
-                    'message': 'Get Complete Package to access document processing',
+                    'error': 'Access required',
+                    'message': 'Purchase Passport Application Processing ($12) or upgrade to Complete Package to access this tool',
                     'required_tier': 'complete',
                     'current_tier': user.subscription_tier,
                     'redirect': '/pricing'

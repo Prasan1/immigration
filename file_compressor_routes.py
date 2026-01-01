@@ -29,9 +29,11 @@ def register_file_compressor_routes(app, limiter):
         return decorated_function
 
     def check_compression_limits(user):
-        """Check if user can compress files (for free tier)"""
+        """Check if user can compress files based on their subscription tier OR standalone purchase"""
+        from models import OneTimePurchase
+
+        # Legacy unlimited tiers (backward compatibility)
         if user.subscription_tier in ['basic', 'pro', 'enterprise']:
-            # Paid tiers have unlimited premium compression
             return {
                 'allowed': True,
                 'tier': 'premium',
@@ -39,7 +41,65 @@ def register_file_compressor_routes(app, limiter):
                 'limit': None
             }
 
-        # Free tier - check monthly limit
+        # Agency tier - unlimited premium compression (monthly subscription)
+        if user.subscription_tier == 'agency':
+            return {
+                'allowed': True,
+                'tier': 'agency',
+                'remaining': None,
+                'limit': None
+            }
+
+        # Complete Package - lifetime limit of 100 compressions
+        if user.subscription_tier == 'complete':
+            limits = Config.FILE_COMPRESSOR_LIMITS['complete']
+            lifetime_limit = limits.get('lifetime_limit', 100)
+
+            # Count ALL compressions ever made by this user
+            total_compressions = FileCompressionJob.query.filter(
+                FileCompressionJob.user_id == user.id,
+                FileCompressionJob.status == 'completed'
+            ).count()
+
+            remaining = lifetime_limit - total_compressions
+
+            return {
+                'allowed': remaining > 0,
+                'tier': 'complete',
+                'remaining': remaining,
+                'limit': lifetime_limit,
+                'used': total_compressions,
+                'limit_type': 'lifetime'
+            }
+
+        # Check if free user purchased PDF Evidence Pack standalone
+        pdf_pack_purchase = OneTimePurchase.query.filter_by(
+            user_id=user.id,
+            tool_type='pdf_evidence_pack',
+            status='completed'
+        ).first()
+
+        if pdf_pack_purchase:
+            # User bought PDF Evidence Pack - give them 100 compressions
+            lifetime_limit = 100
+
+            total_compressions = FileCompressionJob.query.filter(
+                FileCompressionJob.user_id == user.id,
+                FileCompressionJob.status == 'completed'
+            ).count()
+
+            remaining = lifetime_limit - total_compressions
+
+            return {
+                'allowed': remaining > 0,
+                'tier': 'pdf_evidence_pack',
+                'remaining': remaining,
+                'limit': lifetime_limit,
+                'used': total_compressions,
+                'limit_type': 'lifetime'
+            }
+
+        # Free tier - NO ACCESS (must upgrade or purchase)
         limits = Config.FILE_COMPRESSOR_LIMITS['free']
         monthly_limit = limits['monthly_limit']
 
@@ -65,15 +125,21 @@ def register_file_compressor_routes(app, limiter):
 
     @app.route('/file-compressor')
     def file_compressor_page():
-        """File compressor page (accessible to all, but requires login to use)"""
+        """File compressor page (PAID PLANS ONLY)"""
         user = get_current_user()
 
-        # Get usage info for free users
+        # Check if user has access (paid plans only)
+        if user and user.subscription_tier == 'free':
+            # Free users see upgrade prompt
+            usage_info = check_compression_limits(user)
+            return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info, show_upgrade=True)
+
+        # Get usage info for paid users
         usage_info = None
         if user:
             usage_info = check_compression_limits(user)
 
-        return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info)
+        return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info, show_upgrade=False)
 
     @app.route('/api/file-compressor/usage', methods=['GET'])
     @login_required
@@ -127,13 +193,24 @@ def register_file_compressor_routes(app, limiter):
         # Check limits
         usage_info = check_compression_limits(user)
 
-        if requested_tier == 'free':
-            if not usage_info['allowed'] and usage_info['tier'] == 'free':
+        # Block if limit reached
+        if not usage_info['allowed']:
+            if usage_info['tier'] == 'complete':
+                # Complete Package user hit their lifetime 100 compression limit
                 return jsonify({
-                    'error': 'Monthly compression limit reached',
+                    'error': 'Compression limit reached',
                     'limit': usage_info['limit'],
                     'used': usage_info['used'],
-                    'message': 'Get Complete Package for unlimited compressions, or pay $5 for premium compression of this file',
+                    'remaining': 0,
+                    'limit_type': 'lifetime',
+                    'message': f'You have used all {usage_info["limit"]} compressions included in your Complete Package. Upgrade to Agency tier for unlimited compressions.',
+                    'redirect': '/pricing'
+                }), 403
+            elif usage_info['tier'] == 'free':
+                # Free tier has no access
+                return jsonify({
+                    'error': 'Compression not available',
+                    'message': 'PDF compression is only available with paid plans. Upgrade to Complete Package to get 100 compressions.',
                     'redirect': '/pricing'
                 }), 403
 
@@ -143,8 +220,12 @@ def register_file_compressor_routes(app, limiter):
         file.seek(0)
 
         # Determine which limits to use based on user's subscription tier
-        # PDF compression is now bundled into subscriptions
-        tier_limits = Config.FILE_COMPRESSOR_LIMITS.get(usage_info['tier'], Config.FILE_COMPRESSOR_LIMITS['free'])
+        # Map tier to config (handle 'premium' -> 'basic' for legacy users)
+        tier_for_config = usage_info['tier']
+        if tier_for_config == 'premium':
+            tier_for_config = 'basic'  # Legacy premium users mapped to basic tier limits
+
+        tier_limits = Config.FILE_COMPRESSOR_LIMITS.get(tier_for_config, Config.FILE_COMPRESSOR_LIMITS['free'])
 
         max_size_bytes = tier_limits['max_file_size_mb'] * 1024 * 1024
 
@@ -167,12 +248,15 @@ def register_file_compressor_routes(app, limiter):
             file.save(original_path)
 
             # Create compression job record
+            # Use user's subscription tier for tracking (not requested_tier)
+            compression_tier_for_job = user.subscription_tier if user.subscription_tier in ['complete', 'agency', 'basic', 'pro', 'enterprise'] else 'free'
+
             job = FileCompressionJob(
                 user_id=user.id,
                 original_filename=original_filename,
                 original_file_size=file_size,
                 original_file_path=original_path,
-                compression_tier=requested_tier,
+                compression_tier=compression_tier_for_job,
                 target_quality=tier_limits['compression_quality'],
                 status='pending'
             )
@@ -185,7 +269,8 @@ def register_file_compressor_routes(app, limiter):
                 'job_id': job.id,
                 'status': 'pending',
                 'message': 'File uploaded. Compression will start shortly.',
-                'tier': requested_tier
+                'tier': compression_tier_for_job,
+                'usage_info': usage_info  # Include remaining compressions
             })
 
         except Exception as e:

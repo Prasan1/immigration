@@ -43,6 +43,8 @@ class Config:
     # Document Processing Pricing (one-time charges)
     STRIPE_PRICE_ID_PASSPORT = os.getenv('STRIPE_PRICE_ID_PASSPORT')  # $12 per passport application
     STRIPE_PRICE_ID_FILE_COMPRESSOR = os.getenv('STRIPE_PRICE_ID_FILE_COMPRESSOR')  # $5 per premium compression
+    STRIPE_PRICE_ID_PDF_EVIDENCE_PACK = os.getenv('STRIPE_PRICE_ID_PDF_EVIDENCE_PACK')  # $29 PDF & Evidence Pack
+    STRIPE_PRICE_ID_TRAVEL_HISTORY = os.getenv('STRIPE_PRICE_ID_TRAVEL_HISTORY')  # $19 I-94 Travel History
 
     # Security Settings
     SESSION_COOKIE_SECURE = ENV == 'production'
@@ -87,8 +89,8 @@ class Config:
             'forms_included': 'I-130, I-485, I-864, I-765, I-131',
             'tagline': 'Everything you need to file I-130, I-485, I-864, I-765, I-131 with confidence',
             'features': [
-                'Complete I-130 & I-485 checklists (personalized)',
-                'Auto-generated cover letters (USCIS-ready)',
+                'Complete I-130 & I-485 checklists',
+                'Professional cover letter templates',
                 'Evidence organizer (photos, texts, financial docs)',
                 'PDF compressor (unlimited use—beat USCIS 10MB limits)',
                 'I-94 travel history generator',
@@ -180,28 +182,55 @@ class Config:
             'price': 12.00,
             'price_id': os.getenv('STRIPE_PRICE_ID_PASSPORT'),
             'form_type': 'DS-11',
-            'required_tier': 'basic'
+            'required_tier': None,  # Available as standalone purchase
+            'redirect_url': '/documents/passport'
+        },
+        'pdf_evidence_pack': {
+            'name': 'USCIS PDF & Evidence Pack',
+            'description': 'Compress and organize large evidence files to meet USCIS upload limits',
+            'price': 29.00,
+            'price_id': os.getenv('STRIPE_PRICE_ID_PDF_EVIDENCE_PACK'),
+            'form_type': 'pdf_tools',
+            'required_tier': None,  # Available as standalone purchase
+            'redirect_url': '/file-compressor'
+        },
+        'travel_history': {
+            'name': 'I-94 Travel History Worksheet',
+            'description': 'Turn I-94 travel records into clean, USCIS-ready travel history worksheet',
+            'price': 19.00,
+            'price_id': os.getenv('STRIPE_PRICE_ID_TRAVEL_HISTORY'),
+            'form_type': 'i94_history',
+            'required_tier': None,  # Available as standalone purchase
+            'redirect_url': '/documents/i94-history'
         }
-        # NOTE: PDF Compression is now bundled into subscriptions (free: 5/month, paid: unlimited)
-        # No longer offered as separate $5 purchase
+        # NOTE: PDF Compression is now bundled into PAID subscriptions ONLY
+        # No longer offered as separate $5 purchase or free tier access
     }
 
-    # File Compressor Configuration
+    # File Compressor Configuration (PAID PLANS ONLY)
     FILE_COMPRESSOR_LIMITS = {
         'free': {
-            'monthly_limit': 5,  # 5 compressions per month
-            'max_file_size_mb': 2,  # 2MB max file size
-            'compression_quality': 'basic',  # 50-60% compression
-            'target_compression_ratio': 0.55  # Target 55% of original size
+            'monthly_limit': 0,  # NO ACCESS - Paid plans only
+            'max_file_size_mb': 0,
+            'compression_quality': None,
+            'target_compression_ratio': 0
         },
         'complete': {
-            'monthly_limit': None,  # Unlimited - bundled into Complete Package
+            'monthly_limit': None,  # Not monthly - see lifetime_limit
+            'lifetime_limit': 100,  # 100 compressions total (one-time payment plan)
             'max_file_size_mb': 50,  # 50MB max file size
             'compression_quality': 'premium',  # 70-85% compression
             'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
         },
         'agency': {
             'monthly_limit': None,  # Unlimited - bundled into Agency subscription
+            'max_file_size_mb': 50,  # 50MB max file size
+            'compression_quality': 'premium',  # 70-85% compression
+            'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
+        },
+        'pdf_evidence_pack': {
+            'monthly_limit': None,  # Not monthly - see lifetime_limit
+            'lifetime_limit': 100,  # 100 compressions total (standalone purchase)
             'max_file_size_mb': 50,  # 50MB max file size
             'compression_quality': 'premium',  # 70-85% compression
             'target_compression_ratio': 0.25  # Target 25% of original size (75% reduction)
@@ -248,7 +277,7 @@ class Config:
     WHITE_LABEL_FEATURES = [
         'Custom branding with your logo and colors',
         'Custom site name and branding text',
-        'Remove "Powered by ImmigrationForms.io"',
+        'Remove "Powered by ImmigrationTemplates.com"',
         'Branded checklist exports with your logo',
         'Custom footer text and legal disclaimers',
         'Deploy on your own domain (standard hosting)'

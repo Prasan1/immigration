@@ -161,6 +161,38 @@ class Subscription(db.Model):
         return f'<Subscription {self.tier} for User {self.user_id}>'
 
 
+class OneTimePurchase(db.Model):
+    """Track one-time purchases of standalone tools (passport, travel history, etc.)"""
+    __tablename__ = 'one_time_purchases'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    tool_type = db.Column(db.String(100), nullable=False)  # passport, pdf_evidence_pack, travel_history
+    price_paid = db.Column(db.Float, nullable=False)
+    stripe_payment_intent_id = db.Column(db.String(255))
+    status = db.Column(db.String(50), default='pending')  # pending, completed, failed, refunded
+
+    # Timestamps
+    purchased_at = db.Column(db.DateTime, default=datetime.utcnow)
+    completed_at = db.Column(db.DateTime)
+
+    user = db.relationship('User', backref=db.backref('one_time_purchases', lazy=True))
+
+    def __repr__(self):
+        return f'<OneTimePurchase {self.tool_type} for User {self.user_id}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'tool_type': self.tool_type,
+            'price_paid': self.price_paid,
+            'status': self.status,
+            'purchased_at': self.purchased_at.isoformat() if self.purchased_at else None,
+            'completed_at': self.completed_at.isoformat() if self.completed_at else None
+        }
+
+
 class EnterpriseSettings(db.Model):
     """Store custom branding settings for Enterprise users"""
     __tablename__ = 'enterprise_settings'

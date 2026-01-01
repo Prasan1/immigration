@@ -289,6 +289,120 @@
             transform: translateY(-1px);
         }
 
+        /* A la carte tools section */
+        .tools-section {
+            margin-top: 4rem;
+        }
+
+        .tools-section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .tools-section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .tools-section-header p {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+        }
+
+        @media (max-width: 992px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-gray);
+            padding: 1.75rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .tool-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--brand-purple);
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .tool-included {
+            font-size: 0.8rem;
+            color: var(--success-green);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .tool-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-price small {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .tool-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .tool-card .btn-tool {
+            margin-top: auto;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid var(--border-gray);
+            background: white;
+            color: var(--text-dark);
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .tool-card .btn-tool:hover {
+            background: var(--bg-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
         /* Comparison Table */
         .comparison-section {
             margin-top: 5rem;
@@ -462,14 +576,18 @@
                     Everything you need to file I-130, I-485, I-864, I-765, I-131 with confidence
                 </div>
 
+                <div class="alert alert-warning" style="margin: 1rem 0; padding: 0.75rem; font-size: 0.85rem; border-radius: 8px; background: #FFF3CD; border: 1px solid #FFC107; color: #856404;">
+                    <i class="fas fa-info-circle me-1"></i><strong>For Personal Use Only:</strong> This package is for individuals filing their own marriage-based green card. Commercial use (agencies/preparers filing for clients) requires the Immigration Preparer plan.
+                </div>
+
                 <ul class="features-list">
                     <li>
                         <i class="fas fa-check-circle"></i>
-                        <span><strong>Complete I-130 & I-485 checklists</strong> (personalized)</span>
+                        <span><strong>Complete I-130 & I-485 checklists</strong></span>
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
-                        <span><strong>Auto-generated cover letters</strong> (USCIS-ready)</span>
+                        <span><strong>Professional cover letter templates</strong> (fill in your details)</span>
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
@@ -477,7 +595,7 @@
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
-                        <span><strong>PDF compressor</strong> (unlimited use—beat USCIS 10MB limits)</span>
+                        <span><strong>PDF compressor</strong> (100 compressions included)</span>
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
@@ -489,11 +607,11 @@
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
-                        <span><strong>Interview prep guide</strong></span>
+                        <span><strong>RFE response templates</strong> (if needed)</span>
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
-                        <span><strong>RFE response templates</strong> (if needed)</span>
+                        <span><strong>Passport application processing</strong> (included)</span>
                     </li>
                     <li>
                         <i class="fas fa-check-circle"></i>
@@ -560,7 +678,69 @@
         <div class="guarantee-badge">
             <i class="fas fa-shield-alt"></i>
             <h3>30-Day Money-Back Guarantee</h3>
-            <p>If our Complete Package doesn't help you organize your marriage green card packet with confidence, we'll refund every penny. No questions asked.</p>
+            <p>If our Complete Package doesn't meet your expectations within 30 days, we'll refund your purchase. Full refunds available if you haven't extensively used the professional PDF generation features. We want you to be confident in your purchase.</p>
+            <p class="small text-muted mt-2" style="font-size: 0.85rem;">
+                <i class="fas fa-info-circle me-1"></i>
+                Fair use policy: Refunds may not apply if more than 5 professional PDFs have been generated, as this indicates substantial value received.
+            </p>
+        </div>
+
+        <!-- A la carte tools section -->
+        <div class="tools-section">
+            <div class="tools-section-header">
+                <h2>Not Ready for the Full Toolkit?</h2>
+                <p>Use individual tools as you go. <strong>All of these are included in the $199 Complete Package.</strong></p>
+            </div>
+
+            <div class="tools-grid">
+                <!-- Tool 1: PDF & Evidence Pack -->
+                <div class="tool-card">
+                    <div class="tool-label">Standalone Tool</div>
+                    <div class="tool-name">USCIS PDF & Evidence Pack</div>
+                    <div class="tool-included">✓ Included in Complete Package</div>
+                    <div class="tool-price">
+                        $29 <small>one-time</small>
+                    </div>
+                    <p class="tool-description">
+                        Compress and organize large evidence files so they meet strict USCIS upload limits. Ideal if you already prepared your packet but need to handle PDFs and file sizes.
+                    </p>
+                    <button class="btn-tool" onclick="handleToolPurchase('pdf_evidence_pack')">
+                        <i class="fas fa-shopping-cart me-2"></i>Purchase for $29
+                    </button>
+                </div>
+
+                <!-- Tool 2: Passport Application Processing -->
+                <div class="tool-card">
+                    <div class="tool-label">Standalone Tool</div>
+                    <div class="tool-name">Passport Application Processing</div>
+                    <div class="tool-included">✓ Included in Complete Package</div>
+                    <div class="tool-price">
+                        $12 <small>one-time</small>
+                    </div>
+                    <p class="tool-description">
+                        Complete DS-11 passport application form with pre-filled data, professional PDF output, and comprehensive checklist. Perfect if you just need passport processing help.
+                    </p>
+                    <button class="btn-tool" onclick="handleToolPurchase('passport')">
+                        <i class="fas fa-shopping-cart me-2"></i>Purchase for $12
+                    </button>
+                </div>
+
+                <!-- Tool 3: I-94 Travel History Worksheet -->
+                <div class="tool-card">
+                    <div class="tool-label">Standalone Tool</div>
+                    <div class="tool-name">I-94 Travel History Worksheet</div>
+                    <div class="tool-included">✓ Included in Complete Package</div>
+                    <div class="tool-price">
+                        $19 <small>one-time</small>
+                    </div>
+                    <p class="tool-description">
+                        Quickly turn your I-94 travel records into a clean, USCIS-ready travel history worksheet. Great if you only need help organizing past entries and exits.
+                    </p>
+                    <button class="btn-tool" onclick="handleToolPurchase('travel_history')">
+                        <i class="fas fa-shopping-cart me-2"></i>Purchase for $19
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- FAQ Section -->
@@ -606,12 +786,63 @@
             </p>
         </div>
     </div>
+
+    <!-- Legal Disclaimer Modal (shown before checkout) -->
+    <div class="modal fade" id="legalDisclaimerModal" tabindex="-1" aria-labelledby="legalDisclaimerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #FEF3C7; border-bottom: 2px solid #F59E0B;">
+                    <h5 class="modal-title" id="legalDisclaimerLabel" style="color: #92400E; font-weight: 700;">
+                        <i class="fas fa-exclamation-triangle me-2" style="color: #D97706;"></i>Important: Please Read Before Purchase
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 2rem;">
+                    <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px;">
+                        <h6 style="color: #92400E; font-weight: 700; margin-bottom: 0.75rem;">
+                            <i class="fas fa-gavel me-2"></i>NOT LEGAL ADVICE
+                        </h6>
+                        <p style="color: #78350F; font-size: 0.95rem; line-height: 1.7; margin: 0;">
+                            <strong>ImmigrationTemplates.com is a software tool, not a law firm.</strong> We do not provide legal advice, legal representation, or immigration consulting services.
+                        </p>
+                    </div>
+
+                    <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 1rem;">By clicking "I Understand & Agree" below, you acknowledge that:</h6>
+
+                    <ul style="color: #475569; font-size: 0.95rem; line-height: 1.8; padding-left: 1.5rem;">
+                        <li><strong>Our checklists, templates, and tools are for informational purposes only</strong> and do not constitute legal advice</li>
+                        <li><strong>You are solely responsible</strong> for your own immigration application, filing decisions, and case outcomes</li>
+                        <li><strong>We strongly recommend consulting with a licensed immigration attorney</strong> for case-specific guidance, especially if you have complicating factors (criminal history, prior denials, etc.)</li>
+                        <li><strong>ImmigrationTemplates.com is not liable</strong> for any outcomes, denials, RFEs, or delays related to your immigration case</li>
+                        <li><strong>If you start an application and get stuck or confused,</strong> please consult an attorney rather than proceeding incorrectly</li>
+                        <li><strong>This purchase is non-refundable after 30 days,</strong> and refunds are issued at our discretion</li>
+                    </ul>
+
+                    <div class="form-check mt-4" style="background: #F1F5F9; padding: 1rem; border-radius: 8px;">
+                        <input class="form-check-input" type="checkbox" id="acceptDisclaimerCheckbox" style="margin-top: 0.5rem;">
+                        <label class="form-check-label" for="acceptDisclaimerCheckbox" style="color: #1e293b; font-weight: 600; font-size: 0.95rem;">
+                            I have read and understand this disclaimer. I accept that ImmigrationTemplates.com is a software tool, not a law firm, and does not provide legal advice.
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="proceedToCheckoutBtn" disabled style="background: var(--accent-navy); border: none;">
+                        <i class="fas fa-check-circle me-2"></i>I Understand & Agree - Proceed to Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
     <script>
         // User logged in status
         const isUserLoggedIn = {{ 'true' if user else 'false' }};
+        let currentPlan = null;  // Store the plan user is trying to purchase
 
         function handlePurchase(plan) {
             console.log('Purchase clicked for plan:', plan);
@@ -623,8 +854,21 @@
                 return;
             }
 
-            // User is logged in
-            const button = event.target;
+            // Store the plan and show disclaimer modal
+            currentPlan = plan;
+            const modal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'));
+            modal.show();
+
+            // Reset checkbox and button state
+            document.getElementById('acceptDisclaimerCheckbox').checked = false;
+            document.getElementById('proceedToCheckoutBtn').disabled = true;
+        }
+
+        function proceedToCheckout() {
+            if (!currentPlan) return;
+
+            const plan = currentPlan;
+            const button = document.getElementById('proceedToCheckoutBtn');
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
 
@@ -647,9 +891,7 @@
                     } else {
                         alert('Error: No checkout URL received');
                         button.disabled = false;
-                        button.innerHTML = plan === 'complete'
-                            ? '<i class="fas fa-shopping-cart me-2"></i>Get Complete Package - $199'
-                            : '<i class="fas fa-briefcase me-2"></i>Start Agency Plan';
+                        button.innerHTML = '<i class="fas fa-check-circle me-2"></i>I Understand & Agree - Proceed to Payment';
                     }
                 },
                 error: function(xhr) {
@@ -657,14 +899,24 @@
                     const errorMsg = xhr.responseJSON?.error || 'Error creating checkout session. Please try again.';
                     alert(errorMsg);
                     button.disabled = false;
-                    button.innerHTML = plan === 'complete'
-                        ? '<i class="fas fa-shopping-cart me-2"></i>Get Complete Package - $199'
-                        : '<i class="fas fa-briefcase me-2"></i>Start Agency Plan';
+                    button.innerHTML = '<i class="fas fa-check-circle me-2"></i>I Understand & Agree - Proceed to Payment';
                 }
             });
         }
 
         $(document).ready(function() {
+            // Enable/disable proceed button based on checkbox
+            $('#acceptDisclaimerCheckbox').change(function() {
+                $('#proceedToCheckoutBtn').prop('disabled', !this.checked);
+            });
+
+            // Handle proceed to checkout button click
+            $('#proceedToCheckoutBtn').click(function() {
+                // Close modal and proceed
+                bootstrap.Modal.getInstance(document.getElementById('legalDisclaimerModal')).hide();
+                proceedToCheckout();
+            });
+
             // Logout handler
             $('#logoutBtn').click(function() {
                 $.post('/api/auth/logout', function() {
@@ -677,5 +929,58 @@
                 window.location.href = '/login';
             });
         });
+
+        // Handle standalone tool purchase
+        function handleToolPurchase(toolType) {
+            console.log('Tool purchase clicked:', toolType);
+
+            // Check if user is logged in
+            if (!isUserLoggedIn) {
+                window.location.href = '/login?redirect=/pricing';
+                return;
+            }
+
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+            $.ajax({
+                url: '/api/create-tool-checkout',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ tool_type: toolType }),
+                success: function(response) {
+                    console.log('Tool checkout session created:', response);
+                    if (response.checkout_url) {
+                        window.location.href = response.checkout_url;
+                    } else {
+                        alert('Error: No checkout URL received');
+                        button.disabled = false;
+                        button.innerHTML = originalText;
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Tool checkout error:', xhr);
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+
+                    const errorResponse = xhr.responseJSON;
+                    if (errorResponse) {
+                        // Handle specific errors
+                        if (errorResponse.redirect_url) {
+                            // User already has access
+                            if (confirm(errorResponse.message + '\n\nGo to tool now?')) {
+                                window.location.href = errorResponse.redirect_url;
+                            }
+                        } else {
+                            alert(errorResponse.error || 'Error creating checkout session. Please try again.');
+                        }
+                    } else {
+                        alert('Error creating checkout session. Please try again.');
+                    }
+                }
+            });
+        }
     </script>
 {% endblock %}

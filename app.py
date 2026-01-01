@@ -7,6 +7,7 @@ from functools import wraps
 import stripe
 import json
 import os
+import re
 from datetime import datetime
 from config import Config
 from models import db, User, ImmigrationForm, Subscription, EnterpriseSettings, FormTemplate
@@ -254,20 +255,38 @@ def get_documents():
         forms = ImmigrationForm.query.all()
         documents = []
 
+        # Free trial forms - Full access without login
+        FREE_TRIAL_FORMS = ['I-130', 'I-485', 'N-400']
+
         for form in forms:
             form_dict = form.to_dict()
 
+            # Extract form number from title (e.g., "Form I-130 - Description" -> "I-130")
+            form_number_match = re.search(r'Form\s+([\w-]+)', form.title)
+            form_number = form_number_match.group(1) if form_number_match else ''
+
+            # Check if this is a free trial form
+            is_free_trial = form_number in FREE_TRIAL_FORMS
+
             # Access control logic:
-            # 1. Free tier forms show PREVIEW to anonymous users, FULL to logged-in users
-            # 2. Paid tier forms require login AND appropriate subscription
+            # 1. Free trial forms (I-130, I-485, N-400) - FULL access to everyone (no login needed)
+            # 2. Other free tier forms show PREVIEW to anonymous users, FULL to logged-in users
+            # 3. Paid tier forms require login AND appropriate subscription
             if form.access_level == 'free':
-                if user:
-                    # Logged in users get full access to free forms
+                if is_free_trial:
+                    # Anonymous users get FULL access to I-130, I-485, N-400
                     form_dict['has_access'] = True
                     form_dict['requires_login'] = False
                     form_dict['is_preview'] = False
+                    form_dict['is_free_trial'] = True
+                elif user:
+                    # Logged in users get full access to all free forms
+                    form_dict['has_access'] = True
+                    form_dict['requires_login'] = False
+                    form_dict['is_preview'] = False
+                    form_dict['is_free_trial'] = False
                 else:
-                    # Anonymous users get preview (first 3 items)
+                    # Anonymous users get preview (first 3 items) for other forms
                     checklist = form.get_checklist()
                     if checklist and len(checklist) > 3:
                         form_dict['checklist'] = checklist[:3]  # Only first 3 items
@@ -278,11 +297,13 @@ def get_documents():
                         form_dict['is_preview'] = False
                     form_dict['has_access'] = True  # Can still view modal
                     form_dict['requires_login'] = True  # But needs login for full list
+                    form_dict['is_free_trial'] = False
             elif user and user.can_access_form(form):
                 # User is logged in and has appropriate subscription
                 form_dict['has_access'] = True
                 form_dict['requires_login'] = False
                 form_dict['is_preview'] = False
+                form_dict['is_free_trial'] = False
             elif user:
                 # User is logged in but needs to upgrade
                 form_dict['has_access'] = False
@@ -290,12 +311,14 @@ def get_documents():
                 form_dict['requires_upgrade'] = True
                 form_dict['is_preview'] = False
                 form_dict['checklist'] = []  # Hide checklist
+                form_dict['is_free_trial'] = False
             else:
                 # User not logged in - needs to sign up
                 form_dict['has_access'] = False
                 form_dict['requires_login'] = True
                 form_dict['is_preview'] = False
                 form_dict['checklist'] = []  # Hide checklist
+                form_dict['is_free_trial'] = False
 
             form_dict['required_tier'] = form.access_level
             documents.append(form_dict)
@@ -313,15 +336,31 @@ def get_document(doc_id):
 
     form_dict = form.to_dict()
 
+    # Free trial forms - Full access without login
+    FREE_TRIAL_FORMS = ['I-130', 'I-485', 'N-400']
+
+    # Extract form number from title (e.g., "Form I-130 - Description" -> "I-130")
+    form_number_match = re.search(r'Form\s+([\w-]+)', form.title)
+    form_number = form_number_match.group(1) if form_number_match else ''
+
+    is_free_trial = form_number in FREE_TRIAL_FORMS
+
     # Access control - free forms show preview to anonymous, full to logged-in
     if form.access_level == 'free':
-        if user:
-            # Logged in users get full access to free forms
+        if is_free_trial:
+            # Anonymous users get FULL access to I-130, I-485, N-400
             form_dict['has_access'] = True
             form_dict['requires_login'] = False
             form_dict['is_preview'] = False
+            form_dict['is_free_trial'] = True
+        elif user:
+            # Logged in users get full access to all free forms
+            form_dict['has_access'] = True
+            form_dict['requires_login'] = False
+            form_dict['is_preview'] = False
+            form_dict['is_free_trial'] = False
         else:
-            # Anonymous users get preview (first 3 items)
+            # Anonymous users get preview (first 3 items) for other free forms
             checklist = form.get_checklist()
             if checklist and len(checklist) > 3:
                 form_dict['checklist'] = checklist[:3]
@@ -332,16 +371,19 @@ def get_document(doc_id):
                 form_dict['is_preview'] = False
             form_dict['has_access'] = True
             form_dict['requires_login'] = True
+            form_dict['is_free_trial'] = False
     elif user and user.can_access_form(form):
         # User has appropriate subscription
         form_dict['has_access'] = True
         form_dict['requires_login'] = False
         form_dict['is_preview'] = False
+        form_dict['is_free_trial'] = False
     else:
         # Access denied
         form_dict['has_access'] = False
         form_dict['is_preview'] = False
         form_dict['checklist'] = []
+        form_dict['is_free_trial'] = False
 
         if not user:
             # Not logged in
@@ -727,65 +769,282 @@ def create_portal_session():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/create-tool-checkout', methods=['POST'])
+@login_required
+def create_tool_checkout():
+    """Create Stripe checkout session for one-time tool purchase"""
+    from models import OneTimePurchase
+
+    data = request.json
+    tool_type = data.get('tool_type')  # passport, pdf_evidence_pack, travel_history
+
+    if tool_type not in Config.DOCUMENT_TYPES:
+        return jsonify({'error': 'Invalid tool type'}), 400
+
+    tool_info = Config.DOCUMENT_TYPES[tool_type]
+    price_id = tool_info.get('price_id')
+
+    if not price_id:
+        return jsonify({'error': 'Price ID not configured for this tool'}), 500
+
+    user = get_current_user()
+
+    # Check if user already has Complete Package or Agency tier (these include all tools)
+    if user.subscription_tier in ['complete', 'agency', 'basic', 'pro', 'enterprise'] and user.subscription_status == 'active':
+        return jsonify({
+            'error': 'Tool already included in your subscription',
+            'message': f'This tool is already included in your {user.subscription_tier.title()} subscription. No additional purchase needed!',
+            'redirect_url': tool_info.get('redirect_url', '/dashboard')
+        }), 400
+
+    # Check if user already purchased this specific tool
+    existing_purchase = OneTimePurchase.query.filter_by(
+        user_id=user.id,
+        tool_type=tool_type,
+        status='completed'
+    ).first()
+
+    if existing_purchase:
+        return jsonify({
+            'error': 'Tool already purchased',
+            'message': f'You already purchased this tool on {existing_purchase.completed_at.strftime("%B %d, %Y")}. You have lifetime access!',
+            'redirect_url': tool_info.get('redirect_url', '/dashboard')
+        }), 400
+
+    try:
+        # Create or get Stripe customer
+        if not user.stripe_customer_id:
+            customer = stripe.Customer.create(
+                email=user.email,
+                metadata={'user_id': user.id, 'clerk_user_id': user.clerk_user_id}
+            )
+            user.stripe_customer_id = customer.id
+            db.session.commit()
+
+        # Create checkout session for one-time payment
+        checkout_session = stripe.checkout.Session.create(
+            customer=user.stripe_customer_id,
+            payment_method_types=['card'],
+            line_items=[{
+                'price': price_id,
+                'quantity': 1,
+            }],
+            mode='payment',  # One-time payment
+            success_url=request.host_url + f'dashboard?tool_purchased={tool_type}',
+            cancel_url=request.host_url + 'pricing?canceled=true',
+            metadata={
+                'user_id': user.id,
+                'tool_type': tool_type,
+                'purchase_type': 'one_time_tool'
+            }
+        )
+
+        # Create pending purchase record
+        purchase = OneTimePurchase(
+            user_id=user.id,
+            tool_type=tool_type,
+            price_paid=tool_info['price'],
+            status='pending'
+        )
+        db.session.add(purchase)
+        db.session.commit()
+
+        return jsonify({'checkout_url': checkout_session.url})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/user/purchased-tools', methods=['GET'])
+@login_required
+def get_purchased_tools():
+    """Get list of tools user has purchased or has access to"""
+    from models import OneTimePurchase
+
+    user = get_current_user()
+
+    # If user has Complete Package or Agency, they have access to all tools
+    if user.subscription_tier in ['complete', 'agency', 'basic', 'pro', 'enterprise'] and user.subscription_status == 'active':
+        return jsonify({
+            'has_all_tools': True,
+            'via_subscription': user.subscription_tier,
+            'tools': list(Config.DOCUMENT_TYPES.keys())
+        })
+
+    # Otherwise, check for individual purchases
+    purchases = OneTimePurchase.query.filter_by(
+        user_id=user.id,
+        status='completed'
+    ).all()
+
+    purchased_tools = [p.tool_type for p in purchases]
+
+    return jsonify({
+        'has_all_tools': False,
+        'via_subscription': None,
+        'tools': purchased_tools,
+        'purchases': [p.to_dict() for p in purchases]
+    })
+
 @app.route('/api/stripe/webhook', methods=['POST'])
 def stripe_webhook():
     """Handle Stripe webhooks"""
     payload = request.data
     sig_header = request.headers.get('Stripe-Signature')
 
+    print(f"\n{'='*60}")
+    print(f"[WEBHOOK RECEIVED] Stripe webhook incoming")
+    print(f"{'='*60}")
+
     # Verify webhook signature if secret is configured
     if Config.STRIPE_WEBHOOK_SECRET:
+        print(f"[WEBHOOK] Verifying signature with webhook secret...")
         try:
             event = stripe.Webhook.construct_event(
                 payload, sig_header, Config.STRIPE_WEBHOOK_SECRET
             )
-        except ValueError:
+            print(f"[WEBHOOK] ✓ Signature verified successfully")
+        except ValueError as e:
+            print(f"[WEBHOOK ERROR] Invalid payload: {e}")
             return jsonify({'error': 'Invalid payload'}), 400
-        except stripe.error.SignatureVerificationError:
+        except stripe.error.SignatureVerificationError as e:
+            print(f"[WEBHOOK ERROR] Invalid signature: {e}")
             return jsonify({'error': 'Invalid signature'}), 400
     else:
+        print(f"[WEBHOOK WARNING] No webhook secret configured - using dev mode (no signature verification)")
         # No webhook secret configured - parse payload directly (dev only!)
         try:
             event = json.loads(payload)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            print(f"[WEBHOOK ERROR] Invalid JSON: {e}")
             return jsonify({'error': 'Invalid JSON'}), 400
 
+    event_type = event['type']
+    print(f"[WEBHOOK] Event type: {event_type}")
+
     # Handle different event types
-    if event['type'] == 'checkout.session.completed':
+    if event_type == 'checkout.session.completed':
         session = event['data']['object']
+        print(f"[WEBHOOK] Handling checkout.session.completed")
         handle_checkout_completed(session)
 
-    elif event['type'] == 'customer.subscription.updated':
+    elif event_type == 'customer.subscription.updated':
         subscription = event['data']['object']
+        print(f"[WEBHOOK] Handling customer.subscription.updated")
         handle_subscription_updated(subscription)
 
-    elif event['type'] == 'customer.subscription.deleted':
+    elif event_type == 'customer.subscription.deleted':
         subscription = event['data']['object']
+        print(f"[WEBHOOK] Handling customer.subscription.deleted")
         handle_subscription_deleted(subscription)
+    else:
+        print(f"[WEBHOOK] Unhandled event type: {event_type}")
 
+    print(f"[WEBHOOK] Returning success response")
+    print(f"{'='*60}\n")
     return jsonify({'success': True})
 
 def handle_checkout_completed(session):
-    """Handle successful checkout"""
-    user_id = session['metadata'].get('user_id')
-    tier = session['metadata'].get('tier')
-    subscription_id = session.get('subscription')
+    """Handle successful checkout - both subscriptions and one-time payments"""
+    from models import OneTimePurchase
+    from datetime import datetime
 
-    user = User.query.get(user_id)
-    if user:
-        user.subscription_tier = tier
-        user.subscription_status = 'active'
-        user.stripe_subscription_id = subscription_id
+    try:
+        user_id = session['metadata'].get('user_id')
+        purchase_type = session['metadata'].get('purchase_type')  # 'one_time_tool' or None (subscription)
+        tier = session['metadata'].get('tier')
+        tool_type = session['metadata'].get('tool_type')  # For tool purchases
+        pricing_type = session['metadata'].get('pricing_type', 'subscription')
+        subscription_id = session.get('subscription')  # Will be None for one-time payments
+        payment_intent = session.get('payment_intent')  # For one-time payments
+        customer_id = session.get('customer')
 
-        # Create subscription record
-        sub = Subscription(
-            user_id=user.id,
-            tier=tier,
-            status='active',
-            stripe_subscription_id=subscription_id
-        )
-        db.session.add(sub)
-        db.session.commit()
+        print(f"[WEBHOOK] Processing checkout:")
+        print(f"  - user_id={user_id}")
+        print(f"  - purchase_type={purchase_type}")
+        print(f"  - tier={tier}")
+        print(f"  - tool_type={tool_type}")
+        print(f"  - pricing_type={pricing_type}")
+        print(f"  - subscription_id={subscription_id}")
+        print(f"  - payment_intent={payment_intent}")
+        print(f"  - customer_id={customer_id}")
+
+        if not user_id:
+            print(f"[WEBHOOK ERROR] No user_id in session metadata: {session['metadata']}")
+            return
+
+        user = User.query.get(user_id)
+        if not user:
+            print(f"[WEBHOOK ERROR] User not found: user_id={user_id}")
+            return
+
+        # Update customer ID if not set
+        if not user.stripe_customer_id and customer_id:
+            user.stripe_customer_id = customer_id
+
+        # Handle one-time tool purchases
+        if purchase_type == 'one_time_tool' and tool_type:
+            print(f"[WEBHOOK] Processing one-time tool purchase: {tool_type}")
+
+            # Find the pending purchase record
+            purchase = OneTimePurchase.query.filter_by(
+                user_id=user.id,
+                tool_type=tool_type,
+                status='pending'
+            ).order_by(OneTimePurchase.purchased_at.desc()).first()
+
+            if purchase:
+                purchase.status = 'completed'
+                purchase.stripe_payment_intent_id = payment_intent
+                purchase.completed_at = datetime.utcnow()
+                db.session.commit()
+                print(f"[WEBHOOK SUCCESS] Tool purchase completed: {tool_type} for user {user.email}")
+            else:
+                print(f"[WEBHOOK WARNING] No pending purchase found for tool {tool_type}, creating new record")
+                # Create new purchase record if somehow missing
+                purchase = OneTimePurchase(
+                    user_id=user.id,
+                    tool_type=tool_type,
+                    price_paid=Config.DOCUMENT_TYPES.get(tool_type, {}).get('price', 0),
+                    stripe_payment_intent_id=payment_intent,
+                    status='completed',
+                    completed_at=datetime.utcnow()
+                )
+                db.session.add(purchase)
+                db.session.commit()
+                print(f"[WEBHOOK SUCCESS] Tool purchase record created: {tool_type}")
+
+        # Handle subscription purchases (Complete Package or Agency)
+        elif tier:
+            print(f"[WEBHOOK] Updating user {user.email} from {user.subscription_tier} to {tier}")
+
+            # Update user subscription
+            user.subscription_tier = tier
+            user.subscription_status = 'active'
+
+            # Set subscription ID only if it exists (for recurring subscriptions)
+            if subscription_id:
+                user.stripe_subscription_id = subscription_id
+
+            # Create subscription record
+            sub = Subscription(
+                user_id=user.id,
+                tier=tier,
+                status='active',
+                stripe_subscription_id=subscription_id  # Will be None for one-time payments, which is fine
+            )
+            db.session.add(sub)
+            db.session.commit()
+
+            print(f"[WEBHOOK SUCCESS] User {user.email} upgraded to {tier}!")
+            print(f"  - New tier: {user.subscription_tier}")
+            print(f"  - Status: {user.subscription_status}")
+
+    except Exception as e:
+        print(f"[WEBHOOK ERROR] Failed to process checkout: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        db.session.rollback()
+        raise
 
 def handle_subscription_updated(subscription):
     """Handle subscription updates"""
@@ -938,15 +1197,9 @@ def template_personal_declaration():
     return render_template('form_personal_declaration.html', user=user)
 
 @app.route('/templates/uscis-cover-letter')
-@login_required
 def template_cover_letter():
-    """USCIS Cover Letter Template"""
+    """USCIS Cover Letter Template - FREE template, no login required"""
     user = get_current_user()
-
-    # Basic tier required
-    if user.subscription_tier == 'free':
-        return redirect('/pricing')
-
     return render_template('form_uscis_cover_letter.html', user=user)
 
 @app.route('/templates/evidence-index')
@@ -964,12 +1217,12 @@ def template_evidence_index():
 @app.route('/templates/retainer-agreement')
 @login_required
 def template_retainer():
-    """Attorney-Client Retainer Agreement Template"""
+    """Attorney-Client Retainer Agreement Template - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required (professional/attorney tool)
+    allowed_tiers = ['agency', 'pro', 'enterprise']  # Include legacy tiers for backward compatibility
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_retainer_agreement.html', user=user)
@@ -977,12 +1230,12 @@ def template_retainer():
 @app.route('/templates/employer-letter')
 @login_required
 def template_employer_letter():
-    """Employer Support Letter Template"""
+    """Employer Support Letter Template - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required
+    allowed_tiers = ['agency', 'pro', 'enterprise']
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_employer_letter.html', user=user)
@@ -1002,12 +1255,12 @@ def template_marriage_bona_fide():
 @app.route('/templates/hardship-declaration')
 @login_required
 def template_hardship_declaration():
-    """Extreme Hardship Declaration (I-601/I-601A) Template"""
+    """Extreme Hardship Declaration (I-601/I-601A) Template - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required
+    allowed_tiers = ['agency', 'pro', 'enterprise']
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_hardship_declaration.html', user=user)
@@ -1015,12 +1268,12 @@ def template_hardship_declaration():
 @app.route('/templates/rfe-response')
 @login_required
 def template_rfe_response():
-    """RFE Response Cover Letter Template"""
+    """RFE Response Cover Letter Template - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required
+    allowed_tiers = ['agency', 'pro', 'enterprise']
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_rfe_response.html', user=user)
@@ -1052,12 +1305,12 @@ def template_spouse_affidavit():
 @app.route('/templates/hardship-worksheet')
 @login_required
 def template_hardship_worksheet():
-    """Extreme Hardship Worksheet Template"""
+    """Extreme Hardship Worksheet Template - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required (attorney tool)
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required (attorney tool)
+    allowed_tiers = ['agency', 'pro', 'enterprise']
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_extreme_hardship_worksheet.html', user=user)
@@ -1083,12 +1336,12 @@ def template_affidavit_support():
 @app.route('/templates/client-intake-employment')
 @login_required
 def template_client_intake_employment():
-    """Client Intake Questionnaire (Employment-Based) - PRO tier"""
+    """Client Intake Questionnaire (Employment-Based) - Agency Plan"""
     user = get_current_user()
 
-    # Pro tier required
-    tier_hierarchy = {'free': 0, 'basic': 1, 'pro': 2, 'enterprise': 3}
-    if tier_hierarchy.get(user.subscription_tier, 0) < 2:
+    # Agency tier required
+    allowed_tiers = ['agency', 'pro', 'enterprise']
+    if user.subscription_tier not in allowed_tiers:
         return redirect('/pricing')
 
     return render_template('form_client_intake_employment.html', user=user)

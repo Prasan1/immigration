@@ -339,10 +339,12 @@
         // Map internal tier names to display names
         function getTierDisplayName(internalName) {
             const tierNames = {
-                'free': 'Solo',
-                'basic': 'Professional',
-                'pro': 'Team',
-                'enterprise': 'Business'
+                'free': 'Free Starter',
+                'basic': 'Complete Package',
+                'complete': 'Complete Package',
+                'pro': 'Immigration Preparer',
+                'agency': 'Immigration Preparer',
+                'enterprise': 'Immigration Preparer'
             };
             return tierNames[internalName] || internalName;
         }
@@ -448,10 +450,12 @@
 
         function getTierBadge(tier) {
             const badges = {
-                'free': { text: 'SOLO', class: 'badge-free' },
-                'basic': { text: 'PROFESSIONAL', class: 'badge-professional' },
-                'pro': { text: 'TEAM', class: 'badge-team' },
-                'enterprise': { text: 'BUSINESS', class: 'badge-business' }
+                'free': { text: 'FREE', class: 'badge-free' },
+                'basic': { text: 'COMPLETE PACKAGE', class: 'badge-professional' },
+                'complete': { text: 'COMPLETE PACKAGE', class: 'badge-professional' },
+                'pro': { text: 'AGENCY', class: 'badge-team' },
+                'agency': { text: 'AGENCY', class: 'badge-team' },
+                'enterprise': { text: 'AGENCY', class: 'badge-business' }
             };
             return badges[tier] || badges['free'];
         }
