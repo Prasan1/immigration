@@ -267,21 +267,76 @@
         <div class="container text-center">
             <h1><i class="fas fa-file-archive"></i> PDF File Compressor</h1>
             <p class="lead">Reduce PDF file sizes for immigration applications (DS-260, DS-160, I-485, etc.)</p>
-            <p class="mb-0">Free tier: 5 compressions/month • Premium unlimited: Get Complete Package</p>
+            <p class="mb-0">Premium feature included with Complete Package & Agency plans</p>
         </div>
     </div>
 
     <div class="container main-container">
-        {% if user %}
-            {% if usage_info %}
-                {% if usage_info.tier == 'premium' %}
-                    <div class="usage-badge unlimited">
-                        <i class="fas fa-check-circle"></i> Unlimited Premium Compression Available ({{ usage_info.tier|title }} Subscription)
+        {% if show_upgrade %}
+            <!-- Upgrade Prompt for Free Users -->
+            <div class="info-card text-center" style="max-width: 800px; margin: 0 auto; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 2px solid var(--brand-purple);">
+                <i class="fas fa-lock" style="font-size: 4rem; color: var(--brand-purple); margin-bottom: 1.5rem;"></i>
+                <h2 style="color: var(--text-dark); margin-bottom: 1rem;">File Compressor - Premium Feature</h2>
+                <p class="lead text-muted mb-4">
+                    The PDF file compressor is available exclusively with our paid plans. Compress unlimited PDFs up to 50MB with premium quality (70-85% reduction).
+                </p>
+
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                            <i class="fas fa-infinity" style="font-size: 2rem; color: var(--brand-purple); margin-bottom: 1rem;"></i>
+                            <h5>Unlimited Compressions</h5>
+                            <p class="text-muted mb-0 small">No monthly limits - compress as many files as you need</p>
+                        </div>
                     </div>
-                {% else %}
+                    <div class="col-md-6 mb-3">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--success-green); margin-bottom: 1rem;"></i>
+                            <h5>Premium Quality</h5>
+                            <p class="text-muted mb-0 small">70-85% file size reduction with excellent quality retention</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                            <i class="fas fa-file" style="font-size: 2rem; color: #4facfe; margin-bottom: 1rem;"></i>
+                            <h5>Large File Support</h5>
+                            <p class="text-muted mb-0 small">Compress files up to 50MB - perfect for scanned immigration documents</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                            <i class="fas fa-star" style="font-size: 2rem; color: #FFD700; margin-bottom: 1rem;"></i>
+                            <h5>Plus All Premium Features</h5>
+                            <p class="text-muted mb-0 small">Checklists, cover letter templates, I-94 generator, and more</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="/pricing" class="btn btn-lg" style="background: var(--accent-navy); color: white; border: none; padding: 15px 50px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);">
+                    <i class="fas fa-arrow-up me-2"></i>Upgrade to Complete Package
+                </a>
+                <p class="mt-3 text-muted small mb-0">One-time payment of $199 • Lifetime access • 30-day money-back guarantee</p>
+            </div>
+        {% elif user %}
+            {% if usage_info %}
+                {% if usage_info.tier in ['agency', 'premium', 'basic', 'pro', 'enterprise'] %}
+                    <div class="usage-badge unlimited">
+                        <i class="fas fa-check-circle"></i> Unlimited Premium Compression Available
+                    </div>
+                {% elif usage_info.tier == 'complete' %}
+                    {% if usage_info.remaining > 0 %}
+                    <div class="usage-badge" style="background: #E0E7FF; border-color: #667eea; color: #3730A3;">
+                        <i class="fas fa-layer-group"></i> {{ usage_info.remaining }} of {{ usage_info.limit }} compressions remaining (Complete Package)
+                    </div>
+                    {% else %}
+                    <div class="usage-badge" style="background: #FEE2E2; border-color: #DC2626; color: #991B1B;">
+                        <i class="fas fa-exclamation-triangle"></i> All {{ usage_info.limit }} compressions used. <a href="/pricing" style="color: #991B1B; text-decoration: underline;">Upgrade to Agency</a> for unlimited.
+                    </div>
+                    {% endif %}
+                {% elif usage_info.tier == 'pdf_evidence_pack' %}
                     <div class="usage-badge">
-                        <i class="fas fa-info-circle"></i>
-                        Free Tier: {{ usage_info.remaining }} of {{ usage_info.limit }} compressions remaining this month
+                        <i class="fas fa-file-pdf"></i>
+                        PDF Evidence Pack: {{ usage_info.remaining }} of {{ usage_info.limit }} compressions remaining (lifetime)
                     </div>
                 {% endif %}
             {% endif %}
@@ -309,11 +364,15 @@
                 <button class="btn btn-primary btn-lg" onclick="startCompression()">
                     <i class="fas fa-compress"></i> Compress PDF Now
                 </button>
-                {% if usage_info and usage_info.tier != 'premium' and usage_info.remaining <= 0 %}
+                {% if usage_info and usage_info.tier in ['complete', 'pdf_evidence_pack'] and usage_info.remaining is not none and usage_info.remaining <= 0 %}
                     <div class="alert alert-warning mt-3">
                         <i class="fas fa-exclamation-circle"></i>
-                        You've used all 5 free compressions this month.
-                        <a href="/pricing" class="alert-link">Get Complete Package</a> for unlimited premium compression.
+                        You've used all {{ usage_info.limit }} compressions.
+                        {% if usage_info.tier == 'complete' %}
+                            <a href="/pricing" class="alert-link">Upgrade to Agency</a> for unlimited compressions.
+                        {% else %}
+                            <a href="/pricing" class="alert-link">Upgrade to Complete Package or Agency</a> for more compressions.
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -329,25 +388,64 @@
         {% else %}
             <!-- Not logged in -->
             <div class="info-card text-center">
-                <h3 class="mb-4">Please sign in to use the file compressor</h3>
-                <p class="text-muted mb-4">Free compression available to all users (5 files/month)</p>
+                <h3 class="mb-4">PDF File Compressor - Premium Feature</h3>
+                <p class="text-muted mb-4">Sign in to purchase the PDF & Evidence Pack ($29 one-time) or upgrade to Complete Package ($199) for unlimited compressions</p>
                 <a href="/login" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
+                    <i class="fas fa-sign-in-alt me-2"></i> Sign In to Get Started
                 </a>
+                <p class="mt-3 text-muted small">New user? <a href="/login">Create an account</a> to get started</p>
             </div>
         {% endif %}
 
         <!-- Info Section -->
-        <div class="info-card">
-            <h4 class="mb-3"><i class="fas fa-question-circle"></i> Why compress PDF files?</h4>
-            <p>Many immigration portals have strict file size limits:</p>
-            <ul>
-                <li><strong>DS-260 / DS-160:</strong> 2MB per document</li>
-                <li><strong>I-485 / N-400:</strong> 5MB per file</li>
-                <li><strong>Canadian Immigration:</strong> 4MB limit</li>
-                <li><strong>UK Visa Applications:</strong> 2MB per document</li>
-            </ul>
-            <p class="mb-0">Our compressor reduces file sizes while maintaining quality for submission.</p>
+        <div class="info-card" style="max-width: 800px; margin: 2rem auto 0; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 2px solid var(--brand-purple);">
+            <div class="text-center mb-4">
+                <i class="fas fa-question-circle" style="font-size: 3rem; color: var(--brand-purple); margin-bottom: 1rem;"></i>
+                <h2 style="color: var(--text-dark); margin-bottom: 1rem;">Why compress PDF files?</h2>
+                <p class="lead text-muted">Many immigration portals have strict file size limits:</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                        <h5 style="color: var(--accent-navy); margin-bottom: 1rem;">
+                            <i class="fas fa-passport me-2"></i>DS-260 / DS-160
+                        </h5>
+                        <p class="text-muted mb-0"><strong>2MB per document</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                        <h5 style="color: var(--accent-navy); margin-bottom: 1rem;">
+                            <i class="fas fa-id-card me-2"></i>I-485 / N-400
+                        </h5>
+                        <p class="text-muted mb-0"><strong>5MB per file</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                        <h5 style="color: var(--accent-navy); margin-bottom: 1rem;">
+                            <i class="fas fa-maple-leaf me-2"></i>Canadian Immigration
+                        </h5>
+                        <p class="text-muted mb-0"><strong>4MB limit</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
+                        <h5 style="color: var(--accent-navy); margin-bottom: 1rem;">
+                            <i class="fas fa-flag me-2"></i>UK Visa Applications
+                        </h5>
+                        <p class="text-muted mb-0"><strong>2MB per document</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="lead mb-0" style="color: var(--text-dark);">
+                    <i class="fas fa-check-circle me-2" style="color: var(--success-green);"></i>
+                    Our compressor reduces file sizes while maintaining quality for submission.
+                </p>
+            </div>
         </div>
     </div>
 
@@ -474,6 +572,7 @@
                 if (response.ok) {
                     alert('Compression completed successfully!');
                     loadRecentJobs();
+                    refreshUsageInfo();  // Update compression count
                     resetUpload();
                 } else {
                     alert(data.error || 'Compression failed');
@@ -563,6 +662,28 @@
 
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        async function refreshUsageInfo() {
+            try {
+                const response = await fetch('/api/file-compressor/usage');
+                const usageInfo = await response.json();
+
+                // Update usage badge if user is on Complete Package
+                if (usageInfo.tier === 'complete') {
+                    const usageBadge = document.querySelector('.usage-badge');
+                    if (usageBadge && usageInfo.remaining > 0) {
+                        usageBadge.innerHTML = `<i class="fas fa-layer-group"></i> ${usageInfo.remaining} of ${usageInfo.limit} compressions remaining (Complete Package)`;
+                    } else if (usageBadge && usageInfo.remaining <= 0) {
+                        usageBadge.style.background = '#FEE2E2';
+                        usageBadge.style.borderColor = '#DC2626';
+                        usageBadge.style.color = '#991B1B';
+                        usageBadge.innerHTML = `<i class="fas fa-exclamation-triangle"></i> All ${usageInfo.limit} compressions used. <a href="/pricing" style="color: #991B1B; text-decoration: underline;">Upgrade to Agency</a> for unlimited.`;
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to refresh usage info:', error);
+            }
         }
     </script>
 {% endblock %}

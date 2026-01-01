@@ -128,11 +128,17 @@ def register_file_compressor_routes(app, limiter):
         """File compressor page (PAID PLANS ONLY)"""
         user = get_current_user()
 
-        # Check if user has access (paid plans only)
+        # Check if user has access (paid plans OR standalone purchase)
         if user and user.subscription_tier == 'free':
-            # Free users see upgrade prompt
+            # Check if free user purchased PDF Evidence Pack
             usage_info = check_compression_limits(user)
-            return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info, show_upgrade=True)
+
+            # If they have standalone access, don't show upgrade prompt
+            if usage_info.get('allowed'):
+                return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info, show_upgrade=False)
+            else:
+                # Free users without purchase see upgrade prompt
+                return render_template('file_compressor.html', user=user, config=Config, usage_info=usage_info, show_upgrade=True)
 
         # Get usage info for paid users
         usage_info = None
