@@ -271,3 +271,40 @@ class FormTemplate(db.Model):
             'use_case': self.use_case,
             'created_at': self.created_at.isoformat()
         }
+
+
+class EmailLead(db.Model):
+    """Email leads captured from landing pages"""
+    __tablename__ = 'email_leads'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), nullable=False, index=True)
+    source = db.Column(db.String(100))  # e.g., 'free-i130-checklist', 'homepage', 'blog-post'
+
+    # UTM tracking
+    utm_source = db.Column(db.String(100))  # e.g., 'facebook', 'reddit', 'google'
+    utm_medium = db.Column(db.String(100))  # e.g., 'social', 'cpc', 'organic'
+    utm_campaign = db.Column(db.String(100))  # e.g., 'free-checklist-campaign'
+
+    # Status tracking
+    status = db.Column(db.String(50), default='subscribed')  # subscribed, unsubscribed, converted_to_paid
+    converted_to_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<EmailLead {self.email} from {self.source}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'source': self.source,
+            'utm_source': self.utm_source,
+            'utm_medium': self.utm_medium,
+            'utm_campaign': self.utm_campaign,
+            'status': self.status,
+            'created_at': self.created_at.isoformat()
+        }

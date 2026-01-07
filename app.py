@@ -10,7 +10,7 @@ import os
 import re
 from datetime import datetime
 from config import Config
-from models import db, User, ImmigrationForm, Subscription, EnterpriseSettings, FormTemplate
+from models import db, User, ImmigrationForm, Subscription, EnterpriseSettings, FormTemplate, EmailLead
 from team_models import Team, TeamMembership
 from form_guides import get_form_guide
 
@@ -84,6 +84,13 @@ try:
     register_file_compressor_routes(app, limiter)
 except Exception as e:
     print(f"WARNING: Failed to register file compressor routes: {e}", flush=True)
+
+# Register lead generation routes
+try:
+    from lead_routes import register_lead_routes
+    register_lead_routes(app, limiter)
+except Exception as e:
+    print(f"WARNING: Failed to register lead routes: {e}", flush=True)
 
 # Load branding settings for each request
 @app.before_request
