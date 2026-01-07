@@ -5,8 +5,8 @@
 {% block head %}
     <style>
         :root {
-            --brand-purple: #667eea;
-            --brand-deep-purple: #764ba2;
+            --brand-purple: #b45309;
+            --brand-deep-purple: #0f766e;
             --accent-navy: #1e293b;
             --text-dark: #111827;
             --text-muted: #6b7280;
@@ -18,34 +18,64 @@
         body {
             background: white;
             min-height: 100vh;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         /* Navbar */
         .navbar {
             background: white !important;
-            border-bottom: 1px solid var(--border-gray);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
         }
 
         .navbar-brand {
-            font-weight: 600;
+            font-weight: 800;
             color: var(--text-dark) !important;
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         .navbar .nav-link {
             color: var(--text-muted) !important;
-            font-weight: 500;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
         }
 
         .navbar .nav-link.active {
             color: var(--brand-purple) !important;
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.18) 0%, rgba(15, 118, 110, 0.18) 100%);
         }
 
         .navbar .btn-light {
             background: var(--accent-navy);
             color: white;
             border: none;
+        }
+
+        .disclaimer-note {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            border-radius: 8px;
+        }
+
+        .disclaimer-modal-header {
+            background: #e2e8f0;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        .disclaimer-modal-header .modal-title {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .disclaimer-box {
+            background: #f1f5f9;
+            border-left: 4px solid #94a3b8;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
         }
 
         /* Dark Hero Header with US Flag Watermark */
@@ -153,12 +183,12 @@
         /* Featured Card (Most Popular) */
         .pricing-card.featured {
             border: 2px solid var(--brand-purple);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 10px 30px rgba(180, 83, 9, 0.15);
             transform: scale(1.05);
         }
 
         .pricing-card.featured:hover {
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 12px 35px rgba(180, 83, 9, 0.2);
             transform: scale(1.05) translateY(-2px);
         }
 
@@ -266,7 +296,7 @@
 
         .btn-cta.btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(180, 83, 9, 0.4);
         }
 
         .btn-cta.btn-secondary {
@@ -483,7 +513,7 @@
 
         /* Money Back Guarantee Badge */
         .guarantee-badge {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%);
             border: 2px solid var(--brand-purple);
             border-radius: 12px;
             padding: 2rem;
@@ -576,7 +606,7 @@
                     Everything you need to file I-130, I-485, I-864, I-765, I-131 with confidence
                 </div>
 
-                <div class="alert alert-warning" style="margin: 1rem 0; padding: 0.75rem; font-size: 0.85rem; border-radius: 8px; background: #FFF3CD; border: 1px solid #FFC107; color: #856404;">
+                <div class="alert disclaimer-note" style="margin: 1rem 0; padding: 0.75rem; font-size: 0.85rem;">
                     <i class="fas fa-info-circle me-1"></i><strong>For Personal Use Only:</strong> This package is for individuals filing their own marriage-based green card. Commercial use (agencies/preparers filing for clients) requires the Immigration Preparer plan.
                 </div>
 
@@ -791,18 +821,18 @@
     <div class="modal fade" id="legalDisclaimerModal" tabindex="-1" aria-labelledby="legalDisclaimerLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header" style="background: #FEF3C7; border-bottom: 2px solid #F59E0B;">
-                    <h5 class="modal-title" id="legalDisclaimerLabel" style="color: #92400E; font-weight: 700;">
-                        <i class="fas fa-exclamation-triangle me-2" style="color: #D97706;"></i>Important: Please Read Before Purchase
+            <div class="modal-header disclaimer-modal-header">
+                    <h5 class="modal-title" id="legalDisclaimerLabel">
+                        <i class="fas fa-exclamation-triangle me-2" style="color: #64748b;"></i>Important: Please Read Before Purchase
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="padding: 2rem;">
-                    <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px;">
-                        <h6 style="color: #92400E; font-weight: 700; margin-bottom: 0.75rem;">
+                    <div class="disclaimer-box">
+                        <h6 style="color: #1e293b; font-weight: 700; margin-bottom: 0.75rem;">
                             <i class="fas fa-gavel me-2"></i>NOT LEGAL ADVICE
                         </h6>
-                        <p style="color: #78350F; font-size: 0.95rem; line-height: 1.7; margin: 0;">
+                        <p style="color: #334155; font-size: 0.95rem; line-height: 1.7; margin: 0;">
                             <strong>ImmigrationTemplates.com is a software tool, not a law firm.</strong> We do not provide legal advice, legal representation, or immigration consulting services.
                         </p>
                     </div>

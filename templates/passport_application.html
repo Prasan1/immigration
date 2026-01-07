@@ -9,13 +9,46 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', Georgia, serif;
+        }
+
+        .navbar {
+            background: white !important;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 800;
+            color: #0f172a !important;
+        }
+
+        .navbar .nav-link {
+            color: #475569 !important;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar .nav-link:hover {
+            color: #b45309 !important;
+            background: rgba(180, 83, 9, 0.12);
         }
 
         .hero-section {
@@ -62,7 +95,7 @@
 
         .form-control:focus, .form-select:focus {
             border-color: {{ g.branding.primary_color }};
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(180, 83, 9, 0.25);
         }
 
         .btn-primary {
@@ -82,8 +115,9 @@
         }
 
         .price-badge {
-            background: #ffc107;
-            color: #000;
+            background: rgba(15, 118, 110, 0.12);
+            color: #0f766e;
+            border: 1px solid rgba(15, 118, 110, 0.2);
             padding: 8px 16px;
             border-radius: 20px;
             font-weight: 700;
@@ -134,6 +168,51 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-passport me-2"></i>
+                {{ g.branding.site_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="hero-section">
         <div class="container text-center">
             <h1><i class="fas fa-passport"></i> US Passport Application Processing</h1>
@@ -505,5 +584,6 @@
             document.getElementById('loadingOverlay').classList.remove('active');
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

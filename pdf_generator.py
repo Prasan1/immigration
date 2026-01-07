@@ -77,7 +77,7 @@ class PDFGenerator:
             textColor=colors.grey,
             alignment=TA_CENTER
         )
-        footer_text = f"Generated on {datetime.now().strftime('%B %d, %Y')} | ImmigrationForms.io"
+        footer_text = f"Generated on {datetime.now().strftime('%B %d, %Y')} | ImmigrationTemplates.com"
         elements.append(Paragraph(footer_text, footer_style))
 
     def _add_field(self, elements, label, value):
@@ -322,6 +322,88 @@ class ChecklistPDFGenerator(PDFGenerator):
 class CoverLetterGenerator(PDFGenerator):
     """Generate USCIS cover letter"""
 
+    def _get_form_address(self, form_title):
+        """Get appropriate USCIS address based on form type"""
+        form_upper = form_title.upper()
+
+        if 'I-130' in form_upper:
+            return "USCIS<br/>Attn: I-130<br/>P.O. Box 804625<br/>Chicago, IL 60680-4107"
+        elif 'I-485' in form_upper:
+            return "USCIS<br/>Attn: I-485<br/>P.O. Box 805887<br/>Chicago, IL 60680-4120"
+        elif 'I-765' in form_upper:
+            return "USCIS<br/>Attn: I-765<br/>P.O. Box 805373<br/>Chicago, IL 60680"
+        elif 'I-131' in form_upper:
+            return "USCIS<br/>Attn: I-131<br/>P.O. Box 805625<br/>Chicago, IL 60680"
+        elif 'N-400' in form_upper:
+            return "USCIS<br/>Attn: N-400<br/>P.O. Box 660060<br/>Dallas, TX 75266"
+        elif 'I-864' in form_upper:
+            return "USCIS<br/>Attn: I-864<br/>P.O. Box 804625<br/>Chicago, IL 60680-4107"
+        else:
+            return "U.S. Citizenship and Immigration Services<br/>Appropriate Service Center"
+
+    def _get_document_list(self, form_title):
+        """Get form-specific document checklist"""
+        form_upper = form_title.upper()
+
+        if 'I-130' in form_upper:
+            return [
+                "1. Completed Form I-130, Petition for Alien Relative",
+                "2. Filing fee: Check or money order for $535",
+                "3. Proof of U.S. citizenship (birth certificate or naturalization certificate)",
+                "4. Marriage certificate (if applicable)",
+                "5. Proof of termination of previous marriages (if applicable)",
+                "6. Two passport-style photographs of petitioner",
+                "7. Two passport-style photographs of beneficiary",
+                "8. Proof of bona fide relationship (photos, correspondence, joint accounts)"
+            ]
+        elif 'I-485' in form_upper:
+            return [
+                "1. Completed Form I-485, Application to Register Permanent Residence",
+                "2. Filing fee and biometric fee",
+                "3. Copy of passport biographical pages",
+                "4. Two passport-style photographs",
+                "5. Form I-693, Medical Examination (in sealed envelope)",
+                "6. Birth certificate with certified English translation",
+                "7. Form I-864, Affidavit of Support",
+                "8. Employment authorization documents (if applicable)"
+            ]
+        elif 'N-400' in form_upper:
+            return [
+                "1. Completed Form N-400, Application for Naturalization",
+                "2. Filing fee: Check or money order for $640 ($725 with biometrics)",
+                "3. Copy of Permanent Resident Card (front and back)",
+                "4. Two passport-style photographs",
+                "5. Proof of marital status (marriage certificate, divorce decree)",
+                "6. Evidence of any name changes",
+                "7. Documentation for any trips outside the U.S. over 6 months"
+            ]
+        elif 'I-765' in form_upper:
+            return [
+                "1. Completed Form I-765, Application for Employment Authorization",
+                "2. Filing fee (if required for your category)",
+                "3. Copy of Form I-94, Arrival/Departure Record",
+                "4. Two passport-style photographs",
+                "5. Copy of pending I-485 receipt (if filing based on pending AOS)",
+                "6. Copy of passport biographical pages"
+            ]
+        elif 'I-131' in form_upper:
+            return [
+                "1. Completed Form I-131, Application for Travel Document",
+                "2. Filing fee: $575 (or $630 if under 16)",
+                "3. Two passport-style photographs",
+                "4. Copy of Permanent Resident Card or pending I-485 receipt",
+                "5. Copy of passport biographical pages",
+                "6. Evidence of travel plans (if applicable)"
+            ]
+        else:
+            return [
+                f"1. Completed {form_title}",
+                "2. Filing fee payment (check or money order)",
+                "3. Supporting documents as required by form instructions",
+                "4. Passport-style photographs (if required)",
+                "5. Photocopies of identity documents"
+            ]
+
     def generate(self, user_data, form_info):
         """Generate cover letter PDF"""
         elements = []
@@ -336,14 +418,22 @@ class CoverLetterGenerator(PDFGenerator):
         )
         elements.append(Paragraph(datetime.now().strftime('%B %d, %Y'), date_style))
 
-        # USCIS address
+        # USCIS address (use custom if provided, otherwise auto-generate)
         address_style = ParagraphStyle(
             name='Address',
             parent=self.styles['Normal'],
             fontSize=11,
             spaceAfter=30
         )
-        elements.append(Paragraph("U.S. Citizenship and Immigration Services<br/>Attn: I-485 Processing<br/>[Service Center Address]", address_style))
+        # Use custom mailing address if provided, otherwise auto-generate based on form
+        custom_address = form_info.get('mailing_address', '').strip()
+        if custom_address:
+            # User provided custom address - use it as-is
+            form_address = custom_address.replace('\n', '<br/>')
+        else:
+            # Auto-generate address based on form type
+            form_address = self._get_form_address(form_info.get('title', ''))
+        elements.append(Paragraph(form_address, address_style))
 
         # Subject line
         subject_style = ParagraphStyle(
@@ -361,12 +451,12 @@ class CoverLetterGenerator(PDFGenerator):
         elements.append(Spacer(1, 0.2*inch))
 
         # Salutation
-        elements.append(Paragraph("Dear Sir or Madam:", self.styles['Normal']))
+        elements.append(Paragraph("Dear USCIS Officer:", self.styles['Normal']))
         elements.append(Spacer(1, 0.2*inch))
 
-        # Body
+        # Body (fixed wording - not "on behalf of")
         body_paragraphs = [
-            f"I am submitting this {form_info.get('title', 'application')} on behalf of {user_data.get('full_name', 'the applicant')}. "
+            f"I am submitting this {form_info.get('title', 'application')}. "
             "Please find enclosed all required forms, supporting documents, and fees as specified in the filing instructions.",
 
             "The enclosed package contains the following:",
@@ -376,7 +466,7 @@ class CoverLetterGenerator(PDFGenerator):
             elements.append(Paragraph(para, self.styles['Normal']))
             elements.append(Spacer(1, 0.15*inch))
 
-        # Document list
+        # Document list (form-specific)
         doc_list_style = ParagraphStyle(
             name='DocList',
             parent=self.styles['Normal'],
@@ -385,12 +475,7 @@ class CoverLetterGenerator(PDFGenerator):
             spaceAfter=10
         )
 
-        documents = form_info.get('documents', [
-            f"1. Completed {form_info.get('title', 'Form')}",
-            "2. Supporting documents and evidence",
-            "3. Filing fee payment",
-            "4. Photographs (if required)",
-        ])
+        documents = self._get_document_list(form_info.get('title', ''))
 
         for doc in documents:
             elements.append(Paragraph(doc, doc_list_style))

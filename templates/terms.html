@@ -9,20 +9,50 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
             min-height: 100vh;
             padding-bottom: 3rem;
         }
 
+        .disclaimer-note {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            border-radius: 8px;
+        }
+
         .navbar {
-            background: rgba(44, 62, 80, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white !important;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 800;
+            color: #0f172a !important;
+        }
+
+        .navbar .nav-link {
+            color: #475569 !important;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar .nav-link:hover {
+            color: #b45309 !important;
+            background: rgba(180, 83, 9, 0.12);
         }
 
         .content-container {
@@ -31,19 +61,21 @@
             background: white;
             border-radius: 20px;
             padding: 3rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
         }
 
         h1 {
-            color: #667eea;
+            color: #0f172a;
             margin-bottom: 1.5rem;
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         h2 {
-            color: #2c3e50;
+            color: #0f172a;
             margin-top: 2rem;
             margin-bottom: 1rem;
             font-size: 1.5rem;
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         .last-updated {
@@ -53,7 +85,7 @@
         }
 
         p, li {
-            color: #495057;
+            color: #475569;
             line-height: 1.8;
         }
 
@@ -64,33 +96,66 @@
         .alert {
             border-radius: 12px;
         }
+
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 2rem;
+                margin: 1.5rem auto;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-passport me-2"></i>
                 {{ g.branding.site_name }}
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/">
-                    <i class="fas fa-home me-1"></i>Home
-                </a>
-                <a class="nav-link" href="/forms">
-                    <i class="fas fa-file-alt me-1"></i>USCIS Forms
-                </a>
-                <a class="nav-link" href="/templates">
-                    <i class="fas fa-edit me-1"></i>Form Templates
-                </a>
-                <a class="nav-link" href="/pricing">
-                    <i class="fas fa-tags me-1"></i>Pricing
-                </a>
-                {% if user %}
-                <a class="nav-link" href="/dashboard">Dashboard</a>
-                {% else %}
-                <a class="nav-link" href="/login">Sign In</a>
-                {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    {% if user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>
@@ -99,7 +164,7 @@
         <h1>Terms of Service</h1>
         <p class="last-updated">Last Updated: December 16, 2025</p>
 
-        <div class="alert alert-warning">
+        <div class="alert disclaimer-note">
             <strong><i class="fas fa-exclamation-triangle me-2"></i>Important Notice:</strong>
             {{ g.branding.site_name }} provides informational resources and templates. We are NOT a law firm and do NOT provide legal advice. For legal advice, please consult a qualified immigration attorney.
         </div>
@@ -147,6 +212,8 @@
         </ul>
 
         <h2>5. Cancellation and Refunds</h2>
+
+        <h3>5.1 Cancellation Policy</h3>
         <p>You may cancel your subscription at any time from your account dashboard. Upon cancellation:</p>
         <ul>
             <li>You will retain access until the end of your current billing period</li>
@@ -154,6 +221,20 @@
             <li>Your data will be retained for 30 days in case you wish to reactivate</li>
             <li>After 30 days, your account and data may be permanently deleted</li>
         </ul>
+
+        <h3>5.2 30-Day Money-Back Guarantee (Complete Package Only)</h3>
+        <p>We offer a 30-day money-back guarantee on the Complete Package purchase:</p>
+        <ul>
+            <li><strong>Eligibility Period:</strong> Refund requests must be submitted within 30 days of purchase</li>
+            <li><strong>Fair Use Policy:</strong> Full refunds are available if you have not generated more than 5 professional PDFs using our premium features</li>
+            <li><strong>Rationale:</strong> Generating more than 5 professional PDFs indicates substantial value has been received from the product</li>
+            <li><strong>How to Request:</strong> Email support@immigrationforms.io with your refund request</li>
+            <li><strong>Processing Time:</strong> Refunds are processed within 5-7 business days</li>
+            <li><strong>Method:</strong> Refunds issued to original payment method</li>
+        </ul>
+
+        <h3>5.3 Subscription Refunds (Immigration Preparer)</h3>
+        <p>Monthly subscription payments are non-refundable. You can cancel anytime to avoid future charges.</p>
 
         <h2>6. Acceptable Use</h2>
         <p>You agree NOT to:</p>
@@ -246,5 +327,6 @@
             <a href="/" class="btn btn-primary"><i class="fas fa-home me-2"></i>Back to Home</a>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

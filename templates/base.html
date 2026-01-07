@@ -21,29 +21,71 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --brand-primary: #667eea;
-            --brand-secondary: #764ba2;
+            /* RankSewa-inspired clean palette */
+            --brand-primary: #0284c7;
+            --brand-secondary: #0d9488;
+            --brand-accent: #10b981;
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+            --text-muted: #94a3b8;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-light: #e2e8f0;
+            --verified-green: #10b981;
+            --warning-amber: #f59e0b;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background: #f8fafc;
+            color: var(--text-dark);
         }
 
         main {
             flex: 1;
         }
 
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            color: var(--text-dark);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Verification Badge */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .verified-badge i {
+            color: var(--verified-green);
+        }
+
         /* Professional Footer */
         .site-footer {
             margin-top: 80px;
             padding: 64px 0 32px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-top: 1px solid #e2e8f0;
+            background: #0f172a;
+            border-top: 3px solid var(--brand-primary);
         }
 
         .site-footer .footer-content {
@@ -62,14 +104,14 @@
         .site-footer .footer-column h3 {
             font-size: 1.6rem;
             font-weight: 800;
-            color: #0f172a;
+            color: #ffffff;
             margin-bottom: 12px;
             letter-spacing: -0.01em;
         }
 
         .site-footer .footer-tagline {
             font-size: 0.95rem;
-            color: var(--brand-primary);
+            color: #f1c27d;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
@@ -77,7 +119,7 @@
         }
 
         .site-footer .footer-description {
-            color: #64748b;
+            color: #cbd5e1;
             font-size: 0.95rem;
             line-height: 1.7;
             font-weight: 400;
@@ -86,7 +128,7 @@
         .site-footer .footer-column h4 {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 20px;
@@ -105,7 +147,7 @@
 
         .site-footer .footer-links a,
         .site-footer .footer-contact a {
-            color: #64748b;
+            color: #cbd5e1;
             text-decoration: none;
             font-size: 0.95rem;
             transition: all 0.2s ease;
@@ -113,7 +155,7 @@
         }
 
         .site-footer .footer-links a:hover {
-            color: var(--brand-primary);
+            color: #f1c27d;
             padding-left: 4px;
         }
 
@@ -125,12 +167,12 @@
         }
 
         .site-footer .footer-contact i {
-            color: var(--brand-primary);
+            color: #f1c27d;
             font-size: 1rem;
         }
 
         .site-footer .footer-contact a:hover {
-            color: var(--brand-primary);
+            color: #f1c27d;
         }
 
         .site-footer .footer-bottom {
@@ -138,7 +180,7 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 32px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid #475569;
         }
 
         .site-footer .footer-copyright {
@@ -146,6 +188,10 @@
             font-size: 0.9rem;
             margin: 0;
             font-weight: 500;
+        }
+
+        .site-footer .footer-copyright a {
+            color: #cbd5e1;
         }
 
         /* Trust Badges Section */
@@ -157,26 +203,26 @@
             gap: 24px;
             padding: 32px 0;
             margin-top: 32px;
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
+            border-top: 1px solid #475569;
+            border-bottom: 1px solid #475569;
         }
 
         .site-footer .trust-badge-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #64748b;
+            color: #cbd5e1;
             font-size: 0.9rem;
             font-weight: 500;
         }
 
         .site-footer .trust-badge-item i {
-            color: var(--brand-primary);
+            color: #f1c27d;
             font-size: 1.1rem;
         }
 
         .site-footer .trust-badge-item strong {
-            color: #1e293b;
+            color: #ffffff;
             font-weight: 700;
         }
 
@@ -238,28 +284,58 @@
     {% block head %}{% endblock %}
 
     <style>
+        /* Clean, Professional Navbar */
         .navbar {
-            background: white !important;
-            border-bottom: 1px solid #E5E7EB;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            background: #ffffff !important;
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+            padding: 1rem 0;
         }
 
         .navbar-brand {
-            font-weight: 600;
-            color: #2C3E50 !important;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: var(--text-dark) !important;
+            letter-spacing: -0.02em;
         }
 
         .navbar .nav-link {
-            color: #6B7280 !important;
+            color: var(--text-gray) !important;
             font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+            border-radius: 6px;
+            padding: 0.5rem 1rem !important;
         }
 
         .navbar .nav-link:hover {
-            color: #667eea !important;
+            color: var(--brand-primary) !important;
+            background: rgba(2, 132, 199, 0.08);
         }
 
         .navbar .nav-link.active {
-            color: #667eea !important;
+            color: var(--brand-primary) !important;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--brand-primary);
+            border: none;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0369a1;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-link {
+                padding: 0.4rem 0.75rem !important;
+            }
         }
     </style>
 </head>
@@ -316,9 +392,9 @@
                     </li>
                     {% if user %}
                     <li class="nav-item">
-                        <span class="navbar-text me-3" style="background: rgba(30, 58, 95, 0.1); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; color: #2C3E50;">
-                            <i class="fas fa-user-circle me-2" style="color: #1E3A5F;"></i>{{ user.full_name or user.email.split('@')[0] }}
-                            <span class="badge" style="background: #1E3A5F; color: white; margin-left: 0.5rem;">{{ user.subscription_tier.title() }}</span>
+                        <span class="navbar-text me-3" style="background: #f0f9ff; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; color: var(--text-dark); border: 1px solid #bae6fd;">
+                            <i class="fas fa-user-circle me-2" style="color: var(--brand-primary);"></i>{{ user.full_name or user.email.split('@')[0] }}
+                            <span class="badge" style="background: var(--brand-secondary); color: white; margin-left: 0.5rem;">{{ user.subscription_tier.title() }}</span>
                         </span>
                     </li>
                     <li class="nav-item">
@@ -424,10 +500,21 @@
                 </div>
             </div>
 
+            <!-- Legal Disclaimer Banner -->
+            <div style="background: rgba(248, 250, 252, 0.08); border: 1px solid rgba(203, 213, 225, 0.4); border-radius: 12px; padding: 24px; margin: 32px 0; text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px;">
+                    <i class="fas fa-exclamation-triangle" style="color: #f1c27d; font-size: 1.5rem;"></i>
+                    <h4 style="margin: 0; color: #e2e8f0; font-weight: 700; font-size: 1.1rem;">Important legal disclaimer</h4>
+                </div>
+                <p style="color: #cbd5f5; font-size: 0.95rem; line-height: 1.7; margin: 0; max-width: 900px; margin: 0 auto; font-weight: 500;">
+                    <strong>ImmigrationTemplates.com is a software tool, not a law firm.</strong> We do not provide legal advice, representation, or immigration consulting services. Our checklists, templates, and tools are for informational purposes only and do not constitute legal advice. You are solely responsible for your own immigration application and decisions. We strongly recommend consulting with a licensed immigration attorney for case-specific guidance. By using this service, you acknowledge that ImmigrationTemplates.com is not liable for any outcomes related to your immigration case.
+                </p>
+            </div>
+
             <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2024 Immigration Templates. All rights reserved.
+                    © 2024 Immigration Templates. All rights reserved. • <strong style="color: #64748b;">Not Legal Advice</strong> • <a href="/terms" style="color: #64748b; text-decoration: none;">Terms of Service</a> • <a href="/privacy" style="color: #64748b; text-decoration: none;">Privacy Policy</a>
                 </p>
             </div>
         </div>

@@ -9,6 +9,10 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -21,40 +25,51 @@
     ></script>
     <style>
         :root {
-            --accent-navy: #1E3A5F;
-            --text-dark: #2C3E50;
-            --text-muted: #6B7280;
-            --border-gray: #E5E7EB;
-            --bg-light: #F9FAFB;
-            --brand-purple: #667eea;
-            --success-green: #16a34a;
+            --accent-navy: #0f2a3a;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border-gray: #e2e8f0;
+            --bg-light: #f8fafc;
+            --brand-primary: #b45309;
+            --brand-secondary: #0f766e;
+            --success-green: #15803d;
+            --brand-purple: var(--brand-primary);
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
             min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         /* White Navbar */
         .navbar {
             background: white !important;
-            border-bottom: 1px solid var(--border-gray);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
         }
 
         .navbar-brand {
-            font-weight: 600;
+            font-weight: 800;
             color: var(--text-dark) !important;
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         .navbar .nav-link {
             color: var(--text-muted) !important;
-            font-weight: 500;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
         }
 
         .navbar .nav-link.active {
-            color: var(--brand-purple) !important;
+            color: var(--brand-primary) !important;
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.18) 0%, rgba(15, 118, 110, 0.18) 100%);
         }
 
         .dashboard-container {
@@ -63,11 +78,30 @@
 
         .dashboard-card {
             background: white;
-            border: 1px solid var(--border-gray);
-            border-radius: 12px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 24px rgba(180, 83, 9, 0.12);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b45309 0%, #0f766e 100%);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(180, 83, 9, 0.18);
         }
 
         .dashboard-card h2 {
@@ -97,7 +131,7 @@
 
         /* New Tiers */
         .subscription-badge.complete {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.15) 0%, rgba(15, 118, 110, 0.15) 100%);
             color: var(--brand-purple);
             border: 1px solid var(--brand-purple);
             font-weight: 600;
@@ -126,13 +160,21 @@
         }
 
         .stat-card {
-            background: var(--bg-light);
-            border: 1px solid var(--border-gray);
+            background: white;
+            border: 2px solid rgba(180, 83, 9, 0.1);
             color: var(--text-dark);
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 1.75rem;
+            border-radius: 16px;
             text-align: center;
             margin-bottom: 1rem;
+            box-shadow: 0 6px 20px rgba(180, 83, 9, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(180, 83, 9, 0.18);
+            border-color: rgba(180, 83, 9, 0.3);
         }
 
         .stat-card h3 {
@@ -146,6 +188,194 @@
             margin: 0;
             color: var(--text-muted);
             font-weight: 500;
+        }
+
+        /* Modern Dashboard Enhancements */
+        .dashboard-hero {
+            background: linear-gradient(135deg, #b45309 0%, #0f766e 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 32px rgba(180, 83, 9, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .dashboard-hero h2 {
+            color: white !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-hero p {
+            color: rgba(255,255,255,0.9) !important;
+        }
+
+        .subscription-badge-large {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: white !important;
+            color: #b45309 !important;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .modern-stat-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            min-height: 120px;
+        }
+
+        .modern-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .modern-stat-card .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modern-stat-card .stat-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+            color: white;
+        }
+
+        .modern-stat-card .stat-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .activity-timeline {
+            position: relative;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 8px;
+            width: 2px;
+            height: calc(100% + 0.5rem);
+            background: var(--border-gray);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-content {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--brand-primary);
+        }
+
+        .timeline-content h6 {
+            margin: 0 0 0.25rem 0;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .alert-neutral {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        .alert-neutral .alert-link {
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .alert-neutral i {
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 2rem 0;
+            }
+
+            .dashboard-card {
+                padding: 1.5rem;
+            }
+
+            .navbar .nav-link {
+                padding: 0.4rem 0.75rem !important;
+            }
         }
     </style>
 
@@ -176,7 +406,12 @@
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/forms"><i class="fas fa-file-alt me-1"></i>Forms</a></li>
                     <li class="nav-item"><a class="nav-link" href="/templates"><i class="fas fa-edit me-1"></i>Templates</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/file-compressor"><i class="fas fa-file-archive me-1"></i>Compressor</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas {% if user.subscription_tier == 'free' %}fa-lock{% else %}fa-file-archive{% endif %} me-1"></i>Compressor
+                            {% if user.subscription_tier == 'free' %}<span class="badge ms-1" style="font-size: 0.65rem; background: rgba(15, 118, 110, 0.15); color: var(--brand-secondary);">Premium</span>{% endif %}
+                        </a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="/pricing"><i class="fas fa-tags me-1"></i>Pricing</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
                     {% if user and user.subscription_tier in ['enterprise', 'agency'] %}
@@ -193,12 +428,68 @@
     </nav>
 
     <div class="container dashboard-container">
-        <div class="dashboard-card">
-            <h2>
-                <i class="fas fa-user-circle me-2"></i>
-                Welcome, <span id="userName"></span>!
-            </h2>
-            <p class="text-muted mb-0">Manage your subscription and access immigration forms</p>
+        <!-- Hero Welcome Section -->
+        <div class="dashboard-hero">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="mb-2">
+                        <i class="fas fa-hand-wave me-2" style="color: var(--brand-secondary);"></i>
+                        Welcome back, <span id="userName"></span>!
+                    </h2>
+                    <p class="text-muted mb-0">Your immigration document hub</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="subscription-badge-large" id="subscriptionBadgeLarge"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modern Stat Cards Row -->
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="modern-stat-card" style="background: linear-gradient(135deg, #b45309 0%, #0f766e 100%);">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="accessibleFormsModern">-</h3>
+                        <p>Forms Accessible</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="modern-stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="documentsGenerated">0</h3>
+                        <p>Documents Created</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="modern-stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="memberSince">-</h3>
+                        <p>Member Since</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="modern-stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="stat-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 style="font-size: 1.1rem;" id="tierNameModern">-</h3>
+                        <p>Current Plan</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Quick Access to PDF Features -->
@@ -208,7 +499,7 @@
             <div class="row mt-3">
                 {% if user.subscription_tier not in ['free'] %}
                 <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/documents/passport'">
+                    <div class="card h-100" style="border: 2px solid #b45309; cursor: pointer;" onclick="window.location.href='/documents/passport'">
                         <div class="card-body text-center">
                             <i class="fas fa-passport fa-3x text-primary mb-2"></i>
                             <h6>Passport Application</h6>
@@ -218,7 +509,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mb-3" id="coverLetterCard">
-                    <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/documents/cover-letter'">
+                    <div class="card h-100" style="border: 2px solid #b45309; cursor: pointer;" onclick="window.location.href='/documents/cover-letter'">
                         <div class="card-body text-center">
                             <i class="fas fa-envelope-open-text fa-3x text-primary mb-2"></i>
                             <h6>Cover Letter</h6>
@@ -228,7 +519,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mb-3" id="i94Card">
-                    <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/documents/i94-history'">
+                    <div class="card h-100" style="border: 2px solid #b45309; cursor: pointer;" onclick="window.location.href='/documents/i94-history'">
                         <div class="card-body text-center">
                             <i class="fas fa-plane-departure fa-3x text-primary mb-2"></i>
                             <h6>I-94 Travel History</h6>
@@ -239,7 +530,7 @@
                 </div>
                 {% endif %}
                 <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card h-100" style="border: 2px solid #667eea; cursor: pointer;" onclick="window.location.href='/forms'">
+                    <div class="card h-100" style="border: 2px solid #b45309; cursor: pointer;" onclick="window.location.href='/forms'">
                         <div class="card-body text-center">
                             <i class="fas fa-file-pdf fa-3x text-primary mb-2"></i>
                             <h6>Form Checklists</h6>
@@ -254,7 +545,7 @@
                         <div class="card-body text-center d-flex flex-column justify-content-center">
                             <i class="fas fa-lock fa-3x mb-3" style="color: var(--brand-purple);"></i>
                             <h5>Unlock Complete Package Features</h5>
-                            <p class="text-muted mb-3">Get instant access to Passport Applications, Cover Letters, and I-94 Travel History generators</p>
+                            <p class="text-muted mb-3">Get instant access to Passport Applications, Cover Letter Templates, and I-94 Travel History tools</p>
                             <div>
                                 <a href="/pricing" class="btn btn-primary btn-lg">
                                     <i class="fas fa-arrow-up me-2"></i>Get Complete Package
@@ -268,7 +559,18 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8">
+                <!-- Account Milestones Timeline -->
+                <div class="dashboard-card mb-4">
+                    <h4><i class="fas fa-trophy me-2"></i>Account Milestones</h4>
+                    <hr>
+                    <div class="activity-timeline" id="activityTimeline">
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-info-circle me-2"></i>Your milestones will appear here
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Subscription Card -->
                 <div class="dashboard-card">
                     <h4><i class="fas fa-crown me-2"></i>Subscription Status</h4>
@@ -332,7 +634,7 @@
                         {% endif %}
                         {% if user.subscription_tier in ['enterprise', 'agency'] %}
                         <div class="col-md-6 mb-2">
-                            <a href="/enterprise/settings" class="btn btn-outline-warning w-100">
+                            <a href="/enterprise/settings" class="btn btn-outline-secondary w-100">
                                 <i class="fas fa-palette me-2"></i>Branding Settings
                             </a>
                         </div>
@@ -368,7 +670,7 @@
                     <h4 style="color: #DC2626;"><i class="fas fa-exclamation-triangle me-2"></i>Danger Zone</h4>
                     <p class="text-muted mb-4">Once you delete your account, there is no going back. Please be certain.</p>
 
-                    <div class="alert alert-warning">
+                    <div class="alert alert-neutral">
                         <strong><i class="fas fa-info-circle me-2"></i>Before deleting your account:</strong>
                         <ul class="mb-0 mt-2">
                             <li>All your data will be permanently deleted</li>
@@ -417,7 +719,7 @@
                     </ul>
 
                     {% if user.subscription_tier != 'free' and user.subscription_status == 'active' %}
-                    <div class="alert alert-warning">
+                    <div class="alert alert-neutral">
                         <strong><i class="fas fa-dollar-sign me-2"></i>Refund Request</strong>
                         <div class="form-check mt-2">
                             <input class="form-check-input" type="checkbox" id="requestRefundCheck">
@@ -533,12 +835,32 @@
                         'pro': 'Team',
                         'enterprise': 'Business'
                     };
-                    badge.text(tierNames[user.subscription_tier] || capitalizeFirstLetter(user.subscription_tier));
+                    const tierName = tierNames[user.subscription_tier] || capitalizeFirstLetter(user.subscription_tier);
+                    badge.text(tierName);
                     badge.addClass(user.subscription_tier);
+
+                    // Update large subscription badge with color
+                    const badgeLarge = $('#subscriptionBadgeLarge');
+                    badgeLarge.text(tierName);
+                    if (user.subscription_tier === 'free') {
+                        badgeLarge.css('background', '#6B7280').css('color', 'white');
+                    } else if (user.subscription_tier === 'complete') {
+                        badgeLarge.css('background', 'linear-gradient(135deg, #b45309 0%, #0f766e 100%)').css('color', 'white');
+                    } else if (user.subscription_tier === 'agency') {
+                        badgeLarge.css('background', '#1e293b').css('color', 'white');
+                    }
+
+                    // Update modern stat cards
+                    $('#tierNameModern').text(tierName);
+
+                    // Calculate member since (from created_at or fallback to 2024)
+                    const memberDate = user.created_at ? new Date(user.created_at) : new Date('2024-01-01');
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    $('#memberSince').text(monthNames[memberDate.getMonth()] + ' ' + memberDate.getFullYear());
 
                     const status = user.subscription_status === 'active' ?
                         '<span class="text-success"><i class="fas fa-check-circle me-1"></i>Active</span>' :
-                        '<span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i>Inactive</span>';
+                        '<span class="text-muted"><i class="fas fa-exclamation-circle me-1" style="color: #0f766e;"></i>Inactive</span>';
                     $('#subscriptionStatus').html(status);
 
                     if (user.subscription_ends_at) {
@@ -553,6 +875,7 @@
                     }
 
                     loadBenefits(user.subscription_tier);
+                    loadActivityTimeline(user);
                 });
             }
 
@@ -563,25 +886,138 @@
 
                     $('#accessibleForms').text(accessibleForms);
                     $('#totalForms').text(totalForms);
+
+                    // Update modern stat cards
+                    $('#accessibleFormsModern').text(accessibleForms);
                 });
+            }
+
+            function loadActivityTimeline(user) {
+                // Show only REAL account milestones (no fake activity)
+                const milestones = [];
+
+                // Milestone 1: Account Creation (always accurate)
+                if (user.created_at) {
+                    const joinDate = new Date(user.created_at);
+                    milestones.push({
+                        icon: 'fa-user-plus',
+                        color: '#b45309',
+                        title: 'Account Created',
+                        description: 'Started your immigration document journey',
+                        time: formatTimeAgo(joinDate),
+                        date: joinDate
+                    });
+                }
+
+                // Milestone 2: Subscription Upgrade (only if paid tier and has date)
+                if (user.subscription_tier !== 'free') {
+                    const tierNames = {
+                        'complete': 'Complete Package',
+                        'agency': 'Immigration Preparer',
+                        'basic': 'Professional',
+                        'pro': 'Team',
+                        'enterprise': 'Business'
+                    };
+                    const tierName = tierNames[user.subscription_tier] || user.subscription_tier;
+
+                    // Use subscription date if available, otherwise use created_at as fallback
+                    const upgradeDate = user.subscription_updated_at ? new Date(user.subscription_updated_at) : (user.created_at ? new Date(user.created_at) : null);
+
+                    if (upgradeDate) {
+                        milestones.push({
+                            icon: 'fa-crown',
+                            color: '#43e97b',
+                            title: 'Upgraded to ' + tierName,
+                            description: 'Unlocked premium features and professional tools',
+                            time: formatTimeAgo(upgradeDate),
+                            date: upgradeDate
+                        });
+                    }
+                }
+
+                // Milestone 3: Forms Access Unlocked
+                $.get('/api/documents', function(documents) {
+                    const accessibleCount = documents.filter(doc => doc.has_access).length;
+                    if (accessibleCount > 0) {
+                        milestones.push({
+                            icon: 'fa-unlock',
+                            color: '#4facfe',
+                            title: accessibleCount + ' Forms Accessible',
+                            description: 'Access to immigration forms and checklists',
+                            time: 'Current Status',
+                            date: null
+                        });
+                    }
+
+                    // Sort milestones by date (most recent first)
+                    milestones.sort((a, b) => {
+                        if (!a.date) return 1;
+                        if (!b.date) return -1;
+                        return b.date - a.date;
+                    });
+
+                    // Render timeline
+                    let timelineHTML = '';
+                    milestones.forEach(milestone => {
+                        timelineHTML += `
+                            <div class="timeline-item">
+                                <div class="timeline-icon" style="background: ${milestone.color};">
+                                    <i class="fas ${milestone.icon}"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6>${milestone.title}</h6>
+                                    <p>${milestone.description}</p>
+                                    <div class="timeline-time">
+                                        <i class="fas fa-clock me-1"></i>${milestone.time}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    $('#activityTimeline').html(timelineHTML || '<div class="text-center text-muted py-4"><i class="fas fa-info-circle me-2"></i>No milestones yet</div>');
+                });
+            }
+
+            function formatTimeAgo(date) {
+                const seconds = Math.floor((new Date() - date) / 1000);
+                const intervals = {
+                    year: 31536000,
+                    month: 2592000,
+                    week: 604800,
+                    day: 86400,
+                    hour: 3600,
+                    minute: 60
+                };
+
+                for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+                    const interval = Math.floor(seconds / secondsInUnit);
+                    if (interval >= 1) {
+                        return interval + ' ' + unit + (interval === 1 ? '' : 's') + ' ago';
+                    }
+                }
+                return 'Just now';
             }
 
             function loadBenefits(tier) {
                 const benefits = {
                     'free': [
-                        'Basic I-130 checklist (view only)',
-                        'Sample cover letter template',
-                        'Required forms list',
-                        'Evidence categories overview'
+                        'Read-only checklists (all immigration forms)',
+                        'Browse form library',
+                        'Basic information and guidance',
+                        '❌ No PDF compressor access',
+                        '❌ No cover letter generator',
+                        '❌ No I-94 travel history',
+                        '❌ No interactive features'
                     ],
                     'complete': [
-                        'Complete I-130 & I-485 checklists (personalized)',
-                        'Auto-generated cover letters (USCIS-ready)',
+                        'Complete I-130 & I-485 checklists',
+                        'Professional cover letter templates (fill in your details)',
                         'Evidence organizer (photos, texts, financial docs)',
-                        'PDF compressor (unlimited use)',
+                        'PDF compressor (100 compressions included)',
                         'I-94 travel history generator',
+                        'Passport application processing (included)',
                         'Document review checklist',
-                        'Interview prep guide',
                         'RFE response templates',
                         'Lifetime access - pay once, use forever'
                     ],
@@ -635,22 +1071,60 @@
             function showProcessingMessage() {
                 const html = `
                     <div class="alert alert-info" id="processingAlert">
-                        <h5><i class="fas fa-spinner fa-spin me-2"></i>Processing Your Subscription...</h5>
-                        <p class="mb-0">Please wait while we activate your account. This usually takes 3-5 seconds.</p>
+                        <h5><i class="fas fa-spinner fa-spin me-2"></i>Activating Your Complete Package...</h5>
+                        <p class="mb-2">Your payment of $199 was successful! We're setting up your account now.</p>
+                        <p class="mb-0 small text-muted">This usually takes 3-10 seconds. Please don't close this page.</p>
                     </div>
+                    <button class="btn btn-primary btn-lg mt-2" id="manualRefreshBtn" style="display: none;">
+                        <i class="fas fa-sync me-2"></i>Refresh Account Status
+                    </button>
                 `;
                 $('.dashboard-container').prepend(html);
+
+                // Add click handler for manual refresh button
+                $('#manualRefreshBtn').click(function() {
+                    const btn = $(this);
+                    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Checking...');
+
+                    $.ajax({
+                        url: '/api/sync-subscription',
+                        method: 'POST',
+                        success: function() {
+                            location.reload();
+                        },
+                        error: function() {
+                            location.reload();
+                        }
+                    });
+                });
             }
 
             function pollSubscriptionStatus(attempt = 0) {
-                const maxAttempts = 10; // Poll for up to 20 seconds (10 attempts × 2 seconds)
+                const maxAttempts = 30; // Poll for up to 60 seconds (30 attempts × 2 seconds)
+                const showHelpAfter = 15; // Show help button after 30 seconds
 
                 if (attempt >= maxAttempts) {
-                    // Polling timeout - show manual sync button
-                    $('#processingAlert').removeClass('alert-info').addClass('alert-warning')
-                        .html('<h5><i class="fas fa-exclamation-triangle me-2"></i>Taking Longer Than Expected</h5><p class="mb-0">Your payment was successful! Click the Refresh button below if your subscription doesn\'t update automatically.</p>');
-                    $('#syncSubscriptionBtn').show();
+                    // Polling timeout - likely failed
+                    $('#processingAlert').removeClass('alert-info').addClass('alert-danger')
+                        .html(`
+                            <h5><i class="fas fa-times-circle me-2"></i>Activation Taking Too Long</h5>
+                            <p class="mb-2">Your payment of $199 was successful, but your account hasn't updated yet.</p>
+                            <p class="mb-3"><strong>Don't worry - your payment is secure and recorded!</strong></p>
+                            <p class="mb-0">Please try refreshing your account status using the button below. If this doesn't work within a few minutes, please contact support and we'll activate your account immediately.</p>
+                        `);
+                    $('#manualRefreshBtn').show();
                     return;
+                }
+
+                // Show help button earlier if taking too long
+                if (attempt >= showHelpAfter && attempt < maxAttempts) {
+                    $('#processingAlert').removeClass('alert-info').addClass('alert-neutral')
+                        .html(`
+                            <h5><i class="fas fa-clock me-2"></i>Still Processing...</h5>
+                            <p class="mb-2">Your payment was successful! We're activating your Complete Package access.</p>
+                            <p class="mb-0">This is taking longer than usual. You can wait (we'll keep checking) or click the button below to manually refresh.</p>
+                        `);
+                    $('#manualRefreshBtn').show();
                 }
 
                 $.ajax({
@@ -660,13 +1134,14 @@
                         // Check if subscription is updated
                         if (user.subscription_tier !== 'free' && user.subscription_status === 'active') {
                             // Success! Subscription is active
-                            $('#processingAlert').removeClass('alert-info').addClass('alert-success')
-                                .html('<h5><i class="fas fa-check-circle me-2"></i>Subscription Activated!</h5><p class="mb-0">Redirecting...</p>');
+                            $('#processingAlert').removeClass('alert-info alert-neutral').addClass('alert-success')
+                                .html('<h5><i class="fas fa-check-circle me-2"></i>Complete Package Activated!</h5><p class="mb-0">Redirecting to your dashboard...</p>');
+                            $('#manualRefreshBtn').hide();
 
-                            // Clean URL and reload after 1 second
+                            // Clean URL and reload after 1.5 seconds
                             setTimeout(function() {
                                 window.location.href = '/dashboard';
-                            }, 1000);
+                            }, 1500);
                         } else {
                             // Not updated yet, poll again
                             setTimeout(function() {

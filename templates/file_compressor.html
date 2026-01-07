@@ -7,15 +7,15 @@
 {% block head %}
     <style>
         :root {
-            --accent-navy: #1E3A5F;
-            --text-dark: #2C3E50;
-            --text-muted: #6B7280;
-            --border-gray: #E5E7EB;
-            --brand-purple: #667eea;
+            --accent-navy: #0f2a3a;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border-gray: #e2e8f0;
+            --brand-purple: #b45309;
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: white;
         }
 
@@ -120,10 +120,25 @@
             font-weight: 600;
         }
 
+        .alert-neutral {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        .alert-neutral .alert-link {
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .alert-neutral i {
+            color: #64748b;
+        }
+
         .usage-badge {
-            background: #FEF3C7;
-            border: 1px solid #F59E0B;
-            color: #92400E;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            color: #334155;
             padding: 12px 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -212,8 +227,8 @@
         }
 
         .status-pending {
-            background: #FEF3C7;
-            color: #92400E;
+            background: #e2e8f0;
+            color: #475569;
         }
 
         .status-processing {
@@ -274,7 +289,7 @@
     <div class="container main-container">
         {% if show_upgrade %}
             <!-- Upgrade Prompt for Free Users -->
-            <div class="info-card text-center" style="max-width: 800px; margin: 0 auto; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 2px solid var(--brand-purple);">
+            <div class="info-card text-center" style="max-width: 800px; margin: 0 auto; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(180, 83, 9, 0.05) 0%, rgba(15, 118, 110, 0.05) 100%); border: 2px solid var(--brand-purple);">
                 <i class="fas fa-lock" style="font-size: 4rem; color: var(--brand-purple); margin-bottom: 1.5rem;"></i>
                 <h2 style="color: var(--text-dark); margin-bottom: 1rem;">File Compressor - Premium Feature</h2>
                 <p class="lead text-muted mb-4">
@@ -305,7 +320,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <div style="background: white; padding: 1.5rem; border-radius: 12px; height: 100%;">
-                            <i class="fas fa-star" style="font-size: 2rem; color: #FFD700; margin-bottom: 1rem;"></i>
+                            <i class="fas fa-star" style="font-size: 2rem; color: #0f766e; margin-bottom: 1rem;"></i>
                             <h5>Plus All Premium Features</h5>
                             <p class="text-muted mb-0 small">Checklists, cover letter templates, I-94 generator, and more</p>
                         </div>
@@ -325,7 +340,7 @@
                     </div>
                 {% elif usage_info.tier == 'complete' %}
                     {% if usage_info.remaining > 0 %}
-                    <div class="usage-badge" style="background: #E0E7FF; border-color: #667eea; color: #3730A3;">
+                    <div class="usage-badge" style="background: #E0E7FF; border-color: #b45309; color: #3730A3;">
                         <i class="fas fa-layer-group"></i> {{ usage_info.remaining }} of {{ usage_info.limit }} compressions remaining (Complete Package)
                     </div>
                     {% else %}
@@ -365,7 +380,7 @@
                     <i class="fas fa-compress"></i> Compress PDF Now
                 </button>
                 {% if usage_info and usage_info.tier in ['complete', 'pdf_evidence_pack'] and usage_info.remaining is not none and usage_info.remaining <= 0 %}
-                    <div class="alert alert-warning mt-3">
+                    <div class="alert alert-neutral mt-3">
                         <i class="fas fa-exclamation-circle"></i>
                         You've used all {{ usage_info.limit }} compressions.
                         {% if usage_info.tier == 'complete' %}
@@ -398,7 +413,7 @@
         {% endif %}
 
         <!-- Info Section -->
-        <div class="info-card" style="max-width: 800px; margin: 2rem auto 0; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 2px solid var(--brand-purple);">
+        <div class="info-card" style="max-width: 800px; margin: 2rem auto 0; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(180, 83, 9, 0.05) 0%, rgba(15, 118, 110, 0.05) 100%); border: 2px solid var(--brand-purple);">
             <div class="text-center mb-4">
                 <i class="fas fa-question-circle" style="font-size: 3rem; color: var(--brand-purple); margin-bottom: 1rem;"></i>
                 <h2 style="color: var(--text-dark); margin-bottom: 1rem;">Why compress PDF files?</h2>

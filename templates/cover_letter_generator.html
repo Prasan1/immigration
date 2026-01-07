@@ -9,15 +9,50 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
             min-height: 100vh;
         }
-        .container {
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', Georgia, serif;
+        }
+
+        .navbar {
+            background: white !important;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 800;
+            color: #0f172a !important;
+        }
+
+        .navbar .nav-link {
+            color: #475569 !important;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar .nav-link:hover {
+            color: #b45309 !important;
+            background: rgba(180, 83, 9, 0.12);
+        }
+
+        .main-container {
             max-width: 800px;
             padding: 40px 20px;
         }
@@ -25,10 +60,61 @@
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
+
+        .badge-neutral {
+            background: rgba(15, 118, 110, 0.12);
+            color: #0f766e;
+            border: 1px solid rgba(15, 118, 110, 0.2);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-passport me-2"></i>
+                {{ g.branding.site_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container main-container">
         <div class="card">
             <div class="card-body p-4">
                 <h2><i class="fas fa-envelope-open-text me-2"></i>USCIS Cover Letter Generator</h2>
@@ -52,8 +138,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Form Title (e.g., Form I-485) *</label>
-                        <input type="text" class="form-control" id="form_title" required placeholder="Form I-485 - Adjustment of Status">
+                        <label class="form-label">Form Type *</label>
+                        <select class="form-control" id="form_type" required>
+                            <option value="">Select a form...</option>
+                            <option value="I-130">Form I-130 - Petition for Alien Relative</option>
+                            <option value="I-485">Form I-485 - Application to Adjust Status</option>
+                            <option value="I-765">Form I-765 - Employment Authorization</option>
+                            <option value="I-131">Form I-131 - Application for Travel Document</option>
+                            <option value="I-864">Form I-864 - Affidavit of Support</option>
+                            <option value="N-400">Form N-400 - Application for Naturalization</option>
+                            <option value="other">Other (enter manually)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3" id="customFormTitle" style="display: none;">
+                        <label class="form-label">Custom Form Title *</label>
+                        <input type="text" class="form-control" id="form_title_custom" placeholder="Enter form title">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Mailing Address *
+                            <span class="badge badge-neutral text-dark ms-2">
+                                <i class="fas fa-exclamation-triangle"></i> Always verify on USCIS.gov before mailing
+                            </span>
+                        </label>
+                        <textarea class="form-control" id="mailing_address" rows="4" required placeholder="Address will auto-fill when you select a form type"></textarea>
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            This address is pre-filled based on current USCIS guidance, but addresses can change.
+                            <strong>Always verify the current mailing address at
+                            <a href="https://www.uscis.gov" target="_blank">www.uscis.gov</a> before sending your application.</strong>
+                        </small>
                     </div>
 
                     <div class="mb-3">
@@ -63,7 +179,11 @@
 
                     <div class="mb-3">
                         <label class="form-label">Documents Included (one per line)</label>
-                        <textarea class="form-control" id="documents" rows="5" placeholder="1. Completed Form I-485&#10;2. Passport photos&#10;3. Birth certificate&#10;4. Medical examination report&#10;5. Filing fee payment"></textarea>
+                        <textarea class="form-control" id="documents" rows="8" placeholder="Documents will auto-fill when you select a form type (you can edit these)"></textarea>
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            This list is suggested based on the form type. Edit it to match your actual documents.
+                        </small>
                     </div>
 
                     <div class="d-grid gap-2">
@@ -90,8 +210,122 @@
     </div>
 
     <script>
+        // Form address and document mappings
+        const formData = {
+            'I-130': {
+                address: 'USCIS\nAttn: I-130\nP.O. Box 804625\nChicago, IL 60680-4107',
+                title: 'Form I-130 - Petition for Alien Relative',
+                documents: [
+                    '1. Completed Form I-130, Petition for Alien Relative',
+                    '2. Filing fee: Check or money order for $535',
+                    '3. Proof of U.S. citizenship (birth certificate or naturalization certificate)',
+                    '4. Marriage certificate (if applicable)',
+                    '5. Proof of termination of previous marriages (if applicable)',
+                    '6. Two passport-style photographs of petitioner',
+                    '7. Two passport-style photographs of beneficiary',
+                    '8. Proof of bona fide relationship (photos, correspondence, joint accounts)'
+                ]
+            },
+            'I-485': {
+                address: 'USCIS\nAttn: I-485\nP.O. Box 805887\nChicago, IL 60680-4120',
+                title: 'Form I-485 - Application to Register Permanent Residence',
+                documents: [
+                    '1. Completed Form I-485, Application to Register Permanent Residence',
+                    '2. Filing fee and biometric fee',
+                    '3. Copy of passport biographical pages',
+                    '4. Two passport-style photographs',
+                    '5. Form I-693, Medical Examination (in sealed envelope)',
+                    '6. Birth certificate with certified English translation',
+                    '7. Form I-864, Affidavit of Support',
+                    '8. Employment authorization documents (if applicable)'
+                ]
+            },
+            'I-765': {
+                address: 'USCIS\nAttn: I-765\nP.O. Box 805373\nChicago, IL 60680',
+                title: 'Form I-765 - Application for Employment Authorization',
+                documents: [
+                    '1. Completed Form I-765, Application for Employment Authorization',
+                    '2. Filing fee (if required for your category)',
+                    '3. Copy of Form I-94, Arrival/Departure Record',
+                    '4. Two passport-style photographs',
+                    '5. Copy of pending I-485 receipt (if filing based on pending AOS)',
+                    '6. Copy of passport biographical pages'
+                ]
+            },
+            'I-131': {
+                address: 'USCIS\nAttn: I-131\nP.O. Box 805625\nChicago, IL 60680',
+                title: 'Form I-131 - Application for Travel Document',
+                documents: [
+                    '1. Completed Form I-131, Application for Travel Document',
+                    '2. Filing fee: $575 (or $630 if under 16)',
+                    '3. Two passport-style photographs',
+                    '4. Copy of Permanent Resident Card or pending I-485 receipt',
+                    '5. Copy of passport biographical pages',
+                    '6. Evidence of travel plans (if applicable)'
+                ]
+            },
+            'I-864': {
+                address: 'USCIS\nAttn: I-864\nP.O. Box 804625\nChicago, IL 60680-4107',
+                title: 'Form I-864 - Affidavit of Support',
+                documents: [
+                    '1. Completed Form I-864, Affidavit of Support',
+                    '2. IRS tax transcripts (last 3 years)',
+                    '3. W-2 forms (last 3 years)',
+                    '4. Recent pay stubs',
+                    '5. Proof of employment (employment letter)',
+                    '6. Proof of assets (if using assets to meet requirements)',
+                    '7. Proof of U.S. citizenship or permanent residence'
+                ]
+            },
+            'N-400': {
+                address: 'USCIS\nAttn: N-400\nP.O. Box 660060\nDallas, TX 75266',
+                title: 'Form N-400 - Application for Naturalization',
+                documents: [
+                    '1. Completed Form N-400, Application for Naturalization',
+                    '2. Filing fee: Check or money order for $640 ($725 with biometrics)',
+                    '3. Copy of Permanent Resident Card (front and back)',
+                    '4. Two passport-style photographs',
+                    '5. Proof of marital status (marriage certificate, divorce decree)',
+                    '6. Evidence of any name changes',
+                    '7. Documentation for any trips outside the U.S. over 6 months'
+                ]
+            }
+        };
+
+        // Auto-fill address and documents when form type changes
+        $('#form_type').on('change', function() {
+            const formType = $(this).val();
+
+            if (formType === 'other') {
+                $('#customFormTitle').show();
+                $('#mailing_address').val('');
+                $('#documents').val('');
+            } else if (formType && formData[formType]) {
+                $('#customFormTitle').hide();
+                $('#mailing_address').val(formData[formType].address);
+                $('#documents').val(formData[formType].documents.join('\n'));
+            } else {
+                $('#customFormTitle').hide();
+                $('#mailing_address').val('');
+                $('#documents').val('');
+            }
+        });
+
         $('#coverLetterForm').on('submit', function(e) {
             e.preventDefault();
+
+            const formType = $('#form_type').val();
+            let formTitle;
+
+            if (formType === 'other') {
+                formTitle = $('#form_title_custom').val();
+                if (!formTitle) {
+                    alert('Please enter a custom form title');
+                    return;
+                }
+            } else {
+                formTitle = formData[formType]?.title || formType;
+            }
 
             const docs = $('#documents').val().split('\n').filter(d => d.trim());
 
@@ -99,7 +333,8 @@
                 full_name: $('#full_name').val(),
                 email: $('#email').val(),
                 phone: $('#phone').val(),
-                form_title: $('#form_title').val(),
+                form_title: formTitle,
+                mailing_address: $('#mailing_address').val(),
                 case_number: $('#case_number').val(),
                 documents: docs
             };
@@ -123,5 +358,6 @@
             });
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

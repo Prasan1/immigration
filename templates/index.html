@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Immigration Documents Portal</title>
+    <meta name="description" content="Get organized immigration form checklists, filing fees, and mailing info in one place. Explore common USCIS forms with printable summaries and clear next steps.">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -16,19 +21,27 @@
     <script src="https://cdn.jsdelivr.net/npm/clerk@latest/dist/clerk.browser.js"></script>
     <style>
         :root {
-            --accent-navy: #1E3A5F;
-            --text-dark: #2C3E50;
-            --text-muted: #6B7280;
-            --border-gray: #E5E7EB;
-            --bg-light: #F9FAFB;
-            --brand-purple: #667eea;
-            --success-green: #16a34a;
+            /* RankSewa-inspired clean palette */
+            --primary-color: #0284c7;
+            --secondary-color: #0d9488;
+            --accent-green: #10b981;
+            --accent-navy: #1e3a5f;
+            --brand-purple: #b45309;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-gray: #e2e8f0;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
             min-height: 100vh;
+        }
+
+        h1, h2, h3, .page-title {
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         /* White Navbar */
@@ -52,64 +65,323 @@
             color: var(--brand-purple) !important;
         }
 
-        /* Page Header with Artistic Flag */
+        /* Clean Page Header */
         .page-header {
-            background: linear-gradient(135deg, #F8FAFC 0%, #E8F4F8 100%);
-            color: var(--text-dark);
+            background: var(--primary-color);
+            color: white;
             padding: 100px 0 80px 0;
             margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Artistic Wavy US Flag */
-        .page-header::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -5%;
-            width: 110%;
-            height: 120%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='starsforms' x='0' y='0' width='80' height='60' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='60' cy='15' r='4' fill='rgba(255,255,255,0.4)'/%3E%3Ccircle cx='40' cy='35' r='4' fill='rgba(255,255,255,0.4)'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M 0 0 Q 100 20 200 0 Q 300 -20 380 0 L 380 230 Q 300 250 200 230 Q 100 210 0 230 Z' fill='rgba(159,175,210,0.3)' /%3E%3Crect x='0' y='0' width='380' height='230' fill='url(%23starsforms)' opacity='0.8'/%3E%3Cpath d='M 0 0 Q 250 20 500 0 Q 750 -20 1000 0 L 1000 46 Q 750 66 500 46 Q 250 26 0 46 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 92 Q 250 112 500 92 Q 750 72 1000 92 L 1000 138 Q 750 158 500 138 Q 250 118 0 138 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 184 Q 250 204 500 184 Q 750 164 1000 184 L 1000 230 Q 750 250 500 230 Q 250 210 0 230 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 276 Q 250 296 500 276 Q 750 256 1000 276 L 1000 322 Q 750 342 500 322 Q 250 302 0 322 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 368 Q 250 388 500 368 Q 750 348 1000 368 L 1000 414 Q 750 434 500 414 Q 250 394 0 414 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 460 Q 250 480 500 460 Q 750 440 1000 460 L 1000 506 Q 750 526 500 506 Q 250 486 0 506 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 552 Q 250 572 500 552 Q 750 532 1000 552 L 1000 600 Q 750 600 500 600 Q 250 600 0 600 Z' fill='rgba(229,135,144,0.25)'/%3E%3Cpath d='M 0 100 Q 125 60 250 100 T 500 100 T 750 100 T 1000 100 L 1000 150 Q 875 190 750 150 T 500 150 T 250 150 T 0 150 Z' fill='rgba(159,175,210,0.15)' opacity='0.6'/%3E%3Cpath d='M 0 300 Q 125 340 250 300 T 500 300 T 750 300 T 1000 300 L 1000 250 Q 875 210 750 250 T 500 250 T 250 250 T 0 250 Z' fill='rgba(229,135,144,0.12)' opacity='0.5'/%3E%3Cpath d='M 0 450 Q 125 410 250 450 T 500 450 T 750 450 T 1000 450 L 1000 500 Q 875 540 750 500 T 500 500 T 250 500 T 0 500 Z' fill='rgba(159,175,210,0.12)' opacity='0.5'/%3E%3C/svg%3E");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.35;
-            z-index: 0;
-            animation: gentleFlagFlow 40s ease-in-out infinite;
-            will-change: transform;
-        }
-
-        @keyframes gentleFlagFlow {
-            0%, 100% {
-                transform: translateX(0) translateY(0) scale(1.05);
-            }
-            50% {
-                transform: translateX(-1%) translateY(1%) scale(1.05);
-            }
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .page-header-content {
             position: relative;
             z-index: 1;
             display: inline-block;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem 3rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 0;
         }
 
         .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
+            font-size: 3.6rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            letter-spacing: -0.02em;
         }
 
         .page-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-muted);
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.92);
             font-weight: 500;
+            margin-bottom: 0;
+            max-width: 560px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #f8fafc;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 28px 0 24px;
+        }
+
+        .hero-cta {
+            background: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.85rem 2rem;
+            font-weight: 700;
+            border: none;
+        }
+
+        .hero-cta:hover {
+            color: var(--primary-color);
+            background: #f8fafc;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+        }
+
+        .hero-secondary {
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+            border-radius: 8px;
+            padding: 0.85rem 2rem;
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .hero-secondary:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .hero-highlights {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .highlight-item {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-card h4 {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .hero-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px 0;
+        }
+
+        .hero-card li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .hero-card li i {
+            color: var(--brand-secondary);
+        }
+
+        .hero-card .hero-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--brand-secondary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .hero-card .hero-card-cta:hover {
+            color: var(--brand-primary);
+        }
+
+        .trust-strip {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            align-items: center;
+            margin-top: -30px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--border-gray);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .trust-item i {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .section-header {
+            margin: 48px 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .steps-grid,
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            border: 1px solid var(--border-gray);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
+        .step-card .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .step-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.25rem;
+            border: 1px solid var(--border-gray);
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            background: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.1);
+        }
+
+        .feature-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .seo-callout {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-gray);
+        }
+
+        .seo-callout strong {
+            color: var(--primary-color);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 16px;
+            padding: 18px 20px;
+            border: 1px solid var(--border-gray);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .faq-item h5 {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .faq-item p {
+            color: var(--text-muted);
             margin-bottom: 0;
         }
 
@@ -121,11 +393,11 @@
 
         .search-container {
             background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             margin-bottom: 3rem;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-gray);
         }
 
         .search-title {
@@ -147,8 +419,8 @@
         }
 
         .search-input-wrapper .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.15);
         }
 
         .search-input-wrapper .input-group-text {
@@ -159,60 +431,23 @@
             background: none;
             border: none;
             z-index: 10;
-            color: #667eea;
+            color: var(--primary-color);
         }
 
+        /* Clean RankSewa-style Document Cards */
         .document-card {
             background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .document-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--brand-purple);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .document-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-            border-radius: 50%;
-            transform: translate(50%, -50%);
-            transition: all 0.4s ease;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-gray);
         }
 
         .document-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-
-        .document-card:hover::before {
-            opacity: 1;
-        }
-
-        .document-card:hover::after {
-            width: 200px;
-            height: 200px;
-            opacity: 0.8;
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.15);
         }
 
         .document-title {
@@ -234,15 +469,15 @@
         }
 
         .document-category {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-            color: #667eea;
+            background: #eff6ff;
+            color: var(--primary-color);
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
             display: inline-block;
             margin-bottom: 1rem;
             font-weight: 600;
-            border: 1.5px solid rgba(102, 126, 234, 0.3);
+            border: 1px solid #bae6fd;
         }
 
         .document-meta {
@@ -257,144 +492,236 @@
         }
 
         .btn-download {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            background: var(--accent-green);
             border: none;
             color: white;
-            border-radius: 10px;
+            border-radius: 6px;
             padding: 0.6rem 1.2rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .btn-download.btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
         .btn-download:hover {
-            background: linear-gradient(135deg, #219a52 0%, #27ae60 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+            background: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
             color: white;
         }
 
         .btn-info {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            background: var(--primary-color);
             border: none;
             color: white;
-            border-radius: 10px;
+            border-radius: 6px;
             padding: 0.6rem 1.2rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-info.btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
         .btn-info:hover {
-            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            background: #0369a1;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
             color: white;
         }
 
         .btn-checklist {
-            background: var(--accent-navy);
+            background: var(--secondary-color);
             border: none;
             color: white;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 0.6rem 1.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.2);
+            font-weight: 600;
             transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-checklist.btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
         .btn-checklist:hover {
-            background: #2C5282;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+            background: #0f5b54;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
             color: white;
         }
 
         .checklist-modal .modal-content {
-            border-radius: 12px;
-            border: 1px solid var(--border-gray);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-radius: 20px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15),
+                        0 8px 24px rgba(2, 132, 199, 0.1);
+            overflow: hidden;
         }
 
         .checklist-modal .modal-header {
-            background: white;
-            color: var(--text-dark);
-            border-radius: 12px 12px 0 0;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border-gray);
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 50%, #10b981 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 2rem 2.5rem;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checklist-modal .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .checklist-modal .modal-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .checklist-modal .modal-title {
-            font-weight: 600;
-            font-size: 1.4rem;
-            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.75rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            letter-spacing: -0.01em;
         }
 
         .checklist-modal .modal-title i {
-            color: var(--brand-purple);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .checklist-modal .btn-close {
-            opacity: 0.5;
+            opacity: 0.8;
+            filter: brightness(0) invert(1);
+            position: relative;
+            z-index: 1;
+            background-size: 50%;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .checklist-modal .btn-close:hover {
             opacity: 1;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
         }
 
         .checklist-modal .modal-body {
-            padding: 2rem;
-            background: white;
+            padding: 2.5rem;
+            background: #fafbfc;
+            background-image: radial-gradient(circle at top right, rgba(2, 132, 199, 0.03) 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, rgba(13, 148, 136, 0.03) 0%, transparent 50%);
         }
 
         .form-info-box {
-            background: var(--bg-light);
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
             margin-bottom: 2rem;
-            border: 1px solid var(--border-gray);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0284c7, #0d9488, #10b981);
         }
 
         .info-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: white;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(13, 148, 136, 0.08));
+            border-radius: 10px;
             margin: 0.25rem;
             font-weight: 600;
             color: var(--text-dark);
-            border: 1px solid var(--border-gray);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .info-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+            border-color: #0284c7;
         }
 
         .info-badge i {
-            color: var(--brand-purple);
-            margin-right: 0.5rem;
+            color: #0284c7;
+            font-size: 1.1rem;
         }
 
         .checklist-section-title {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid #667eea;
+            background: linear-gradient(135deg, #0284c7, #0d9488);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, #0284c7, #0d9488, #10b981);
+            border-image-slice: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checklist-section-title i {
+            background: linear-gradient(135deg, #0284c7, #0d9488);
+            color: white;
+            padding: 0.7rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.3);
+            -webkit-text-fill-color: white;
         }
 
         .checklist-item {
-            padding: 1rem 1.25rem;
-            margin-bottom: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
             background: white;
-            border-radius: 12px;
-            border: 2px solid #e8e8e8;
-            transition: all 0.3s ease;
+            border-radius: 14px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
         }
 
         .checklist-item::before {
@@ -403,33 +730,51 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 4px;
-            background: var(--accent-navy);
+            width: 5px;
+            background: linear-gradient(180deg, #0284c7, #0d9488);
             transform: scaleY(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+        }
+
+        .checklist-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.03), rgba(13, 148, 136, 0.03));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .checklist-item:hover {
-            border-color: var(--accent-navy);
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.15);
-            transform: translateX(5px);
+            border-color: #0284c7;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.15),
+                        0 4px 12px rgba(13, 148, 136, 0.1);
+            transform: translateX(8px) scale(1.01);
         }
 
         .checklist-item:hover::before {
             transform: scaleY(1);
         }
 
+        .checklist-item:hover::after {
+            opacity: 1;
+        }
+
         .checklist-item .form-check-input {
             width: 1.5rem;
             height: 1.5rem;
             margin-top: 0.125rem;
-            border: 2px solid #667eea;
+            border: 2px solid var(--border-gray);
             cursor: pointer;
         }
 
         .checklist-item .form-check-input:checked {
-            background-color: #667eea;
-            border-color: #667eea;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         .checklist-item .form-check-label {
@@ -445,11 +790,66 @@
             opacity: 0.6;
         }
 
+        /* Premium checklist items */
+        .checklist-item.premium-item {
+            background: #f8fafc;
+            padding: 1.25rem;
+            transition: all 0.2s ease;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .checklist-item.premium-item:hover {
+            background: #eff6ff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.1);
+        }
+
         .modal-footer {
-            border-top: 1px solid var(--border-gray);
-            padding: 1.25rem 2rem;
-            background: var(--bg-light);
-            border-radius: 0 0 12px 12px;
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 1.5rem 2.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-footer .btn {
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-footer .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Tab Content Fade Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-body > * {
+            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Quick Action Buttons */
+        .quick-action-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        .quick-action-btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.25) !important;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(13, 148, 136, 0.05)) !important;
         }
 
         .progress-indicator {
@@ -475,6 +875,21 @@
             background: var(--accent-navy);
             border-radius: 10px;
             transition: width 0.4s ease;
+        }
+
+        .alert-neutral {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        .alert-neutral .alert-link {
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .alert-neutral i {
+            color: #64748b;
         }
 
         /* Preview Signup CTA */
@@ -523,63 +938,155 @@
             box-shadow: 0 6px 20px rgba(30, 58, 95, 0.4);
         }
 
-        /* Modal Tabs */
+        /* Modern Modal Tabs with Engaging Design */
         .modal-tabs {
             display: flex;
-            background: var(--bg-light);
-            border-bottom: 1px solid var(--border-gray);
-            padding: 0 1rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #0284c7, #0d9488, #10b981);
+            border-image-slice: 1;
+            padding: 0.5rem 1.5rem 0;
             flex-wrap: wrap;
+            gap: 0.5rem;
+            box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.03);
         }
 
         .tab-btn {
-            background: none;
+            position: relative;
+            background: transparent;
             border: none;
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.75rem;
             font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px 12px 0 0;
             font-size: 0.95rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #0284c7, #0d9488);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.1), rgba(13, 148, 136, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px 12px 0 0;
         }
 
         .tab-btn:hover {
-            color: var(--brand-purple);
-            background: rgba(102, 126, 234, 0.05);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:hover::after {
+            opacity: 1;
+        }
+
+        .tab-btn:hover i {
+            transform: scale(1.15) rotate(5deg);
         }
 
         .tab-btn.active {
-            color: var(--accent-navy);
-            border-bottom-color: var(--accent-navy);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3),
+                        0 2px 6px rgba(13, 148, 136, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .tab-btn.active::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .tab-btn.active::after {
+            opacity: 0;
         }
 
         .tab-btn i {
-            font-size: 1rem;
+            font-size: 1.1rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Guide Content Styles */
+        .tab-btn.active i {
+            transform: scale(1.1);
+        }
+
+        /* Modern Guide Content Styles */
         .guide-section {
             margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--bg-light);
-            border-radius: 12px;
-            border-left: 4px solid var(--brand-purple);
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .guide-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, #0284c7 0%, #0d9488 50%, #10b981 100%);
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.3);
+        }
+
+        .guide-section:hover {
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1),
+                        0 4px 12px rgba(2, 132, 199, 0.15);
+            transform: translateY(-2px);
         }
 
         .guide-section h5 {
-            color: #2c3e50;
+            color: var(--text-dark);
             font-weight: 700;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .guide-section h5 i {
+            background: linear-gradient(135deg, #0284c7, #0d9488);
+            color: white;
+            padding: 0.6rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
         }
 
         .guide-section h6 {
-            color: #667eea;
+            color: var(--primary-color);
             font-weight: 600;
-            margin-top: 1rem;
-            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
         }
 
         .guide-section ul {
@@ -588,75 +1095,157 @@
         }
 
         .guide-section li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
+            padding: 0.75rem 0 0.75rem 2.5rem;
             position: relative;
-            line-height: 1.6;
+            line-height: 1.7;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .guide-section li:hover {
+            padding-left: 3rem;
+            color: var(--text-dark);
         }
 
         .guide-section li:before {
             content: "→";
             position: absolute;
-            left: 0;
-            color: #667eea;
+            left: 0.5rem;
+            color: var(--primary-color);
             font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .guide-section li:hover:before {
+            left: 0.75rem;
+            transform: scale(1.2);
         }
 
         .tip-box {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            border-left: 3px solid #667eea;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(13, 148, 136, 0.05));
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+            position: relative;
+        }
+
+        .tip-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #0284c7, #0d9488);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .tip-box h6 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0284c7;
+            margin-bottom: 1rem;
+        }
+
+        .tip-box h6 i {
+            font-size: 1.2rem;
+        }
+
+        .tip-box li {
+            padding: 0.5rem 0 0.5rem 0 !important;
         }
 
         .tip-box li:before {
-            content: "💡";
+            content: none !important;
+        }
+
+        .tip-box li:hover {
+            padding-left: 0 !important;
         }
 
         .mistake-item {
-            background: #fff3cd;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
-            border-left: 4px solid #ffc107;
+            background: linear-gradient(135deg, rgba(148, 163, 184, 0.08), rgba(100, 116, 139, 0.08));
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 2px 8px rgba(148, 163, 184, 0.1);
             font-weight: 500;
+            position: relative;
+            padding-left: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mistake-item::before {
+            content: '⚠️';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .mistake-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(148, 163, 184, 0.15);
         }
 
         .protip-item {
-            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
-            border-left: 4px solid #27ae60;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
             font-weight: 500;
+            position: relative;
+            padding-left: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .protip-item::before {
+            content: '✨';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .protip-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
         .filter-badge {
             background: white;
-            color: #667eea;
-            padding: 0.6rem 1.3rem;
-            border-radius: 25px;
+            color: var(--text-dark);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
             margin: 0.3rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: inline-block;
-            border: 2px solid #e0e0e0;
-            font-weight: 500;
+            border: 2px solid var(--border-gray);
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .filter-badge:hover {
-            background: #f8f9fa;
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            background: #f8fafc;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
         }
 
         .filter-badge.active {
-            background: var(--accent-navy);
+            background: var(--primary-color);
             color: white;
-            border-color: var(--accent-navy);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
         }
 
         .no-results {
@@ -675,39 +1264,27 @@
         }
 
         .premium-badge {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            background: #eff6ff;
+            color: var(--primary-color);
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
             margin-left: 0.5rem;
             display: inline-block;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-            animation: pulse-premium 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-premium {
-            0%, 100% { box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); }
-            50% { box-shadow: 0 4px 20px rgba(245, 87, 108, 0.4); }
+            border: 1px solid #bae6fd;
         }
 
         .free-badge {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
+            background: #d1fae5;
+            color: #065f46;
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
             margin-left: 0.5rem;
             display: inline-block;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3);
-            animation: pulse-free 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-free {
-            0%, 100% { box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
-            50% { box-shadow: 0 4px 20px rgba(56, 239, 125, 0.4); }
+            border: 1px solid #a7f3d0;
         }
 
         /* Page Loading Bar */
@@ -749,15 +1326,39 @@
         }
 
         .btn-upgrade {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: var(--primary-color);
             border: none;
             color: white;
             border-radius: 8px;
             padding: 0.5rem 1rem;
             margin-bottom: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-upgrade:hover {
+            background: #0369a1;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            color: white;
         }
 
         @media (max-width: 768px) {
+            .hero-grid,
+            .steps-grid,
+            .feature-grid,
+            .faq-grid,
+            .trust-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2.6rem;
+            }
+
             .document-card {
                 margin-bottom: 1rem;
             }
@@ -963,6 +1564,29 @@
                 font-size: 1rem;
             }
         }
+
+        /* Toast notification animations */
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
     </style>
 
     <!-- Dynamic branding colors -->
@@ -971,16 +1595,13 @@
             --brand-primary: {{ g.branding.primary_color }};
             --brand-secondary: {{ g.branding.secondary_color }};
         }
-        .page-header {
-            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%) !important;
-        }
     </style>
 </head>
 <body>
     <!-- Page Loading Indicator -->
     <div id="pageLoadingBar"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="/">
                 {% if g.branding.logo_url %}
@@ -990,78 +1611,188 @@
                 {% endif %}
                 {{ g.branding.site_name }}
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/">
-                    <i class="fas fa-home me-1"></i>Home
-                </a>
-                <a class="nav-link active" href="/forms">
-                    <i class="fas fa-file-alt me-1"></i>Forms
-                </a>
-                <a class="nav-link" href="/templates">
-                    <i class="fas fa-edit me-1"></i>Templates
-                </a>
-                <a class="nav-link" href="/file-compressor">
-                    <i class="fas fa-file-archive me-1"></i>Compressor
-                </a>
-                <a class="nav-link" href="/pricing">
-                    <i class="fas fa-tags me-1"></i>Pricing
-                </a>
-                {% if user %}
-                <span class="navbar-text me-3" style="background: rgba(30, 58, 95, 0.1); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; color: var(--text-dark);">
-                    <i class="fas fa-user-circle me-2" style="color: var(--accent-navy);"></i>{{ user.full_name or user.email.split('@')[0] }}
-                    <span class="badge" style="background: var(--accent-navy); color: white; margin-left: 0.5rem;">{{ user.subscription_tier.title() }}</span>
-                </span>
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                </a>
-                <button class="btn btn-outline-danger btn-sm ms-2" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt me-1"></i>Logout
-                </button>
-                {% else %}
-                <button class="btn btn-primary btn-sm ms-2" id="loginBtn">
-                    <i class="fas fa-sign-in-alt me-1"></i>Sign In
-                </button>
-                {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    {% if user %}
+                    <li class="nav-item">
+                        <span class="navbar-text me-3" style="background: rgba(180, 83, 9, 0.12); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; color: var(--text-dark);">
+                            <i class="fas fa-user-circle me-2" style="color: var(--brand-secondary);"></i>{{ user.full_name or user.email.split('@')[0] }}
+                            <span class="badge" style="background: var(--brand-secondary); color: white; margin-left: 0.5rem;">{{ user.subscription_tier.title() }}</span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-danger btn-sm ms-2" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <button class="btn btn-primary btn-sm ms-2" id="loginBtn">
+                            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                        </button>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Page Header -->
     <div class="page-header">
-        <div class="container text-center">
-            <div class="page-header-content">
-                <h1 class="page-title">
-                    <i class="fas fa-file-contract me-3"></i>
-                    Immigration Forms Library
-                </h1>
-                <p class="page-subtitle">
-                    Browse all immigration forms with complete checklists, fees, and processing times
-                </p>
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <div class="hero-pill">
+                        <i class="fas fa-star"></i>
+                        Start with 3 forms free, no login required
+                    </div>
+                    <h1 class="page-title">
+                        Get immigration paperwork right the first time
+                    </h1>
+                    <p class="page-subtitle">
+                        Find USCIS form checklists, filing fees, processing times, and mailing info in one organized workspace.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="/pricing" class="btn hero-cta">
+                            <i class="fas fa-rocket me-2"></i>Start Free
+                        </a>
+                        <a href="#forms-library" class="btn hero-secondary">
+                            <i class="fas fa-layer-group me-2"></i>Browse Forms
+                        </a>
+                    </div>
+                    <div class="hero-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-check-circle me-2"></i>Printable checklists
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-clock me-2"></i>Current processing details
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-map-marker-alt me-2"></i>Mailing address guidance
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <h4>What you get inside the library</h4>
+                    <ul>
+                        <li><i class="fas fa-file-alt"></i>Form-by-form document checklists</li>
+                        <li><i class="fas fa-dollar-sign"></i>Filing fees and timelines at a glance</li>
+                        <li><i class="fas fa-link"></i>Official links and mailing info</li>
+                        <li><i class="fas fa-edit"></i>Fillable templates with paid plans</li>
+                    </ul>
+                    <a class="hero-card-cta" href="/pricing">
+                        Compare plans <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="container main-container">
-        <!-- Freemium Banner (for non-logged in users) -->
-        {% if not user %}
-        <div class="mb-4" style="background: white; border-radius: 20px; padding: 1.5rem 2rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); border: 3px solid #28a745;">
-            <div class="d-flex align-items-center">
-                <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); width: 70px; height: 70px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem;">
-                    <i class="fas fa-gift fa-2x" style="color: white;"></i>
-                </div>
-                <div class="flex-grow-1">
-                    <h4 style="color: #28a745; font-weight: 800; margin-bottom: 0.5rem; font-size: 1.4rem;">
-                        <i class="fas fa-star me-2" style="color: #ffc107;"></i>Try 3 Forms FREE - No Login Required!
-                    </h4>
-                    <p style="margin-bottom: 0; color: #495057; font-size: 1rem; font-weight: 500;">
-                        Access <strong>I-130, I-485, and N-400</strong> with full checklists instantly.
-                        <span style="color: #667eea;">Sign up to unlock all 11+ forms + fillable templates.</span>
-                    </p>
-                </div>
-                <a href="/pricing" class="btn btn-lg" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border-radius: 30px; padding: 0.75rem 2rem; font-weight: 600; box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3); white-space: nowrap;">
-                    <i class="fas fa-rocket me-2"></i>View Plans
-                </a>
+        <div class="trust-strip">
+            <div class="trust-item">
+                <i class="fas fa-check-double"></i>Clear, step-by-step checklists
             </div>
+            <div class="trust-item">
+                <i class="fas fa-link"></i>Direct links to official form PDFs
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-print"></i>Printable summaries for your records
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-users"></i>Built for self-filers and small teams
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">How it works</h2>
+            <p class="section-subtitle">
+                Pick a form, follow the checklist, and move forward with confidence. Everything you need is organized in one place.
+            </p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Find your form</h4>
+                <p>Search by form number or browse by category to get started fast.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>Follow the checklist</h4>
+                <p>See required documents, fees, and timing in a clean, printable view.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>Submit with clarity</h4>
+                <p>Use official links and mailing info so nothing gets missed.</p>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Built for real immigration tasks</h2>
+            <p class="section-subtitle">
+                Whether you are applying for family, work, or naturalization, this library keeps your paperwork focused and consistent.
+            </p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Family-based immigration</h4>
+                <p>Track supporting evidence and fee details for key family petitions.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Adjustment of status</h4>
+                <p>Keep I-485 packets organized with a checklist you can print.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Naturalization</h4>
+                <p>Stay ready for the N-400 process with a clean overview.</p>
+            </div>
+        </div>
+        <!-- Free Trial Banner (for non-logged in users) -->
+        {% if not user %}
+        <div class="mb-4 d-flex flex-wrap align-items-center gap-3" style="font-size: 0.98rem; color: #475569;">
+            <span style="background: rgba(15, 118, 110, 0.12); color: #0f766e; font-weight: 600; padding: 0.35rem 0.75rem; border-radius: 999px;">
+                <i class="fas fa-clipboard-check me-1"></i>Free to start
+            </span>
+            <span>
+                Access I-130, I-485, and N-400 checklists without logging in.
+            </span>
+            <a href="/pricing" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
+                See full access plans
+            </a>
         </div>
         {% endif %}
 
@@ -1112,13 +1843,46 @@
             </div>
         </div>
 
+        <div class="section-header">
+            <h2 class="section-title">Popular USCIS forms in one place</h2>
+            <p class="section-subtitle">
+                Explore checklists for I-130, I-485, N-400, I-765, and more. Print what you need and keep moving.
+            </p>
+        </div>
+
         <!-- Documents Grid -->
+        <div id="forms-library"></div>
         <div id="documentsContainer">
             <div class="loading">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <p class="mt-3">Loading immigration documents...</p>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Frequently asked questions</h2>
+            <p class="section-subtitle">
+                Quick answers for first-time visitors. This site is for informational purposes and does not provide legal advice.
+            </p>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h5>Is this official USCIS guidance?</h5>
+                <p>No. We organize publicly available information and link to official resources for your convenience.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Do I need an account to start?</h5>
+                <p>You can access three forms without logging in. Create an account to unlock the full library.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Can I print or save the checklist?</h5>
+                <p>Yes. Each form includes a checklist view that is ready to print.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Does this replace an attorney?</h5>
+                <p>No. This tool helps you stay organized, but it does not provide legal advice.</p>
             </div>
         </div>
     </div>
@@ -1150,6 +1914,9 @@
                     </button>
                     <button class="tab-btn" onclick="switchTab('before-submit')" id="beforeSubmitTab" style="display:none;">
                         <i class="fas fa-tasks me-1"></i>Before You Submit
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('where-to-mail')" id="whereToMailTab">
+                        <i class="fas fa-map-marker-alt me-1"></i>Where to Mail
                     </button>
                 </div>
                 <div class="modal-body" id="modalBody">
@@ -1185,6 +1952,15 @@
         $(document).ready(function() {
             let allDocuments = [];
             let currentFilter = 'all';
+
+            // User subscription tier (from backend)
+            {% if user %}
+            const userTier = "{{ user.subscription_tier }}";
+            const isAuthenticated = true;
+            {% else %}
+            const userTier = "anonymous";
+            const isAuthenticated = false;
+            {% endif %}
 
             // Load documents and categories
             loadDocuments();
@@ -1309,36 +2085,45 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 text-md-end">
+                                <div class="col-md-4">
                                     ${hasAccess ? `
-                                        <a href="${doc.pdf_url}" target="_blank" class="btn btn-download">
-                                            <i class="fas fa-download me-1"></i>Download PDF
-                                        </a>
-                                        <a href="${doc.info_url}" target="_blank" class="btn btn-info">
-                                            <i class="fas fa-info-circle me-1"></i>More Info
-                                        </a>
-                                        <button class="btn btn-checklist" onclick="showChecklist(${doc.id})">
-                                            <i class="fas fa-clipboard-list me-1"></i>View Checklist
-                                        </button>
+                                        <div class="d-flex flex-column gap-2">
+                                            <a href="${doc.pdf_url}" target="_blank" class="btn btn-download btn-sm">
+                                                <i class="fas fa-download me-1"></i>Download
+                                            </a>
+                                            <div class="d-flex gap-2">
+                                                <a href="${doc.info_url}" target="_blank" class="btn btn-info btn-sm flex-fill">
+                                                    <i class="fas fa-info-circle me-1"></i>Info
+                                                </a>
+                                                <button class="btn btn-checklist btn-sm flex-fill" onclick="showChecklist(${doc.id})">
+                                                    <i class="fas fa-clipboard-list me-1"></i>Checklist
+                                                </button>
+                                            </div>
+                                        </div>
                                     ` : doc.requires_login ? `
-                                        <div class="alert alert-info mb-3">
-                                            <i class="fas fa-lock me-2"></i><strong>${getTierDisplayName(doc.required_tier)} Plan Required</strong>
-                                            <br><small>Sign up to access this form</small>
+                                        <div class="d-flex align-items-center gap-2 mb-3 p-3" style="background: #f8fafc; border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                                            <i class="fas fa-lock" style="color: var(--primary-color);"></i>
+                                            <span style="font-size: 0.9rem; color: var(--text-dark); flex: 1;">
+                                                <strong>${getTierDisplayName(doc.required_tier)}</strong> required
+                                            </span>
                                         </div>
-                                        <button class="btn btn-upgrade mb-2" onclick="$('#loginBtn').click()">
-                                            <i class="fas fa-user-plus me-1"></i>Sign Up for ${getTierDisplayName(doc.required_tier)}
-                                        </button>
-                                        <br>
-                                        <a href="/pricing" class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-info-circle me-1"></i>View Plans
-                                        </a>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            <button class="btn btn-primary btn-sm" onclick="$('#loginBtn').click()" style="flex: 1; min-width: 120px;">
+                                                <i class="fas fa-user-plus me-1"></i>Sign Up
+                                            </button>
+                                            <a href="/pricing" class="btn btn-outline-secondary btn-sm" style="flex: 1; min-width: 120px;">
+                                                <i class="fas fa-info-circle me-1"></i>View Plans
+                                            </a>
+                                        </div>
                                     ` : `
-                                        <div class="alert alert-warning mb-3">
-                                            <i class="fas fa-arrow-up me-2"></i><strong>Upgrade Required</strong>
-                                            <br><small>${getTierDisplayName(doc.required_tier)} plan needed</small>
+                                        <div class="d-flex align-items-center gap-2 mb-3 p-3" style="background: #f8fafc; border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                                            <i class="fas fa-arrow-up" style="color: var(--primary-color);"></i>
+                                            <span style="font-size: 0.9rem; color: var(--text-dark); flex: 1;">
+                                                <strong>${getTierDisplayName(doc.required_tier)}</strong> required
+                                            </span>
                                         </div>
-                                        <a href="/pricing" class="btn btn-upgrade">
-                                            <i class="fas fa-unlock me-1"></i>Upgrade to ${getTierDisplayName(doc.required_tier)}
+                                        <a href="/pricing" class="btn btn-primary btn-sm w-100">
+                                            <i class="fas fa-unlock me-1"></i>Upgrade Plan
                                         </a>
                                     `}
                                 </div>
@@ -1474,6 +2259,9 @@
                     case 'before-submit':
                         html = renderBeforeSubmitTab();
                         break;
+                    case 'where-to-mail':
+                        html = renderMailingTab();
+                        break;
                 }
 
                 $('#modalBody').html(html);
@@ -1494,7 +2282,7 @@
                 const doc = currentFormData;
                 return `
                     <div class="form-info-box">
-                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">
+                        <h6 style="color: var(--primary-color); font-weight: 700; margin-bottom: 1rem;">
                             <i class="fas fa-info-circle me-2"></i>Form Information
                         </h6>
                         <p style="color: #495057; margin-bottom: 1rem;">${doc.description}</p>
@@ -1510,22 +2298,23 @@
                             <h6 class="mb-2"><i class="fas fa-check-circle me-2"></i><strong>Step-by-Step Filling Guide Available!</strong></h6>
                             <p class="mb-2">Click the tabs above to see:</p>
                             <ul class="mb-0 mt-2" style="list-style: none; padding-left: 0;">
-                                <li><i class="fas fa-pen me-2" style="color: #667eea;"></i><strong>How to Fill</strong> - Detailed instructions</li>
-                                <li><i class="fas fa-exclamation-triangle me-2" style="color: #ffc107;"></i><strong>Common Mistakes</strong> - Errors to avoid</li>
-                                <li><i class="fas fa-tasks me-2" style="color: #27ae60;"></i><strong>Before You Submit</strong> - Final checklist</li>
+                                <li><i class="fas fa-pen me-2" style="color: var(--primary-color);"></i><strong>How to Fill</strong> - Detailed instructions</li>
+                                <li><i class="fas fa-exclamation-triangle me-2" style="color: #94a3b8;"></i><strong>Common Mistakes</strong> - Errors to avoid</li>
+                                <li><i class="fas fa-tasks me-2" style="color: var(--accent-green);"></i><strong>Before You Submit</strong> - Final checklist</li>
                             </ul>
                         </div>
                     ` : ''}
 
                     <div class="mt-4">
-                        <h6 style="color: #2c3e50; font-weight: 700; margin-bottom: 1rem;">
-                            <i class="fas fa-download me-2"></i>Quick Actions
+                        <h6 style="color: var(--text-dark); font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-download" style="background: linear-gradient(135deg, #0284c7, #0d9488); color: white; padding: 0.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);"></i>
+                            Quick Actions
                         </h6>
-                        <div class="d-grid gap-2">
-                            <a href="${doc.pdf_url}" target="_blank" class="btn btn-lg" style="background: var(--accent-navy); color: white; border: none; border-radius: 8px; box-shadow: 0 2px 8px rgba(30, 58, 95, 0.2); transition: all 0.2s ease;">
+                        <div class="d-grid gap-3">
+                            <a href="${doc.pdf_url}" target="_blank" class="btn btn-lg quick-action-btn-primary" style="background: linear-gradient(135deg, #0284c7, #0d9488); color: white; border: none; border-radius: 12px; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.3); transition: all 0.3s ease; font-weight: 600; padding: 1rem;">
                                 <i class="fas fa-file-pdf me-2"></i>Download Official PDF
                             </a>
-                            <a href="${doc.info_url}" target="_blank" class="btn btn-outline-primary btn-lg">
+                            <a href="${doc.info_url}" target="_blank" class="btn btn-lg quick-action-btn-secondary" style="background: white; color: var(--primary-color); border: 2px solid var(--primary-color); border-radius: 12px; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.1); transition: all 0.3s ease; font-weight: 600; padding: 1rem;">
                                 <i class="fas fa-external-link-alt me-2"></i>View Official USCIS Info
                             </a>
                         </div>
@@ -1557,7 +2346,7 @@
                     return '<p class="text-center text-muted p-5">Filling guide not available.</p>';
                 }
 
-                let html = '<div class="alert alert-info" style="border-radius: 12px;"><i class="fas fa-lightbulb me-2"></i><strong>Read each section before filling the form.</strong> Having documents ready makes the process smoother!</div>';
+                let html = '<div class="alert alert-info" style="border-radius: 12px;"><i class="fas fa-info-circle me-2"></i><strong>Read each section before filling the form.</strong> Having documents ready makes the process smoother!</div>';
 
                 currentFormGuide.filling_steps.forEach((step, index) => {
                     html += `
@@ -1575,7 +2364,7 @@
                 });
 
                 if (currentFormGuide.pro_tips) {
-                    html += `<div class="guide-section" style="border-left-color: #27ae60;"><h5><i class="fas fa-star me-2"></i>Pro Tips</h5>`;
+                    html += `<div class="guide-section" style="border-left-color: var(--accent-green);"><h5><i class="fas fa-star me-2"></i>Pro Tips</h5>`;
                     currentFormGuide.pro_tips.forEach(tip => {
                         html += `<div class="protip-item">${tip}</div>`;
                     });
@@ -1585,30 +2374,280 @@
                 return html;
             }
 
+            // Get enhanced checklist data with pro tips, warnings, and examples
+            function getEnhancedChecklistData(item, index) {
+                const itemLower = item.toLowerCase();
+                let data = {
+                    priority: null,
+                    priorityColor: '#6c757d',
+                    proTip: null,
+                    warning: null,
+                    example: null
+                };
+
+                // Priority detection
+                if (index === 0 || itemLower.includes('form') || itemLower.includes('application') || itemLower.includes('petition')) {
+                    data.priority = 'CRITICAL';
+                    data.priorityColor = '#dc3545';
+                } else if (itemLower.includes('passport') || itemLower.includes('birth certificate') || itemLower.includes('photo')) {
+                    data.priority = 'IMPORTANT';
+                    data.priorityColor = '#fd7e14';
+                }
+
+                // Pro Tips based on content
+                if (itemLower.includes('passport') && itemLower.includes('photo')) {
+                    data.proTip = 'Use a professional photo service that specializes in passport photos to avoid rejections due to incorrect sizing or background.';
+                    data.warning = 'Photos older than 6 months or with incorrect backgrounds are a common cause of application delays.';
+                }
+                else if (itemLower.includes('birth certificate')) {
+                    data.proTip = 'Request certified copies directly from the vital records office. Hospital-issued certificates are often not accepted.';
+                    data.example = 'Acceptable: State/county vital records certified copy with raised seal. Not acceptable: Hospital certificate, photocopy, or notarized copy.';
+                }
+                else if (itemLower.includes('marriage certificate')) {
+                    data.proTip = 'Get the original long-form certificate from the county clerk, not a ceremonial certificate.';
+                    data.warning = 'Ceremonial certificates from wedding venues are not accepted by USCIS.';
+                }
+                else if (itemLower.includes('passport')) {
+                    data.proTip = 'Submit clear, legible copies of ALL pages including blank pages. USCIS may request originals later.';
+                    data.example = 'Include bio page, stamps, visas, and any amendments or endorsements.';
+                }
+                else if (itemLower.includes('photo')) {
+                    data.proTip = 'Photos must be 2x2 inches, taken within last 6 months, white/off-white background, no glasses.';
+                    data.warning = 'Selfies, filtered photos, or photos with shadows will be rejected.';
+                }
+                else if (itemLower.includes('i-94')) {
+                    data.proTip = 'Download your official I-94 travel history from cbp.gov/I94. Keep both arrival and departure records.';
+                    data.example = 'Visit cbp.gov/I94, enter passport details, download PDF with all entry/exit stamps.';
+                }
+                else if (itemLower.includes('tax') || itemLower.includes('1040')) {
+                    data.proTip = 'Include complete returns with all schedules and W-2s. IRS transcripts add credibility.';
+                    data.warning = 'Missing schedules or incomplete returns can delay processing by months.';
+                }
+                else if (itemLower.includes('bank statement')) {
+                    data.proTip = 'Submit 3-6 months of consecutive statements showing consistent balance above poverty guidelines.';
+                    data.example = 'Official bank statements (not screenshots) with account holder name, account number, and bank letterhead.';
+                }
+                else if (itemLower.includes('employment letter') || itemLower.includes('job letter')) {
+                    data.proTip = 'Letter should be on company letterhead, dated within 30 days, include salary, position, start date, and HR contact.';
+                    data.example = 'To Whom It May Concern: This letter confirms [Name] is employed as [Position] since [Date] earning $[Amount]/year. Signed by supervisor or HR.';
+                }
+                else if (itemLower.includes('translation')) {
+                    data.proTip = 'All foreign language documents need certified English translations with translator\'s certification statement.';
+                    data.warning = 'Google Translate or uncertified translations will be rejected. Translator must certify competency in both languages.';
+                }
+                else if (itemLower.includes('affidavit')) {
+                    data.proTip = 'Affidavits must be notarized and signed under penalty of perjury. Include affiant\'s ID copy.';
+                    data.example = 'Use USCIS affidavit templates. Include "I swear/affirm under penalty of perjury that the foregoing is true and correct."';
+                }
+                else if (itemLower.includes('evidence') || itemLower.includes('proof')) {
+                    data.proTip = 'More evidence is better. Provide multiple types of documentation to strengthen your case.';
+                    data.example = 'Combine official documents (leases, insurance) with personal items (photos, messages) for comprehensive evidence.';
+                }
+
+                return data;
+            }
+
             function renderChecklistTab() {
                 const doc = currentFormData;
                 let html = '<h5 class="checklist-section-title"><i class="fas fa-list-check me-2"></i>Required Documents Checklist</h5>';
 
                 if (doc.checklist && doc.checklist.length > 0) {
-                    // Show preview badge if this is a preview
-                    if (doc.is_preview) {
+                    // Debug: Log user tier
+                    console.log('User Tier:', userTier);
+
+                    // FREE TIER: Read-only checklist (no interactivity)
+                    if (userTier === 'free') {
+                        html += `
+                            <div class="alert alert-neutral" style="border-radius: 12px; border-left: 4px solid #94a3b8;">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <h6 class="mb-2"><i class="fas fa-eye me-2"></i><strong>Read-Only Checklist</strong></h6>
+                                        <p class="mb-0 small">You're viewing the basic checklist. Upgrade for interactive tracking, professional PDFs, and expert guidance.</p>
+                                    </div>
+                                    <i class="fas fa-lock" style="font-size: 1.5rem; opacity: 0.3;"></i>
+                                </div>
+                            </div>
+                        `;
+
+                        // Render READ-ONLY checklist items (no checkboxes, just bullet points)
+                        html += '<div class="mt-3">';
+                        doc.checklist.forEach((item, index) => {
+                            html += `
+                                <div class="checklist-item" style="opacity: 0.85;">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas fa-circle me-3 mt-1" style="font-size: 0.5rem; color: var(--accent-navy);"></i>
+                                        <span style="color: #495057; line-height: 1.6;">${item}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+
+                        // Upgrade CTA for free users
+                        html += `
+                            <div class="mt-4 p-4" style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%); border-radius: 12px; border: 2px solid var(--brand-purple);">
+                                <h5 class="mb-3" style="color: var(--accent-navy);"><i class="fas fa-star me-2" style="color: #0f766e;"></i>Unlock Professional Features</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Interactive checkboxes with progress tracking
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Download PDFs with your name & date
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Professional formatted downloads
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Cover letter templates & I-94 history generator
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="/pricing" class="btn btn-lg" style="background: var(--accent-navy); color: white; border: none; padding: 12px 40px; font-weight: 600; box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);">
+                                        <i class="fas fa-arrow-up me-2"></i>Upgrade to Complete Package
+                                    </a>
+                                    <p class="mt-2 mb-0 small text-muted">See all pricing options on our pricing page</p>
+                                </div>
+                            </div>
+                        `;
+
+                    // ANONYMOUS: Free trial forms (I-130, I-485, N-400) - FULL ACCESS
+                    } else if (!isAuthenticated && doc.is_free_trial) {
+                        html += `
+                            <div class="d-flex align-items-center gap-3 mb-3 p-3" style="background: #d1fae5; border-radius: 8px; border-left: 3px solid var(--accent-green);">
+                                <i class="fas fa-gift" style="color: var(--accent-green); font-size: 1.5rem;"></i>
+                                <div style="flex: 1;">
+                                    <strong style="color: #065f46;">Free - No Login Required</strong>
+                                    <p class="mb-0 mt-1" style="font-size: 0.85rem; color: #065f46;">Full checklist access</p>
+                                </div>
+                            </div>
+                        `;
+
+                        // Render FULL checklist items (read-only) for trial forms
+                        html += '<div class="mt-3">';
+                        doc.checklist.forEach((item, index) => {
+                            html += `
+                                <div class="checklist-item">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas fa-circle me-3 mt-1" style="font-size: 0.5rem; color: var(--accent-navy);"></i>
+                                        <span style="color: #495057; line-height: 1.6;">${item}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+
+                        // Signup CTA for anonymous users on trial forms
+                        html += `
+                            <div class="mt-4 p-4" style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%); border-radius: 12px; border: 2px solid var(--brand-purple);">
+                                <h5 class="mb-3" style="color: var(--accent-navy);"><i class="fas fa-rocket me-2" style="color: var(--brand-purple);"></i>Sign up to unlock all 11+ forms</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Access to all immigration forms
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Fillable PDF templates
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Complete checklists & guides
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <i class="fas fa-check-circle me-2 text-success"></i>Track your application progress
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <a href="/login" class="btn btn-lg" style="background: var(--accent-navy); color: white; border: none; padding: 12px 40px; font-weight: 600; box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);">
+                                        <i class="fas fa-user-plus me-2"></i>Create Free Account
+                                    </a>
+                                    <p class="mt-2 mb-0 small text-muted">Already have an account? <a href="/login">Sign in</a></p>
+                                </div>
+                            </div>
+                        `;
+
+                    // ANONYMOUS: Preview mode (first 3 items) for other forms
+                    } else if (!isAuthenticated && doc.is_preview) {
                         html += `<div class="alert alert-info" style="border-radius: 12px; background: var(--accent-navy); color: white; border: none;"><div class="d-flex align-items-center justify-content-between"><div><i class="fas fa-eye me-2"></i><strong>Preview Mode</strong><p class="mb-0 mt-1" style="font-size: 0.9rem;">Showing ${doc.checklist.length} of ${doc.checklist_total} items</p></div><i class="fas fa-lock" style="font-size: 2rem; opacity: 0.3;"></i></div></div>`;
-                    }
 
-                    // Render checklist items
-                    doc.checklist.forEach((item, index) => {
-                        html += `<div class="checklist-item"><div class="form-check"><input class="form-check-input checklist-checkbox" type="checkbox" id="check${index}" data-total="${doc.checklist.length}"><label class="form-check-label" for="check${index}">${item}</label></div></div>`;
-                    });
+                        // Render preview items (read-only)
+                        doc.checklist.forEach((item, index) => {
+                            html += `
+                                <div class="checklist-item">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas fa-circle me-3 mt-1" style="font-size: 0.5rem; color: var(--accent-navy);"></i>
+                                        <span style="color: #495057; line-height: 1.6;">${item}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
 
-                    // Show signup CTA if preview mode
-                    if (doc.is_preview && doc.checklist_total > doc.checklist.length) {
-                        const remainingItems = doc.checklist_total - doc.checklist.length;
-                        html += `<div class="preview-signup-cta"><div class="blur-overlay"><i class="fas fa-lock mb-3" style="font-size: 3rem; color: var(--accent-navy);"></i><h5>Sign up to see all ${doc.checklist_total} items</h5><p class="text-muted mb-4">${remainingItems} more checklist items available</p><a href="/login" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Create Free Account</a><p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p></div></div>`;
-                    }
+                        // Show signup CTA for anonymous users
+                        if (doc.checklist_total > doc.checklist.length) {
+                            const remainingItems = doc.checklist_total - doc.checklist.length;
+                            html += `<div class="preview-signup-cta"><div class="blur-overlay"><i class="fas fa-lock mb-3" style="font-size: 3rem; color: var(--accent-navy);"></i><h5>Sign up to see all ${doc.checklist_total} items</h5><p class="text-muted mb-4">${remainingItems} more checklist items available</p><a href="/login" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Create Free Account</a><p class="mt-3 text-muted small">Already have an account? <a href="/login">Sign in</a></p></div></div>`;
+                        }
 
-                    // Progress indicator (only for full checklist)
-                    if (!doc.is_preview) {
+                    // PAID TIER: Full interactive checklist with all features
+                    } else {
+                        html += `
+                            <div class="alert alert-success" style="border-radius: 12px;">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <i class="fas fa-check-circle me-2"></i><strong>Professional Checklist with Expert Guidance</strong>
+                                        <p class="mb-0 mt-1 small">Interactive tracking + Pro tips + Priority indicators + Professional PDFs</p>
+                                    </div>
+                                    <span class="badge" style="background: var(--success-green); color: white; padding: 0.5rem 1rem;">
+                                        ${getTierDisplayName(userTier)}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+
+                        // Render ENHANCED INTERACTIVE checklist items with pro tips
+                        doc.checklist.forEach((item, index) => {
+                            // Get enhanced item data (priority, tips, warnings)
+                            const enhancedData = getEnhancedChecklistData(item, index);
+
+                            html += `
+                                <div class="checklist-item premium-item" style="border-left: 4px solid ${enhancedData.priorityColor};">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div class="form-check flex-grow-1">
+                                            <input class="form-check-input checklist-checkbox" type="checkbox" id="check${index}" data-total="${doc.checklist.length}">
+                                            <label class="form-check-label" for="check${index}">
+                                                <strong>${item}</strong>
+                                                ${enhancedData.priority ? `<span class="badge ms-2" style="background: ${enhancedData.priorityColor}; font-size: 0.7rem;">${enhancedData.priority}</span>` : ''}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    ${enhancedData.proTip ? `
+                                        <div class="mt-2 ms-4 ps-2" style="border-left: 3px solid #17a2b8; padding-left: 0.75rem;">
+                                            <small class="text-info"><i class="fas fa-gem me-1"></i><strong>Pro Tip:</strong> ${enhancedData.proTip}</small>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedData.warning ? `
+                                        <div class="mt-2 ms-4 ps-2" style="border-left: 3px solid #94a3b8; padding-left: 0.75rem;">
+                                            <small class="text-muted"><i class="fas fa-exclamation-triangle me-1" style="color: #0f766e;"></i><strong>Note:</strong> ${enhancedData.warning}</small>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedData.example ? `
+                                        <div class="mt-2 ms-4 ps-2" style="background: #f8f9fa; padding: 0.5rem; border-radius: 6px;">
+                                            <small class="text-muted"><i class="fas fa-info-circle me-1"></i><strong>Example:</strong> ${enhancedData.example}</small>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        });
+
+                        // Progress indicator for paid users
                         html += `<div class="progress-indicator"><div class="progress-text"><i class="fas fa-tasks me-2"></i><span id="checkedCount">0</span> of ${doc.checklist.length} items completed</div><div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div></div></div>`;
+
+                        // Professional PDF download button for paid users
+                        html += `
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-lg" style="background: var(--accent-navy); color: white; border: none; padding: 12px 40px; font-weight: 600; box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);" onclick="downloadProfessionalPDF(${doc.id})">
+                                    <i class="fas fa-file-pdf me-2"></i>Download Professional PDF
+                                </button>
+                                <p class="mt-2 mb-0 small text-muted">Personalized with your name and today's date</p>
+                            </div>
+                        `;
                     }
                 } else {
                     html += '<p class="text-muted text-center">No checklist available</p>';
@@ -1641,7 +2680,7 @@
                     return '<p class="text-center text-muted p-5">Common mistakes guide not available.</p>';
                 }
 
-                let html = '<div class="alert alert-warning" style="border-radius: 12px;"><h6><i class="fas fa-exclamation-triangle me-2"></i><strong>Avoid These Common Mistakes!</strong></h6><p class="mb-0">These errors cause delays or rejections. Double-check your form!</p></div><div class="mt-4">';
+                let html = '<div class="alert alert-neutral" style="border-radius: 12px;"><h6><i class="fas fa-exclamation-triangle me-2"></i><strong>Avoid These Common Mistakes!</strong></h6><p class="mb-0">These errors cause delays or rejections. Double-check your form!</p></div><div class="mt-4">';
 
                 currentFormGuide.common_mistakes.forEach(mistake => {
                     html += `<div class="mistake-item">${mistake}</div>`;
@@ -1654,7 +2693,7 @@
                 const doc = currentFormData;
 
                 // Show signup prompt for preview mode users
-                if (doc.is_preview) {
+                if (doc.is_preview || !isAuthenticated) {
                     return `
                         <div class="preview-signup-cta" style="margin-top: 0;">
                             <div class="blur-overlay">
@@ -1676,14 +2715,660 @@
 
                 let html = '<div class="alert alert-success" style="border-radius: 12px;"><h6><i class="fas fa-check-circle me-2"></i><strong>Final Checklist Before Mailing</strong></h6><p class="mb-0">Make sure you have everything before mailing to USCIS!</p></div><h5 class="checklist-section-title mt-4"><i class="fas fa-tasks me-2"></i>Before You Submit Checklist</h5>';
 
-                currentFormGuide.before_submit.forEach((item, index) => {
-                    html += `<div class="checklist-item"><div class="form-check"><input class="form-check-input checklist-checkbox" type="checkbox" id="submit${index}" data-total="${currentFormGuide.before_submit.length}"><label class="form-check-label" for="submit${index}">${item}</label></div></div>`;
-                });
+                // FREE TIER: Read-only checklist (no checkboxes)
+                if (userTier === 'free') {
+                    // Render READ-ONLY items
+                    currentFormGuide.before_submit.forEach((item, index) => {
+                        html += `
+                            <div class="checklist-item" style="opacity: 0.85;">
+                                <div class="d-flex align-items-start">
+                                    <i class="fas fa-circle me-3 mt-1" style="font-size: 0.5rem; color: var(--accent-navy);"></i>
+                                    <span style="color: #495057; line-height: 1.6;">${item}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
 
-                html += `<div class="progress-indicator"><div class="progress-text"><i class="fas fa-tasks me-2"></i><span id="checkedCount">0</span> of ${currentFormGuide.before_submit.length} items completed</div><div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div></div></div><div class="alert alert-info mt-4" style="border-radius: 12px;"><i class="fas fa-info-circle me-2"></i><strong>Remember:</strong> Keep copies! Use certified mail with tracking!</div>`;
+                    // Upgrade CTA
+                    html += `
+                        <div class="mt-4 p-4" style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%); border-radius: 12px; border: 2px solid var(--brand-purple);">
+                            <h6 class="mb-2" style="color: var(--accent-navy);"><i class="fas fa-lock me-2"></i>Interactive Checklist (Premium Feature)</h6>
+                            <p class="mb-3 small text-muted">Upgrade to check off items and track your progress</p>
+                            <a href="/pricing" class="btn btn-sm" style="background: var(--accent-navy); color: white;">
+                                <i class="fas fa-arrow-up me-2"></i>Upgrade to Complete Package
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    // PAID TIER: Interactive checkboxes with progress tracking
+                    currentFormGuide.before_submit.forEach((item, index) => {
+                        html += `<div class="checklist-item"><div class="form-check"><input class="form-check-input checklist-checkbox" type="checkbox" id="submit${index}" data-total="${currentFormGuide.before_submit.length}"><label class="form-check-label" for="submit${index}">${item}</label></div></div>`;
+                    });
+
+                    html += `<div class="progress-indicator"><div class="progress-text"><i class="fas fa-tasks me-2"></i><span id="checkedCount">0</span> of ${currentFormGuide.before_submit.length} items completed</div><div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div></div></div>`;
+                }
+
+                html += `<div class="alert alert-info mt-4" style="border-radius: 12px;"><i class="fas fa-info-circle me-2"></i><strong>Remember:</strong> Keep copies! Use certified mail with tracking!</div>`;
 
                 return html;
             }
+
+            function renderMailingTab() {
+                const doc = currentFormData;
+                const formNumber = doc.title.match(/I-\d+|DS-\d+|N-\d+|AR-\d+/i)?.[0] || '';
+
+                let html = '<h5 class="checklist-section-title"><i class="fas fa-map-marker-alt me-2"></i>Where to Mail Your Application</h5>';
+
+                // Check if form can be filed online
+                const onlineFilingForms = ['I-130', 'I-485', 'I-765', 'I-131', 'I-90', 'I-129', 'I-140', 'I-539', 'N-400', 'N-600'];
+                const canFileOnline = onlineFilingForms.some(form => formNumber.toUpperCase() === form);
+
+                if (canFileOnline) {
+                    html += `
+                        <div class="alert alert-info" style="border-radius: 12px; background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%); border-left: 4px solid var(--brand-purple);">
+                            <h6><i class="fas fa-laptop me-2"></i><strong>Online Filing Available!</strong></h6>
+                            <p class="mb-2">You can file ${formNumber} online through USCIS. This is the recommended method if you have:</p>
+                            <ul class="mb-2">
+                                <li>Reliable computer and internet connection</li>
+                                <li>Ability to scan and upload documents (PDF format)</li>
+                                <li>Credit/debit card for fee payment</li>
+                            </ul>
+                            <p class="mb-2"><strong>Benefits of Online Filing:</strong></p>
+                            <ul class="mb-3">
+                                <li>✅ Faster processing - no mail delays</li>
+                                <li>✅ Instant confirmation receipt</li>
+                                <li>✅ Track status online immediately</li>
+                                <li>✅ Get updates via email/text</li>
+                                <li>✅ No risk of lost mail</li>
+                            </ul>
+                            <a href="https://my.uscis.gov/account" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>File ${formNumber} Online at my.uscis.gov
+                            </a>
+                        </div>
+                    `;
+                }
+
+                // PAID USERS: Interactive personalized address selector
+                if (userTier !== 'free') {
+                    html += `
+                        <div class="alert alert-success" style="border-radius: 12px; margin-top: 1.5rem;">
+                            <h6><i class="fas fa-star me-2"></i><strong>Personalized Mailing Address (Premium Feature)</strong></h6>
+                            <p class="mb-0">Answer a few questions to get your exact mailing address</p>
+                        </div>
+                    `;
+
+                    // Get address options for this form
+                    const addressOptions = getAddressOptions(formNumber);
+
+                    if (addressOptions.questions) {
+                        html += `
+                            <div class="card" style="border-radius: 12px; border: 2px solid var(--brand-purple); margin-top: 1.5rem;">
+                                <div class="card-body p-4">
+                                    <div id="addressQuestions">
+                        `;
+
+                        // Render questions
+                        addressOptions.questions.forEach((question, qIndex) => {
+                            html += `
+                                <div class="mb-4">
+                                    <label class="form-label" style="font-weight: 600; color: var(--accent-navy);">
+                                        <i class="fas fa-question-circle me-2"></i>${question.text}
+                                    </label>
+                                    <select class="form-select form-select-lg" id="addressQ${qIndex}" onchange="updateMailingAddress('${formNumber}')">
+                                        <option value="">-- Select --</option>
+                                        ${question.options.map(opt => `<option value="${opt.value}" ${opt.disabled ? 'disabled' : ''}>${opt.label}</option>`).join('')}
+                                    </select>
+                                </div>
+                            `;
+                        });
+
+                        html += `
+                                    </div>
+                                    <div id="selectedAddress" style="display: none;">
+                                        <div class="alert alert-success" style="border-radius: 12px; margin-top: 1.5rem;">
+                                            <h6><i class="fas fa-check-circle me-2"></i><strong>Your Mailing Address:</strong></h6>
+                                        </div>
+                                        <div id="addressDisplay" style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.05) 0%, rgba(15, 118, 110, 0.05) 100%); padding: 2rem; border-radius: 12px; border-left: 4px solid var(--brand-purple);">
+                                            <!-- Address will be displayed here -->
+                                        </div>
+                                        <div class="mt-3 text-center">
+                                            <button class="btn btn-lg" style="background: var(--accent-navy); color: white;" onclick="copyMailingAddress(event)">
+                                                <i class="fas fa-copy me-2"></i>Copy Address
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // Simple form - just show the address
+                        const mailingInfo = getMailingAddresses(formNumber);
+                        html += '<div class="mt-3">';
+                        mailingInfo.forEach((info, index) => {
+                            html += `
+                                <div class="card mb-3" style="border-radius: 12px; border: 2px solid var(--success-green);">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="color: var(--accent-navy);">
+                                            <i class="fas fa-map-pin me-2"></i>${info.title}
+                                        </h6>
+                                        <div style="background: #F9FAFB; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+                                            ${info.address.split('\n').join('<br>')}
+                                        </div>
+                                        ${info.note ? `<p class="mt-2 mb-0 small text-muted"><i class="fas fa-info-circle me-1"></i>${info.note}</p>` : ''}
+                                        <div class="mt-3">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="copyAddress('${info.address.replace(/'/g, "\\'")}', event)">
+                                                <i class="fas fa-copy me-1"></i>Copy Address
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                    }
+
+                // FREE USERS: Show upgrade prompt
+                } else {
+                    html += `
+                        <div class="alert alert-neutral" style="border-radius: 12px; margin-top: 1.5rem;">
+                            <h6><i class="fas fa-envelope me-2"></i><strong>If Filing by Mail:</strong></h6>
+                            <p class="mb-0">Mailing addresses vary by your location and form type.</p>
+                        </div>
+                    `;
+
+                    // Get mailing addresses based on form type
+                    const mailingInfo = getMailingAddresses(formNumber);
+
+                    html += '<div class="mt-3">';
+                    mailingInfo.forEach((info, index) => {
+                        html += `
+                            <div class="card mb-3" style="border-radius: 12px; border: 2px solid var(--border-gray); opacity: 0.7;">
+                                <div class="card-body">
+                                    <h6 class="card-title" style="color: var(--accent-navy);">
+                                        <i class="fas fa-map-pin me-2"></i>${info.title}
+                                    </h6>
+                                    <div style="background: #F9FAFB; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
+                                        ${info.address.split('\n').join('<br>')}
+                                    </div>
+                                    ${info.note ? `<p class="mt-2 mb-0 small text-muted"><i class="fas fa-info-circle me-1"></i>${info.note}</p>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+
+                    html += `
+                        <div class="text-center mt-4 p-4" style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.05) 0%, rgba(15, 118, 110, 0.05) 100%); border-radius: 12px; border: 2px solid var(--brand-purple);">
+                            <i class="fas fa-star" style="font-size: 2rem; color: #0f766e; margin-bottom: 1rem;"></i>
+                            <h5>Get Personalized Mailing Address</h5>
+                            <p class="text-muted mb-3">Upgrade to get your exact mailing address based on your location and case type</p>
+                            <a href="/pricing" class="btn btn-lg" style="background: var(--accent-navy); color: white;">
+                                <i class="fas fa-arrow-up me-2"></i>Upgrade Now
+                            </a>
+                        </div>
+                    `;
+                }
+
+                // Add important mailing tips
+                html += `
+                    <div class="alert alert-success mt-4" style="border-radius: 12px;">
+                        <h6><i class="fas fa-envelope-open-text me-2"></i><strong>Important Mailing Tips:</strong></h6>
+                        <ul class="mb-0">
+                            <li><strong>Use certified mail with return receipt</strong> - This provides proof of delivery</li>
+                            <li><strong>Keep photocopies</strong> - Make copies of everything you send</li>
+                            <li><strong>Check fees</strong> - Verify current fees at uscis.gov before mailing</li>
+                            <li><strong>Organize your packet</strong> - Use the checklist tab to ensure you have everything</li>
+                            <li><strong>Sign and date</strong> - Unsigned applications will be rejected</li>
+                            <li><strong>Track your package</strong> - Keep the tracking number until you receive confirmation</li>
+                        </ul>
+                    </div>
+                `;
+
+                html += `
+                    <div class="text-center mt-4">
+                        <p class="text-muted small">
+                            <i class="fas fa-exclamation-circle me-1"></i>
+                            <strong>Note:</strong> USCIS addresses change occasionally. Always verify at
+                            <a href="https://www.uscis.gov/forms" target="_blank">uscis.gov/forms</a> before mailing.
+                        </p>
+                    </div>
+                `;
+
+                return html;
+            }
+
+            function getMailingAddresses(formNumber) {
+                // Comprehensive mailing addresses for common forms
+                const addresses = {
+                    'I-130': [
+                        {
+                            title: 'For U.S. Residents',
+                            address: 'USCIS\nAttn: I-130\nP.O. Box 4136\nChicago, IL 60680-4136',
+                            note: 'Most applicants living in the United States use this address'
+                        },
+                        {
+                            title: 'If Filing from Outside the U.S.',
+                            address: 'USCIS\nAttn: I-130\n131 M Street NE\nWashington, DC 20529',
+                            note: 'For petitioners residing outside the United States'
+                        }
+                    ],
+                    'I-485': [
+                        {
+                            title: 'For Employment-Based Cases',
+                            address: 'USCIS\nP.O. Box 805887\nChicago, IL 60680-4120',
+                            note: 'Use this if filing based on employment (EB-1, EB-2, EB-3, etc.)'
+                        },
+                        {
+                            title: 'For Family-Based Cases',
+                            address: 'USCIS\nP.O. Box 805371\nChicago, IL 60680-4120',
+                            note: 'Use this if filing based on family relationship (marriage, parent, sibling, etc.)'
+                        }
+                    ],
+                    'I-765': [
+                        {
+                            title: 'Standard Mailing Address',
+                            address: 'USCIS\nP.O. Box 6943\nChicago, IL 60680-6943',
+                            note: 'For most I-765 applications (EAD work permit)'
+                        }
+                    ],
+                    'I-131': [
+                        {
+                            title: 'Standard Mailing Address',
+                            address: 'USCIS\nP.O. Box 6939\nChicago, IL 60680-6939',
+                            note: 'For advance parole / travel document applications'
+                        }
+                    ],
+                    'N-400': [
+                        {
+                            title: 'Standard Mailing Address',
+                            address: 'USCIS\nP.O. Box 21251\nPhoenix, AZ 85036',
+                            note: 'For naturalization (citizenship) applications'
+                        }
+                    ],
+                    'I-864': [
+                        {
+                            title: 'File with Primary Form',
+                            address: 'Do not mail separately',
+                            note: 'I-864 Affidavit of Support should be included with your I-485 or immigrant visa packet - do not mail separately'
+                        }
+                    ],
+                    'I-90': [
+                        {
+                            title: 'Standard Mailing Address',
+                            address: 'USCIS\nP.O. Box 21262\nPhoenix, AZ 85036',
+                            note: 'For green card replacement/renewal'
+                        }
+                    ]
+                };
+
+                // Return addresses or default message
+                if (addresses[formNumber]) {
+                    return addresses[formNumber];
+                }
+
+                // Default message if specific form not found
+                return [{
+                    title: 'Check USCIS Website',
+                    address: 'Visit uscis.gov/forms\nFind your form number\nClick "Direct Filing Addresses"',
+                    note: `Mailing addresses for ${formNumber || 'this form'} vary by location and case type. Please check the USCIS website for the most current address.`
+                }];
+            }
+
+            function getAddressOptions(formNumber) {
+                // US States and territories for dropdown
+                const stateOptions = [
+                    { label: 'Alabama', value: 'AL' },
+                    { label: 'Alaska', value: 'AK' },
+                    { label: 'Arizona', value: 'AZ' },
+                    { label: 'Arkansas', value: 'AR' },
+                    { label: 'California', value: 'CA' },
+                    { label: 'Colorado', value: 'CO' },
+                    { label: 'Connecticut', value: 'CT' },
+                    { label: 'Delaware', value: 'DE' },
+                    { label: 'District of Columbia', value: 'DC' },
+                    { label: 'Florida', value: 'FL' },
+                    { label: 'Georgia', value: 'GA' },
+                    { label: 'Hawaii', value: 'HI' },
+                    { label: 'Idaho', value: 'ID' },
+                    { label: 'Illinois', value: 'IL' },
+                    { label: 'Indiana', value: 'IN' },
+                    { label: 'Iowa', value: 'IA' },
+                    { label: 'Kansas', value: 'KS' },
+                    { label: 'Kentucky', value: 'KY' },
+                    { label: 'Louisiana', value: 'LA' },
+                    { label: 'Maine', value: 'ME' },
+                    { label: 'Maryland', value: 'MD' },
+                    { label: 'Massachusetts', value: 'MA' },
+                    { label: 'Michigan', value: 'MI' },
+                    { label: 'Minnesota', value: 'MN' },
+                    { label: 'Mississippi', value: 'MS' },
+                    { label: 'Missouri', value: 'MO' },
+                    { label: 'Montana', value: 'MT' },
+                    { label: 'Nebraska', value: 'NE' },
+                    { label: 'Nevada', value: 'NV' },
+                    { label: 'New Hampshire', value: 'NH' },
+                    { label: 'New Jersey', value: 'NJ' },
+                    { label: 'New Mexico', value: 'NM' },
+                    { label: 'New York', value: 'NY' },
+                    { label: 'North Carolina', value: 'NC' },
+                    { label: 'North Dakota', value: 'ND' },
+                    { label: 'Ohio', value: 'OH' },
+                    { label: 'Oklahoma', value: 'OK' },
+                    { label: 'Oregon', value: 'OR' },
+                    { label: 'Pennsylvania', value: 'PA' },
+                    { label: 'Rhode Island', value: 'RI' },
+                    { label: 'South Carolina', value: 'SC' },
+                    { label: 'South Dakota', value: 'SD' },
+                    { label: 'Tennessee', value: 'TN' },
+                    { label: 'Texas', value: 'TX' },
+                    { label: 'Utah', value: 'UT' },
+                    { label: 'Vermont', value: 'VT' },
+                    { label: 'Virginia', value: 'VA' },
+                    { label: 'Washington', value: 'WA' },
+                    { label: 'West Virginia', value: 'WV' },
+                    { label: 'Wisconsin', value: 'WI' },
+                    { label: 'Wyoming', value: 'WY' },
+                    { label: '────────────────', value: 'separator', disabled: true },
+                    { label: 'Outside the United States', value: 'OUTSIDE' }
+                ];
+
+                // Define interactive questions for forms with multiple addresses
+                const options = {
+                    'I-130': {
+                        questions: [
+                            {
+                                text: 'Where are you currently residing?',
+                                options: stateOptions
+                            }
+                        ],
+                        getAddress: function(state) {
+                            if (state === 'OUTSIDE') {
+                                return {
+                                    title: 'For Petitioners Outside the U.S.',
+                                    address: 'USCIS\nAttn: I-130\n131 M Street NE\nWashington, DC 20529',
+                                    note: 'Use this address for petitioners residing outside the United States'
+                                };
+                            } else {
+                                return {
+                                    title: `For Residents of ${state}`,
+                                    address: 'USCIS\nAttn: I-130\nP.O. Box 4136\nChicago, IL 60680-4136',
+                                    note: 'All U.S. residents mail I-130 to the Chicago Lockbox'
+                                };
+                            }
+                        }
+                    },
+                    'I-485': {
+                        questions: [
+                            {
+                                text: 'What state do you currently live in?',
+                                options: stateOptions.filter(opt => opt.value !== 'OUTSIDE')
+                            },
+                            {
+                                text: 'What is the basis of your green card application?',
+                                options: [
+                                    { label: 'Family-Based (marriage, parent, sibling, etc.)', value: 'family' },
+                                    { label: 'Employment-Based (EB-1, EB-2, EB-3, etc.)', value: 'employment' }
+                                ]
+                            }
+                        ],
+                        getAddress: function(state, basis) {
+                            if (basis === 'family') {
+                                return {
+                                    title: `For Family-Based Cases (${state})`,
+                                    address: 'USCIS\nP.O. Box 805371\nChicago, IL 60680-4120',
+                                    note: 'All family-based I-485 applications mail to Chicago Lockbox'
+                                };
+                            } else {
+                                return {
+                                    title: `For Employment-Based Cases (${state})`,
+                                    address: 'USCIS\nP.O. Box 805887\nChicago, IL 60680-4120',
+                                    note: 'All employment-based I-485 applications mail to Chicago Lockbox'
+                                };
+                            }
+                        }
+                    },
+                    'N-400': {
+                        questions: [
+                            {
+                                text: 'What state do you currently live in?',
+                                options: stateOptions.filter(opt => opt.value !== 'OUTSIDE')
+                            }
+                        ],
+                        getAddress: function(state) {
+                            return {
+                                title: `For Residents of ${state}`,
+                                address: 'USCIS\nP.O. Box 21251\nPhoenix, AZ 85036',
+                                note: 'All N-400 naturalization applications mail to the Phoenix Lockbox'
+                            };
+                        }
+                    },
+                    'I-765': {
+                        questions: [
+                            {
+                                text: 'What state do you currently live in?',
+                                options: stateOptions.filter(opt => opt.value !== 'OUTSIDE')
+                            }
+                        ],
+                        getAddress: function(state) {
+                            return {
+                                title: `For Residents of ${state}`,
+                                address: 'USCIS\nP.O. Box 6943\nChicago, IL 60680-6943',
+                                note: 'All I-765 work permit applications mail to Chicago Lockbox'
+                            };
+                        }
+                    },
+                    'I-131': {
+                        questions: [
+                            {
+                                text: 'What state do you currently live in?',
+                                options: stateOptions.filter(opt => opt.value !== 'OUTSIDE')
+                            }
+                        ],
+                        getAddress: function(state) {
+                            return {
+                                title: `For Residents of ${state}`,
+                                address: 'USCIS\nP.O. Box 6939\nChicago, IL 60680-6939',
+                                note: 'All I-131 advance parole applications mail to Chicago Lockbox'
+                            };
+                        }
+                    },
+                    'I-90': {
+                        questions: [
+                            {
+                                text: 'What state do you currently live in?',
+                                options: stateOptions.filter(opt => opt.value !== 'OUTSIDE')
+                            }
+                        ],
+                        getAddress: function(state) {
+                            return {
+                                title: `For Residents of ${state}`,
+                                address: 'USCIS\nP.O. Box 21262\nPhoenix, AZ 85036',
+                                note: 'All I-90 green card renewal applications mail to Phoenix Lockbox'
+                            };
+                        }
+                    }
+                };
+
+                return options[formNumber] || {};
+            }
+
+            window.updateMailingAddress = function(formNumber) {
+                const addressOptions = getAddressOptions(formNumber);
+                if (!addressOptions.questions) return;
+
+                // Get all answers
+                const answers = addressOptions.questions.map((q, i) => {
+                    return document.getElementById(`addressQ${i}`).value;
+                });
+
+                // Check if all questions answered
+                if (answers.some(a => !a || a === 'separator')) return;
+
+                // Use the getAddress function with answers
+                const selectedAddress = addressOptions.getAddress(...answers);
+
+                if (selectedAddress) {
+                    // Display the personalized address
+                    const addressHTML = `
+                        <h5 style="color: var(--accent-navy); margin-bottom: 1.5rem;">
+                            <i class="fas fa-envelope me-2"></i>${selectedAddress.title}
+                        </h5>
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; font-family: monospace; font-size: 1.1rem; line-height: 2; border: 2px solid var(--success-green); margin-bottom: 1rem;" id="addressToCopy">
+                            ${selectedAddress.address.split('\n').join('<br>')}
+                        </div>
+                        ${selectedAddress.note ? `<p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>${selectedAddress.note}</p>` : ''}
+                    `;
+
+                    document.getElementById('addressDisplay').innerHTML = addressHTML;
+                    document.getElementById('selectedAddress').style.display = 'block';
+
+                    // Scroll to address
+                    document.getElementById('selectedAddress').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            };
+
+            window.copyMailingAddress = function(event) {
+                const addressElement = document.getElementById('addressToCopy');
+                if (!addressElement) {
+                    showToast('Error: Address not found', 'error');
+                    return;
+                }
+
+                const addressText = addressElement.innerText;
+
+                navigator.clipboard.writeText(addressText).then(() => {
+                    // Show success feedback
+                    const btn = event.target.closest('button');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+
+                    showToast('Address copied to clipboard!', 'success');
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    showToast('Failed to copy. Please select and copy manually.', 'error');
+                });
+            };
+
+            window.copyAddress = function(address, event) {
+                const addressText = address.replace(/<br>/g, '\n').replace(/\\/g, '');
+
+                navigator.clipboard.writeText(addressText).then(() => {
+                    // Show success feedback
+                    const btn = event.target.closest('button');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+                    btn.classList.remove('btn-outline-primary');
+                    btn.classList.add('btn-success');
+                    btn.classList.add('text-white');
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('btn-success');
+                        btn.classList.remove('text-white');
+                        btn.classList.add('btn-outline-primary');
+                    }, 2000);
+
+                    showToast('Address copied to clipboard!', 'success');
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    showToast('Failed to copy. Please select and copy manually.', 'error');
+                });
+            };
+
+            // Toast notification helper
+            function showToast(message, type = 'info') {
+                // Remove any existing toasts
+                const existingToast = document.querySelector('.custom-toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                // Create toast element
+                const toast = document.createElement('div');
+                toast.className = 'custom-toast';
+
+                const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+                const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+
+                toast.innerHTML = `
+                    <i class="fas ${icon} me-2"></i>${message}
+                `;
+
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${bgColor};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 10000;
+                    font-weight: 500;
+                    animation: slideIn 0.3s ease-out;
+                `;
+
+                document.body.appendChild(toast);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Download Professional PDF (for paid users only)
+            window.downloadProfessionalPDF = function(formId) {
+                // Show loading state
+                const btn = event.target.closest('button');
+                const originalHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating PDF...';
+
+                // Make AJAX call to download PDF
+                $.ajax({
+                    url: `/api/forms/${formId}/checklist-pdf`,
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(blob) {
+                        // Create download link
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${currentFormData.title.replace('/', '-')}_Checklist.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+
+                        // Reset button
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+
+                        // Show success message
+                        alert('PDF downloaded successfully!');
+                    },
+                    error: function(xhr) {
+                        // Reset button
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+
+                        // Show error message
+                        if (xhr.status === 403) {
+                            alert('Please upgrade to access professional PDF downloads.');
+                            window.location.href = '/pricing';
+                        } else {
+                            alert('Error generating PDF. Please try again.');
+                        }
+                    }
+                });
+            };
 
             // Logout handler
             $('#logoutBtn').click(async function() {

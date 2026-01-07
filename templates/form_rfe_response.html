@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RFE Response Cover Letter</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+
+        .navbar {
+            background: white !important;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 800;
+            color: #0f172a !important;
+        }
+
+        .navbar .nav-link {
+            color: #475569 !important;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar .nav-link:hover {
+            color: #b45309 !important;
+            background: rgba(180, 83, 9, 0.12);
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             line-height: 1.6;
@@ -101,14 +140,14 @@
         }
 
         .btn-action {
-            background: #667eea;
+            background: #b45309;
             color: white;
             border: none;
             padding: 12px 24px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -235,7 +274,7 @@
 
         .share-option:hover {
             background: #f3f4f6;
-            color: #667eea;
+            color: #b45309;
         }
 
         .share-option i {
@@ -273,9 +312,71 @@
                 display: none !important;
             }
         }
-    </style>
+    
+        @media screen {
+            .container {
+                padding-top: 24px;
+                padding-bottom: 24px;
+            }
+        }
+</style>
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light print-hide">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-passport me-2"></i>
+                {{ g.branding.site_name }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    {% if user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
+                            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="action-buttons">
         <a href="/" class="btn-action btn-home">
             <i class="fas fa-home me-2"></i>Home
@@ -654,5 +755,6 @@
             return false;
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -9,20 +9,35 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="alternate icon" href="/static/favicon.svg">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Space Grotesk', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%);
             min-height: 100vh;
             padding-bottom: 3rem;
         }
 
         .navbar {
-            background: rgba(44, 62, 80, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white !important;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, #b45309, #0f766e) 1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .navbar-brand {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 800;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', Georgia, serif;
         }
 
         .container {
@@ -38,7 +53,7 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #b45309 0%, #0f766e 100%);
             color: white;
             border-radius: 15px 15px 0 0 !important;
             padding: 1.5rem;
@@ -54,8 +69,43 @@
         }
 
         .member-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            border-color: #b45309;
+            box-shadow: 0 5px 15px rgba(180, 83, 9, 0.2);
+        }
+
+        .alert-neutral {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+        }
+
+        .alert-neutral .alert-link {
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .alert-neutral i {
+            color: #64748b;
+        }
+
+        .badge-neutral {
+            background: rgba(15, 118, 110, 0.12);
+            color: #0f766e;
+            border: 1px solid rgba(15, 118, 110, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 1.25rem;
+            }
+
+            .card {
+                margin-bottom: 1.25rem;
+            }
+
+            .card-header {
+                padding: 1.25rem;
+            }
         }
 
         .role-badge {
@@ -81,7 +131,7 @@
         }
 
         .seats-info {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.1) 0%, rgba(15, 118, 110, 0.1) 100%);
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
@@ -96,37 +146,70 @@
         }
 
         .btn-invite {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #b45309 0%, #0f766e 100%);
             color: white;
             border: none;
         }
 
         .btn-invite:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(180, 83, 9, 0.4);
             color: white;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-passport me-2"></i>{{ g.branding.site_name }}
             </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                </a>
-                <a class="nav-link active" href="/team">
-                    <i class="fas fa-users me-1"></i>Team
-                </a>
-                <a class="nav-link" href="/pricing">
-                    <i class="fas fa-tags me-1"></i>Pricing
-                </a>
-                <button class="btn btn-outline-danger btn-sm ms-2" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt me-1"></i>Logout
-                </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forms">
+                            <i class="fas fa-file-alt me-1"></i>Forms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/templates">
+                            <i class="fas fa-edit me-1"></i>Templates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/file-compressor">
+                            <i class="fas fa-file-archive me-1"></i>Compressor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pricing">
+                            <i class="fas fa-tags me-1"></i>Pricing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/team">
+                            <i class="fas fa-users me-1"></i>Team
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-danger btn-sm ms-2" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -145,7 +228,7 @@
                 <div class="seats-info">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <h5 style="color: #667eea; margin-bottom: 0.5rem;">
+                            <h5 style="color: #b45309; margin-bottom: 0.5rem;">
                                 <i class="fas fa-chair me-2"></i>Team Seats
                             </h5>
                             <p class="mb-0">
@@ -159,7 +242,7 @@
                         </div>
                     </div>
                     <div id="upgradeMessage" class="mt-3" style="display: none;">
-                        <div class="alert alert-warning mb-0">
+                        <div class="alert alert-neutral mb-0">
                             <i class="fas fa-info-circle me-2"></i>
                             <strong>Seats Full!</strong> Upgrade to add more team members.
                             <a href="/pricing" class="alert-link">View Plans</a>
@@ -279,7 +362,7 @@
                     <div class="member-card">
                         <div class="row align-items-center">
                             <div class="col-md-1 text-center">
-                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #b45309 0%, #0f766e 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">
                                     ${(member.user_name || member.user_email).charAt(0).toUpperCase()}
                                 </div>
                             </div>
@@ -322,7 +405,7 @@
                                 <small class="text-muted">Invited by ${inv.invited_by} on ${new Date(inv.created_at).toLocaleDateString()}</small>
                             </div>
                             <div class="col-md-3">
-                                <span class="badge bg-warning">Pending</span>
+                                <span class="badge badge-neutral">Pending</span>
                             </div>
                             <div class="col-md-3 text-end">
                                 <button class="btn btn-sm btn-outline-danger" onclick="revokeInvite(${inv.id})">
@@ -380,5 +463,6 @@
             });
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
