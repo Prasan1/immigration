@@ -11,6 +11,10 @@ from datetime import datetime
 def generate_free_i130_checklist():
     """Generate the free I-130 checklist PDF"""
 
+    # Create directory if it doesn't exist
+    import os
+    os.makedirs("static/downloads", exist_ok=True)
+
     filename = "static/downloads/i130-checklist.pdf"
     doc = SimpleDocTemplate(filename, pagesize=letter)
     elements = []

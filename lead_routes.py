@@ -9,6 +9,17 @@ import os
 def register_lead_routes(app, limiter):
     """Register lead generation routes"""
 
+    # Generate PDF if it doesn't exist
+    pdf_path = 'static/downloads/i130-checklist.pdf'
+    if not os.path.exists(pdf_path):
+        try:
+            print("Generating I-130 checklist PDF...", flush=True)
+            from generate_free_i130_pdf import generate_free_i130_checklist
+            generate_free_i130_checklist()
+            print("✅ PDF generated successfully!", flush=True)
+        except Exception as e:
+            print(f"⚠️ Warning: Could not generate PDF: {e}", flush=True)
+
     @app.route('/free-i130-checklist')
     def free_i130_checklist():
         """Landing page for free I-130 checklist"""
